@@ -1,0 +1,70 @@
+<project name="ApiCommonData" basedir=".">
+
+  <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
+  <!-- oooooooooooooooooooooooooo  Dependencies  oooooooooooooooooooooooooo -->
+  <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
+
+  <import file="${projectsDir}/FgpUtil/build.xml" />
+  <import file="${projectsDir}/GUS/build.xml" />
+  <import file="${projectsDir}/TuningManager/build.xml" />
+  <import file="${projectsDir}/DoTS/build.xml" />
+
+  <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
+  <!-- oooooooooooooooooooooooooo  Installation  oooooooooooooooooooooooooo -->
+  <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
+
+  <target name="ApiCommonData-Installation" depends="FgpUtil-Installation,
+                                                     TuningManager-Installation,
+                                                     GUS-Installation,
+                                                     DoTS-Installation,
+                                                     ApiCommonData/Load-Installation">
+    <ant target="defaultProjectInstall">
+      <property name="project" value="ApiCommonData" />
+    </ant>
+  </target>
+
+  <!-- ooooooooooooooooooooooo  Install Components  ooooooooooooooooooooooo -->
+
+  <target name="ApiCommonData/Load-Installation">
+    <ant target="defaultComponentInstall">
+      <property name="project" value="ApiCommonData" />
+      <property name="component" value="Load" />
+    </ant>
+  </target>
+
+  <target name="ApiCommonData/Datasources-Installation">
+    <property name="loadresources" value="${targetDir}/lib/xml/loadresources" />
+    <property name="cache" value="${targetDir}/config/.cache/datasources" />
+    <property name="datasources" value="${targetDir}/lib/xml/datasources" />
+    <mkdir dir="${cache}" />
+    <mkdir dir="${datasources}" />
+    <copy todir="${loadresources}">
+      <fileset dir="${projectsDir}/ApiCommonData/Load/lib/xml">
+        <include name="*Resources.xml" />
+      </fileset>
+    </copy>
+    <echo message="Running updateResourcesWithPubmed" />
+    <apply executable="${targetDir}/bin/updateResourcesWithPubmed"
+           dest="${cache}"
+           verbose="true">
+      <srcfile />
+      <targetfile />
+      <fileset dir="${loadresources}">
+        <include name="*Resources.xml" />
+      </fileset>
+      <mapper type="glob" from="*.xml" to="*-pubmed.xml" />
+    </apply>
+    <copy todir="${datasources}">
+      <fileset dir="${cache}">
+        <include name="*-pubmed.xml" />
+      </fileset>
+    </copy>
+    <delete dir="${loadresources}" />
+
+    <ant target="buildInfo">
+      <property name="component" value="updateResourcesWithPubmed" />
+    </ant>
+
+  </target>
+
+</project>
