@@ -10,8 +10,6 @@ use Cwd;
 
 $| = 1;
 
-my @envVars = ('DB_PLATFORM', 'DB_USER', 'DB_PASS');
-my $envStr = '$' . join(", \$", @envVars);
 my ($dbName, $dbHost, $dropApiDB, $dropGUS, $create, $allowFailures);
 
 &GetOptions("dbName=s" => \$dbName,
