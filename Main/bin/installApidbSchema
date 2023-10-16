@@ -196,7 +196,7 @@ my @apiDbSchemas = qw(
   TESTTUNING
 );
 
-my $filesDir = cwd() . "/../lib/sql/apidbschema/$dbVendor/";
+my $filesDir = "$ENV{GUS_HOME}/lib/sql/apidbschema/$dbVendor";
 
 if ($create) {
   for my $sqlFile (@create) {
