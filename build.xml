@@ -11,7 +11,7 @@
   <!-- oooooooooooooooooooooooooo  Installation  oooooooooooooooooooooooooo -->
   <!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
 
-  <target name="ApidbSchema-Installation" depends="GUS-Installation,
+  <target name="ApidbSchema-Installation" depends="GUS/DBAdmin-Installation,
                                                    SchemaInstallUtils-Installation,
                                                    ApidbSchema/Main-Installation">
     <ant target="defaultProjectInstall">
