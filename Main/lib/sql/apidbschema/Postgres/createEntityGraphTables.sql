@@ -83,9 +83,9 @@ CREATE SEQUENCE :VAR1.EntityType_sq;
 GRANT SELECT ON :VAR1.EntityType_sq TO gus_w;
 GRANT SELECT ON :VAR1.EntityType_sq TO gus_r;
 
-CREATE UNIQUE INDEX :VAR1.entitytype_ix_1 ON :VAR1.entitytype (study_id, entity_type_id) TABLESPACE indx;
-CREATE UNIQUE INDEX :VAR1.entitytype_ix_2 ON :VAR1.entitytype (type_id, entity_type_id) TABLESPACE indx;
-CREATE UNIQUE INDEX :VAR1.entitytype_ix_3 ON :VAR1.entitytype (study_id, internal_abbrev) TABLESPACE indx;
+CREATE UNIQUE INDEX entitytype_ix_1 ON :VAR1.entitytype (study_id, entity_type_id) TABLESPACE indx;
+CREATE UNIQUE INDEX entitytype_ix_2 ON :VAR1.entitytype (type_id, entity_type_id) TABLESPACE indx;
+CREATE UNIQUE INDEX entitytype_ix_3 ON :VAR1.entitytype (study_id, internal_abbrev) TABLESPACE indx;
 
 
 INSERT INTO core.TableInfo
@@ -155,9 +155,9 @@ WHERE 'processtype' NOT IN (SELECT lower(name) FROM core.TableInfo
 
 CREATE TABLE :VAR1.EntityAttributes (
  entity_attributes_id         NUMERIC(12) NOT NULL,
- stable_id                         VARCHAR(200) NOT NULL,
+ stable_id                    VARCHAR(200) NOT NULL,
  entity_type_id               NUMERIC(12) NOT NULL,
- atts                         CLOB,
+ atts                         TEXT,
  modification_date            TIMESTAMP NOT NULL,
  user_read                    NUMERIC(1) NOT NULL,
  user_write                   NUMERIC(1) NOT NULL,
@@ -170,7 +170,7 @@ CREATE TABLE :VAR1.EntityAttributes (
  row_project_id               NUMERIC(4) NOT NULL,
  row_alg_invocation_id        NUMERIC(12) NOT NULL,
  PRIMARY KEY (entity_attributes_id),
-FOREIGN KEY (entity_type_id) REFERENCES :VAR1.EntityType --,
+FOREIGN KEY (entity_type_id) REFERENCES :VAR1.EntityType (entity_type_id) --,
 --CONSTRAINT ensure_va_json CHECK (atts is json)
 );
 
@@ -219,8 +219,8 @@ CREATE TABLE :VAR1.EntityClassification (
  row_group_id                 NUMERIC(3) NOT NULL,
  row_project_id               NUMERIC(4) NOT NULL,
  row_alg_invocation_id        NUMERIC(12) NOT NULL,
- FOREIGN KEY (entity_type_id) REFERENCES :VAR1.EntityType,
- FOREIGN KEY (entity_attributes_id) REFERENCES :VAR1.EntityAttributes,
+ FOREIGN KEY (entity_type_id) REFERENCES :VAR1.EntityType (entity_type_id),
+ FOREIGN KEY (entity_attributes_id) REFERENCES :VAR1.EntityAttributes (entity_attributes_id),
  PRIMARY KEY (entity_classification_id)
 );
 
@@ -257,7 +257,7 @@ CREATE TABLE :VAR1.ProcessAttributes (
  process_type_id                NUMERIC(12) NOT NULL,
  in_entity_id                 NUMERIC(12) NOT NULL,
  out_entity_id                NUMERIC(12) NOT NULL,
- atts                         CLOB,
+ atts                         TEXT,
  modification_date            TIMESTAMP NOT NULL,
  user_read                    NUMERIC(1) NOT NULL,
  user_write                   NUMERIC(1) NOT NULL,
@@ -269,9 +269,9 @@ CREATE TABLE :VAR1.ProcessAttributes (
  row_group_id                 NUMERIC(3) NOT NULL,
  row_project_id               NUMERIC(4) NOT NULL,
  row_alg_invocation_id        NUMERIC(12) NOT NULL,
- FOREIGN KEY (in_entity_id) REFERENCES :VAR1.entityattributes,
- FOREIGN KEY (out_entity_id) REFERENCES :VAR1.entityattributes,
- FOREIGN KEY (process_type_id) REFERENCES :VAR1.processtype,
+ FOREIGN KEY (in_entity_id) REFERENCES :VAR1.entityattributes (entity_attributes_id),
+ FOREIGN KEY (out_entity_id) REFERENCES :VAR1.entityattributes (entity_attributes_id),
+ FOREIGN KEY (process_type_id) REFERENCES :VAR1.processtype (process_type_id),
  PRIMARY KEY (process_attributes_id) -- ,
 --  CONSTRAINT ensure_ea_json CHECK (atts is json)   
 );
@@ -332,9 +332,9 @@ CREATE TABLE :VAR1.EntityTypeGraph (
  row_group_id                 NUMERIC(3) NOT NULL,
  row_project_id               NUMERIC(4) NOT NULL,
  row_alg_invocation_id        NUMERIC(12) NOT NULL,
- FOREIGN KEY (study_id) REFERENCES :VAR1.study,
- FOREIGN KEY (parent_id) REFERENCES :VAR1.entitytype,
- FOREIGN KEY (entity_type_id) REFERENCES :VAR1.entitytype,
+ FOREIGN KEY (study_id) REFERENCES :VAR1.study (study_id),
+ FOREIGN KEY (parent_id) REFERENCES :VAR1.entitytype (entity_type_id),
+ FOREIGN KEY (entity_type_id) REFERENCES :VAR1.entitytype (entity_type_id),
  PRIMARY KEY (entity_type_graph_id)
 );
 
@@ -436,8 +436,8 @@ CREATE TABLE :VAR1.ProcessTypeComponent (
  row_group_id                 NUMERIC(3) NOT NULL,
  row_project_id               NUMERIC(4) NOT NULL,
  row_alg_invocation_id        NUMERIC(12) NOT NULL,
- FOREIGN KEY (process_type_id) REFERENCES :VAR1.ProcessType,
- FOREIGN KEY (component_id) REFERENCES :VAR1.ProcessType,
+ FOREIGN KEY (process_type_id) REFERENCES :VAR1.ProcessType (process_type_id),
+ FOREIGN KEY (component_id) REFERENCES :VAR1.ProcessType (process_type_id),
  PRIMARY KEY (process_type_component_id)
 );
 
@@ -488,7 +488,7 @@ CREATE TABLE :VAR1.Attribute (
   unit                          varchar(400),
   unit_ontology_term_id         NUMERIC(10),
   precision                     integer,
-  ordered_values                CLOB,    
+  ordered_values                TEXT,
   range_min                     varchar(16),
   range_max                     varchar(16),
   bin_width                    varchar(16),
@@ -507,10 +507,10 @@ CREATE TABLE :VAR1.Attribute (
   row_group_id                 NUMERIC(3) NOT NULL,
   row_project_id               NUMERIC(4) NOT NULL,
   row_alg_invocation_id        NUMERIC(12) NOT NULL,
-  FOREIGN KEY (entity_type_id) REFERENCES :VAR1.EntityType,
-  FOREIGN KEY (process_type_id) REFERENCES :VAR1.ProcessType,
- FOREIGN KEY (ontology_term_id) REFERENCES :VAR2.ontologyterm,
- FOREIGN KEY (unit_ontology_term_id) REFERENCES :VAR2.ontologyterm,
+  FOREIGN KEY (entity_type_id) REFERENCES :VAR1.EntityType (entity_type_id),
+  FOREIGN KEY (process_type_id) REFERENCES :VAR1.ProcessType (process_type_id),
+ FOREIGN KEY (ontology_term_id) REFERENCES :VAR2.ontologyterm (ontology_term_id),
+ FOREIGN KEY (unit_ontology_term_id) REFERENCES :VAR2.ontologyterm (ontology_term_id),
   PRIMARY KEY (attribute_id) -- ,
 --  CONSTRAINT ensure_ov_json CHECK (ordered_values is json)   
 );
@@ -569,7 +569,7 @@ CREATE TABLE :VAR1.AttributeGraph (
   bin_width_override           varchar(16),
   is_temporal                  numeric(1),
   is_featured                  numeric(1),
-  ordinal_values               CLOB,
+  ordinal_values               TEXT,
   scale                         varchar(30),
   modification_date            TIMESTAMP NOT NULL,
   user_read                    NUMERIC(1) NOT NULL,
@@ -582,9 +582,9 @@ CREATE TABLE :VAR1.AttributeGraph (
   row_group_id                 NUMERIC(3) NOT NULL,
   row_project_id               NUMERIC(4) NOT NULL,
   row_alg_invocation_id        NUMERIC(12) NOT NULL,
- FOREIGN KEY (ontology_term_id) REFERENCES :VAR2.ontologyterm,
- FOREIGN KEY (parent_ontology_term_id) REFERENCES :VAR2.ontologyterm,
-  FOREIGN KEY (study_id) REFERENCES :VAR1.study,
+ FOREIGN KEY (ontology_term_id) REFERENCES :VAR2.ontologyterm (ontology_term_id),
+ FOREIGN KEY (parent_ontology_term_id) REFERENCES :VAR2.ontologyterm (ontology_term_id),
+  FOREIGN KEY (study_id) REFERENCES :VAR1.study (study_id),
   PRIMARY KEY (attribute_graph_id) -- ,
 --  CONSTRAINT ensure_ordv_json CHECK (ordinal_values is json),
 --  CONSTRAINT ensure_prolbl_json CHECK (provider_label is json)
@@ -633,9 +633,9 @@ CREATE TABLE :VAR1.StudyCharacteristic (
   row_group_id                 NUMERIC(3) NOT NULL,
   row_project_id               NUMERIC(4) NOT NULL,
   row_alg_invocation_id        NUMERIC(12) NOT NULL,
- FOREIGN KEY (value_ontology_term_id) REFERENCES :VAR2.ontologyterm,
- FOREIGN KEY (attribute_id) REFERENCES :VAR2.ontologyterm,
-  FOREIGN KEY (study_id) REFERENCES :VAR1.study,
+ FOREIGN KEY (value_ontology_term_id) REFERENCES :VAR2.ontologyterm (ontology_term_id),
+ FOREIGN KEY (attribute_id) REFERENCES :VAR2.ontologyterm (ontology_term_id),
+  FOREIGN KEY (study_id) REFERENCES :VAR1.study (study_id),
   PRIMARY KEY (study_characteristic_id)
 );
 
@@ -699,7 +699,7 @@ CREATE TABLE :VAR1.AnnotationProperties (
   annotation_properties_id   NUMERIC(10) NOT NULL,
   ontology_term_id       NUMERIC(10) NOT NULL,
   study_id            NUMERIC(12) NOT NULL,
-  props                         CLOB,
+  props                         TEXT,
  external_database_release_id numeric(10) NOT NULL,
 MODIFICATION_DATE     TIMESTAMP,
   USER_READ             NUMERIC(1),
@@ -742,4 +742,3 @@ FROM
 WHERE 'annotationproperties' NOT IN (SELECT lower(name) FROM core.TableInfo
                                     WHERE database_id = d.database_id);
 
-exit;
