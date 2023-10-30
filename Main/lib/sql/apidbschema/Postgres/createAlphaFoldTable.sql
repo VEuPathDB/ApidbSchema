@@ -21,7 +21,7 @@ CREATE TABLE ApiDB.AlphaFold (
   FOREIGN KEY (EXTERNAL_DATABASE_RELEASE_ID) REFERENCES sres.ExternalDatabaseRelease (EXTERNAL_DATABASE_RELEASE_ID)
 );
 
-CREATE INDEX af_ix0 on ApiDB.AlphaFold(uniprot_id, alphafold_id) TABLESPACE indx;
+CREATE INDEX af_ix0 on ApiDB.AlphaFold(uniprot_id, alphafold_id);
 
 CREATE SEQUENCE ApiDB.ALPHAFOLD_SQ;
 

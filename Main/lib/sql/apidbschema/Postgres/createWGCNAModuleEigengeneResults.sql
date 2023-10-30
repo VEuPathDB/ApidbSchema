@@ -18,7 +18,7 @@ CREATE TABLE apidb.EigengeneWGCNAResults (
  PRIMARY KEY (wgcna_eigene_result_id)
 );
 
-CREATE INDEX egenewgcnares_1 ON apidb.EigengeneWGCNAResults (protocol_app_node_id) TABLESPACE indx;
+CREATE INDEX egenewgcnares_1 ON apidb.EigengeneWGCNAResults (protocol_app_node_id) ;
 
 GRANT INSERT, SELECT, UPDATE, DELETE ON apidb.EigengeneWGCNAResults TO gus_w;
 GRANT SELECT ON apidb.EigengeneWGCNAResults TO gus_r;

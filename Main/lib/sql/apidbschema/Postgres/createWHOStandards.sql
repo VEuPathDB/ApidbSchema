@@ -18,8 +18,8 @@ CREATE TABLE apidb.WHOStandards (
  PRIMARY KEY (who_standards_id)
 );
 
-CREATE INDEX whostd_revix0 ON apidb.WHOStandards (label, who_standards_id) TABLESPACE indx;
-CREATE INDEX whostd_revix1 ON apidb.WHOStandards (protocol_app_node_id, who_standards_id) TABLESPACE indx;
+CREATE INDEX whostd_revix0 ON apidb.WHOStandards (label, who_standards_id);
+CREATE INDEX whostd_revix1 ON apidb.WHOStandards (protocol_app_node_id, who_standards_id);
 
 GRANT INSERT, SELECT, UPDATE, DELETE ON apidb.WHOStandards TO gus_w;
 GRANT SELECT ON apidb.WHOStandards TO gus_r;

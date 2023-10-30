@@ -8,9 +8,9 @@ create table apidb.GeneDetail (
       MODIFICATION_DATE TIMESTAMP
 );
 
-CREATE UNIQUE INDEX genedtl_idx01 ON apidb.GeneDetail(source_id, project_id, field_name) tablespace indx;
-CREATE INDEX genedtl_idx02 ON apidb.GeneDetail(field_name, source_id) tablespace indx;
-CREATE INDEX genedtl_idx03 ON apidb.GeneDetail(row_count, source_id) tablespace indx;
+CREATE UNIQUE INDEX genedtl_idx01 ON apidb.GeneDetail(source_id, project_id, field_name) ;
+CREATE INDEX genedtl_idx02 ON apidb.GeneDetail(field_name, source_id) ;
+CREATE INDEX genedtl_idx03 ON apidb.GeneDetail(row_count, source_id) ;
 
 -- TODO
 -- CREATE INDEX gene_text_ix on apidb.GeneDetail(content)

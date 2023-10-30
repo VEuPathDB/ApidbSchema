@@ -20,11 +20,11 @@ CREATE TABLE apidb.NAFeatureMetaCycle (
  FOREIGN KEY (protocol_app_node_id) REFERENCES Study.ProtocolAppNode,
  PRIMARY KEY (na_feature_meta_cycle_id)
 );
-CREATE INDEX nafeatmetacyc_1 ON apidb.NaFeatureMetacycle (na_feature_id, na_feature_meta_cycle_id) TABLESPACE indx;
-CREATE INDEX nafeatmetacyc_2 ON apidb.NaFeatureMetacycle (protocol_app_node_id, na_feature_meta_cycle_id) TABLESPACE indx;
+CREATE INDEX nafeatmetacyc_1 ON apidb.NaFeatureMetacycle (na_feature_id, na_feature_meta_cycle_id) ;
+CREATE INDEX nafeatmetacyc_2 ON apidb.NaFeatureMetacycle (protocol_app_node_id, na_feature_meta_cycle_id) ;
 
---CREATE INDEX apidb.metacyc_revix0 ON apidb.MetaCycle (label, cycle_id) TABLESPACE indx;
---CREATE INDEX apidb.metacyc_revix1 ON apidb.MetaCycle (label, cycle_id) TABLESPACE indx;
+--CREATE INDEX apidb.metacyc_revix0 ON apidb.MetaCycle (label, cycle_id) ;
+--CREATE INDEX apidb.metacyc_revix1 ON apidb.MetaCycle (label, cycle_id) ;
 
 
 GRANT INSERT, SELECT, UPDATE, DELETE ON apidb.NAFeatureMetaCycle TO gus_w;

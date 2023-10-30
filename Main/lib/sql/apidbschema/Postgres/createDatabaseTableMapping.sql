@@ -23,7 +23,7 @@ GRANT INSERT, SELECT, UPDATE, DELETE ON ApiDB.DatabaseTableMapping TO gus_w;
 GRANT SELECT ON ApiDB.DatabaseTableMapping TO gus_r;
 
 CREATE INDEX db_tbl_map_idx
-ON ApiDB.DatabaseTableMapping (database_orig, table_name, primary_key_orig, primary_key) tablespace indx;
+ON ApiDB.DatabaseTableMapping (database_orig, table_name, primary_key_orig, primary_key) ;
 
 
 CREATE SEQUENCE apidb.DatabaseTableMapping_sq;
@@ -72,7 +72,7 @@ GRANT INSERT, SELECT, UPDATE, DELETE ON ApiDB.GlobalNaturalKey TO gus_w;
 GRANT SELECT ON ApiDB.GlobalNaturalKey TO gus_r;
 
 CREATE INDEX db_tbl_map_g_idx
-ON ApiDB.GlobalNaturalKey (table_name, global_natural_key, primary_key) tablespace indx;
+ON ApiDB.GlobalNaturalKey (table_name, global_natural_key, primary_key) ;
 
 CREATE SEQUENCE apidb.GlobalNaturalKey_sq;
 

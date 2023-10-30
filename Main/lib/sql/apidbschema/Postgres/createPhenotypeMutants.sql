@@ -34,7 +34,7 @@ create table ApiDB.PhenotypeMutants (
 );
 
 create index phenmutants_1
-  on apidb.phenotypemutants (na_feature_id, phenotype_mutants_id) tablespace indx;
+  on apidb.phenotypemutants (na_feature_id, phenotype_mutants_id) ;
 
 CREATE SEQUENCE apidb.PhenotypeMutants_sq;
 

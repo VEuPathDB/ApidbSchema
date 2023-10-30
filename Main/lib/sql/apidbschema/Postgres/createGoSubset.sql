@@ -21,8 +21,8 @@ primary key (go_subset_id)
 ALTER TABLE apidb.GoSubset ADD CONSTRAINT gsub_fk
       FOREIGN KEY (EXTERNAL_DATABASE_RELEASE_ID) REFERENCES sres.ExternalDatabaseRelease (EXTERNAL_DATABASE_RELEASE_ID);
 
-CREATE INDEX gosub_revix0 ON apidb.GoSubset (external_database_release_id, go_subset_id) TABLESPACE indx;
-CREATE INDEX gosub_revix1 ON apidb.GoSubset (ontology_term_id, go_subset_id) TABLESPACE indx;
+CREATE INDEX gosub_revix0 ON apidb.GoSubset (external_database_release_id, go_subset_id) ;
+CREATE INDEX gosub_revix1 ON apidb.GoSubset (ontology_term_id, go_subset_id) ;
 
 CREATE SEQUENCE apidb.GoSubset_sq;
 

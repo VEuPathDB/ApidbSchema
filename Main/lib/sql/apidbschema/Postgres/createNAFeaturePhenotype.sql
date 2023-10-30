@@ -25,11 +25,11 @@ create table ApiDB.NAFeaturePhenotype (
 );
 
 create index nfphen_1
-  on apidb.NaFeaturePhenotype (na_feature_id, na_feature_phenotype_id) tablespace indx;
+  on apidb.NaFeaturePhenotype (na_feature_id, na_feature_phenotype_id) ;
 create index nfphen_2
-  on apidb.NaFeaturePhenotype (protocol_app_node_id, na_feature_phenotype_id) tablespace indx;
+  on apidb.NaFeaturePhenotype (protocol_app_node_id, na_feature_phenotype_id) ;
 create index nfphen_3
-  on apidb.NaFeaturePhenotype (property_id, na_feature_phenotype_id) tablespace indx;
+  on apidb.NaFeaturePhenotype (property_id, na_feature_phenotype_id) ;
 
 CREATE SEQUENCE apidb.NAFeaturePhenotype_sq;
 

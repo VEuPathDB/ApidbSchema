@@ -20,7 +20,7 @@ CREATE TABLE apidb.RflpGenotype (
 
 CREATE INDEX rflpg_revfk_ix
   ON apidb.RflpGenotype (protocol_app_node_id, locus_tag, genotype, rflp_genotype_id)
-tablespace indx;
+;
 
 CREATE SEQUENCE apidb.RflpGenotype_sq;
 
@@ -67,7 +67,7 @@ CREATE TABLE apidb.RflpGenotypeNumber (
 
 CREATE INDEX rflpgn_revfk_ix
   ON apidb.RflpGenotypeNumber (protocol_app_node_id, genotype_number, rflp_genotype_id)
-tablespace indx;
+;
 
 CREATE SEQUENCE apidb.RflpGenotypeNumber_sq;
 

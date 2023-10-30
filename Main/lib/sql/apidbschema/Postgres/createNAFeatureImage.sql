@@ -27,10 +27,10 @@ CREATE TABLE ApiDB.NAFeatureImage (
 );
 
 create index nfi_revfk1_ix
-  on apidb.NaFeatureImage (na_feature_id, na_feature_image_id) tablespace indx;
+  on apidb.NaFeatureImage (na_feature_id, na_feature_image_id) ;
 
 create index nfi_revfk2_ix
-  on apidb.NaFeatureImage (external_database_release_id, na_feature_image_id) tablespace indx;
+  on apidb.NaFeatureImage (external_database_release_id, na_feature_image_id) ;
 
 CREATE SEQUENCE ApiDB.NAFeatureImage_sq;
 

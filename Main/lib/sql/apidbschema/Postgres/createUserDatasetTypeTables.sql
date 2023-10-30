@@ -4,7 +4,7 @@ gene_SOURCE_ID                             VARCHAR(100),
 FOREIGN KEY (user_dataset_id) REFERENCES ApiDBUserDatasets.InstalledUserDataset
 );
 
-CREATE unique INDEX UD_GENEID_idx1 ON ApiDBUserDatasets.UD_geneid (user_dataset_id, gene_source_id) tablespace indx;
+CREATE unique INDEX UD_GENEID_idx1 ON ApiDBUserDatasets.UD_geneid (user_dataset_id, gene_source_id);
 
 GRANT insert, select, update, delete ON ApiDBUserDatasets.UD_GeneId TO gus_w;
 GRANT select ON ApiDBUserDatasets.UD_GeneId TO gus_r;
@@ -23,7 +23,7 @@ create table ApiDBUserDatasets.UD_ProfileSet (
 create index pset_idx1
   on ApiDBUserDatasets.UD_ProfileSet
      (profile_set_id, user_dataset_id, name, unit)
-  tablespace indx;
+  ;
 
 create sequence ApiDBUserDatasets.UD_profileset_sq;
 
@@ -48,10 +48,10 @@ FOREIGN KEY (profile_set_id) REFERENCES ApiDBUserDatasets.UD_profileset,
 PRIMARY KEY (protocol_app_node_id)
 );
 
-Create Index UD_PAN_idx1 ON ApiDBUserDatasets.UD_PROTOCOLAPPNODE (type_id) tablespace indx;
-Create Index UD_PAN_idx2 ON ApiDBUserDatasets.UD_PROTOCOLAPPNODE (profile_set_id) tablespace indx;
-Create Index UD_PAN_idx3 ON ApiDBUserDatasets.UD_PROTOCOLAPPNODE (subtype_id) tablespace indx;
-Create Index UD_PAN_idx4 ON ApiDBUserDatasets.UD_PROTOCOLAPPNODE (taxon_id, protocol_app_node_id) tablespace indx;
+Create Index UD_PAN_idx1 ON ApiDBUserDatasets.UD_PROTOCOLAPPNODE (type_id) ;
+Create Index UD_PAN_idx2 ON ApiDBUserDatasets.UD_PROTOCOLAPPNODE (profile_set_id) ;
+Create Index UD_PAN_idx3 ON ApiDBUserDatasets.UD_PROTOCOLAPPNODE (subtype_id) ;
+Create Index UD_PAN_idx4 ON ApiDBUserDatasets.UD_PROTOCOLAPPNODE (taxon_id, protocol_app_node_id) ;
 create index ud_pan_idx5 on apidbUserDatasets.ud_ProtocolAppNode (protocol_app_node_id, profile_set_id, name);
 
 
@@ -77,9 +77,9 @@ create table apidbUserDatasets.UD_NaFeatureExpression (
   PRIMARY KEY (na_feat_expression_id)
 );
 
-Create Index UD_NFE_idx1 ON ApiDBUserDatasets.UD_NaFeatureExpression (protocol_app_node_id, na_feature_id, value) tablespace indx;
-Create Index UD_NFE_idx2 ON ApiDBUserDatasets.UD_NaFeatureExpression (na_feature_id) tablespace indx;
-CREATE unique INDEX UD_NFE_idx3 ON ApiDBUserDatasets.UD_NaFeatureExpression (na_feature_id, protocol_app_node_id, value) tablespace indx;
+Create Index UD_NFE_idx1 ON ApiDBUserDatasets.UD_NaFeatureExpression (protocol_app_node_id, na_feature_id, value) ;
+Create Index UD_NFE_idx2 ON ApiDBUserDatasets.UD_NaFeatureExpression (na_feature_id) ;
+CREATE unique INDEX UD_NFE_idx3 ON ApiDBUserDatasets.UD_NaFeatureExpression (na_feature_id, protocol_app_node_id, value) ;
 
 create sequence ApiDBUserDatasets.UD_NaFeatureExpression_sq;
 
@@ -151,7 +151,7 @@ GRANT select ON ApiDBUserDatasets.UD_Sample TO gus_r;
 GRANT select ON ApiDBUserDatasets.UD_Sample_sq TO gus_w;
 
 -- -- potentially unnecessary: it is meant to be for SampleTables.Characteristics_table, but with the smaller amount of test data Oracle does full table access anyway
--- create index ud_Sample_ud_idx on apidbUserDatasets.ud_Sample (user_dataset_id) tablespace indx;
+-- create index ud_Sample_ud_idx on apidbUserDatasets.ud_Sample (user_dataset_id) ;
 
 -- -- a bit like apidbtuning.propertytype
 -- -- not sure if I want these:
@@ -179,7 +179,7 @@ GRANT select ON ApiDBUserDatasets.UD_Sample_sq TO gus_w;
 -- GRANT SELECT ON apidbUserDatasets.ud_Property_sq TO gus_w;
 
 -- -- potentially unnecessary: it is meant to be for SampleTables.Characteristics_table, but with the smaller amount of test data Oracle does full table access anyway
--- create index ud_Property_ud_idx on apidbUserDatasets.ud_Property (user_dataset_id) tablespace indx;
+-- create index ud_Property_ud_idx on apidbUserDatasets.ud_Property (user_dataset_id) ;
 
 -- -- a bit like apidbtuning.metadata
 -- -- user_dataset_id not needed but makes deleting simpler
@@ -195,9 +195,9 @@ GRANT select ON ApiDBUserDatasets.UD_Sample_sq TO gus_w;
 --   FOREIGN KEY (property_id) REFERENCES apidbUserDatasets.ud_Property (property_id)
 -- );
 -- -- potentially unnecessary: it is meant to be for SampleTables.Characteristics_table, but with the smaller amount of test data Oracle does full table access anyway
--- create index ud_SampleDetail_sid_idx on apidbUserDatasets.ud_SampleDetail (sample_id) tablespace indx;
--- create index ud_SampleDetail_ud_idx on apidbUserDatasets.ud_SampleDetail (user_dataset_id) tablespace indx;
--- create index ud_SampleDetail_pid_idx on apidbUserDatasets.ud_SampleDetail (property_id) tablespace indx;
+-- create index ud_SampleDetail_sid_idx on apidbUserDatasets.ud_SampleDetail (sample_id) ;
+-- create index ud_SampleDetail_ud_idx on apidbUserDatasets.ud_SampleDetail (user_dataset_id) ;
+-- create index ud_SampleDetail_pid_idx on apidbUserDatasets.ud_SampleDetail (property_id) ;
 
 -- GRANT INSERT, SELECT, UPDATE, DELETE ON apidbUserDatasets.ud_SampleDetail TO gus_w;
 -- GRANT SELECT ON apidbUserDatasets.ud_SampleDetail TO gus_r;
@@ -225,7 +225,7 @@ GRANT select ON ApiDBUserDatasets.UD_Sample_sq TO gus_w;
 -- GRANT INSERT, SELECT, UPDATE, DELETE ON apidbUserDatasets.ud_Abundance TO gus_w;
 -- GRANT SELECT ON apidbUserDatasets.ud_Abundance TO gus_r;
 
--- create index ud_Abundance_name_idx on apidbUserDatasets.ud_Abundance (sample_id) tablespace indx;
+-- create index ud_Abundance_name_idx on apidbUserDatasets.ud_Abundance (sample_id) ;
 
 -- -- based on apidbtuning.TaxonAbundance
 -- -- term -> taxon_name
@@ -247,8 +247,8 @@ GRANT select ON ApiDBUserDatasets.UD_Sample_sq TO gus_w;
 -- GRANT INSERT, SELECT, UPDATE, DELETE ON apidbUserDatasets.ud_AggregatedAbundance TO gus_w;
 -- GRANT SELECT ON apidbUserDatasets.ud_AggregatedAbundance TO gus_r;
 
--- create index ud_AggregatedAbundance_name_idx on apidbUserDatasets.ud_AggregatedAbundance (sample_id) tablespace indx;
--- create index ud_AggregatedAbundance_ud_idx on apidbUserDatasets.ud_AggregatedAbundance (user_dataset_id) tablespace indx;
+-- create index ud_AggregatedAbundance_name_idx on apidbUserDatasets.ud_AggregatedAbundance (sample_id) ;
+-- create index ud_AggregatedAbundance_ud_idx on apidbUserDatasets.ud_AggregatedAbundance (user_dataset_id) ;
 
 
 

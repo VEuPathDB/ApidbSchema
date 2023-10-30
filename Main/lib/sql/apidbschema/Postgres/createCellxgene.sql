@@ -21,7 +21,7 @@ CREATE TABLE ApiDB.Cellxgene (
 );
 
 create index cellxgene_ix
-  on apidb.Cellxgene (na_feature_id, external_database_release_id, source_id) tablespace indx;
+  on apidb.Cellxgene (na_feature_id, external_database_release_id, source_id) ;
 
 CREATE SEQUENCE ApiDB.Cellxgene_sq;
 

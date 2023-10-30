@@ -28,8 +28,8 @@ create table ApiDB.PhenotypeModel (
  PRIMARY KEY (phenotype_model_id)
 );
 
-CREATE INDEX phenmod_revix0 ON apidb.PhenotypeModel (external_database_release_id, phenotype_model_id) TABLESPACE indx;
-CREATE INDEX phenmod_revix1 ON apidb.PhenotypeModel (na_feature_id, phenotype_model_id) TABLESPACE indx;
+CREATE INDEX phenmod_revix0 ON apidb.PhenotypeModel (external_database_release_id, phenotype_model_id) ;
+CREATE INDEX phenmod_revix1 ON apidb.PhenotypeModel (na_feature_id, phenotype_model_id) ;
 
 CREATE SEQUENCE apidb.PhenotypeModel_sq;
 
@@ -85,11 +85,11 @@ create table ApiDB.PhenotypeResult (
  PRIMARY KEY (phenotype_result_id)
 );
 
-CREATE INDEX phenres_revix0 ON apidb.PhenotypeResult (evidence_term_id, phenotype_result_id) TABLESPACE indx;
-CREATE INDEX phenres_revix1 ON apidb.PhenotypeResult (life_cycle_stage_term_id, phenotype_result_id) TABLESPACE indx;
-CREATE INDEX phenres_revix2 ON apidb.PhenotypeResult (phenotype_entity_term_id, phenotype_result_id) TABLESPACE indx;
-CREATE INDEX phenres_revix3 ON apidb.PhenotypeResult (phenotype_model_id, phenotype_result_id) TABLESPACE indx;
-CREATE INDEX phenres_revix4 ON apidb.PhenotypeResult (phenotype_quality_term_id, phenotype_result_id) TABLESPACE indx;
+CREATE INDEX phenres_revix0 ON apidb.PhenotypeResult (evidence_term_id, phenotype_result_id) ;
+CREATE INDEX phenres_revix1 ON apidb.PhenotypeResult (life_cycle_stage_term_id, phenotype_result_id) ;
+CREATE INDEX phenres_revix2 ON apidb.PhenotypeResult (phenotype_entity_term_id, phenotype_result_id) ;
+CREATE INDEX phenres_revix3 ON apidb.PhenotypeResult (phenotype_model_id, phenotype_result_id) ;
+CREATE INDEX phenres_revix4 ON apidb.PhenotypeResult (phenotype_quality_term_id, phenotype_result_id) ;
 
 CREATE SEQUENCE apidb.PhenotypeResult_sq;
 
@@ -136,8 +136,8 @@ row_alg_invocation_id        NUMERIC(12),
        PRIMARY KEY (na_feature_phenotype_model_id)
       );
 
-CREATE INDEX nfpm_revix0 ON apidb.NaFeaturePhenotypeModel (na_feature_id, na_feature_phenotype_model_id) TABLESPACE indx;
-CREATE INDEX nfpm_revix1 ON apidb.NaFeaturePhenotypeModel (phenotype_model_id, na_feature_phenotype_model_id) TABLESPACE indx;
+CREATE INDEX nfpm_revix0 ON apidb.NaFeaturePhenotypeModel (na_feature_id, na_feature_phenotype_model_id) ;
+CREATE INDEX nfpm_revix1 ON apidb.NaFeaturePhenotypeModel (phenotype_model_id, na_feature_phenotype_model_id) ;
 
 CREATE SEQUENCE apidb.NaFeaturePhenotypeModel_sq;
 

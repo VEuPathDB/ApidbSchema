@@ -28,15 +28,15 @@ CREATE TABLE apidb.SpliceSiteFeature (
 
 CREATE INDEX ssf_ix0
   ON apidb.SpliceSiteFeature (type, na_sequence_id, is_unique, splice_site_feature_id)
-TABLESPACE indx;
+;
 
 CREATE INDEX ssf_revix0
   ON apidb.SpliceSiteFeature (na_sequence_id, splice_site_feature_id)
-TABLESPACE indx;
+;
 
 CREATE INDEX ssf_revix1
   ON apidb.SpliceSiteFeature (protocol_app_node_id, splice_site_feature_id)
-TABLESPACE indx;
+;
 
 CREATE SEQUENCE apidb.SpliceSiteFeature_sq;
 

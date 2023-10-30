@@ -22,8 +22,8 @@ CREATE TABLE apidb.HaplotypeResult (
 GRANT INSERT, SELECT, UPDATE, DELETE ON apidb.HaplotypeResult TO gus_w;
 GRANT SELECT ON apidb.HaplotypeResult TO gus_r;
 
-CREATE INDEX haprslt_revix0 ON apidb.HaplotypeResult (na_feature_id, haplotype_result_id) TABLESPACE indx;
-CREATE INDEX haprslt_revix1 ON apidb.HaplotypeResult (protocol_app_node_id, haplotype_result_id) TABLESPACE indx;
+CREATE INDEX haprslt_revix0 ON apidb.HaplotypeResult (na_feature_id, haplotype_result_id) ;
+CREATE INDEX haprslt_revix1 ON apidb.HaplotypeResult (protocol_app_node_id, haplotype_result_id) ;
 
 ------------------------------------------------------------------------------
 

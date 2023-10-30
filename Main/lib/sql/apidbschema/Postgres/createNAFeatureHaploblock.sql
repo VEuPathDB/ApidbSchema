@@ -27,10 +27,10 @@ GRANT INSERT, SELECT, UPDATE, DELETE ON ApiDB.NAFeatureHaploblock TO gus_w;
 GRANT SELECT ON ApiDB.NAFeatureHaploblock TO gus_r;
 
 CREATE INDEX NaFeatHapBlock_idx
-ON ApiDB.NAFeatureHaploblock (NA_FEATURE_ID,HAPLOTYPE_BLOCK_NAME) tablespace indx;
+ON ApiDB.NAFeatureHaploblock (NA_FEATURE_ID,HAPLOTYPE_BLOCK_NAME) ;
 
 CREATE INDEX gfls_revfk1_idx
-ON ApiDB.NAFeatureHaploblock (EXTERNAL_DATABASE_RELEASE_ID, NA_FEATURE_HAPBLOCK_ID) tablespace indx;
+ON ApiDB.NAFeatureHaploblock (EXTERNAL_DATABASE_RELEASE_ID, NA_FEATURE_HAPBLOCK_ID) ;
 
 CREATE SEQUENCE apidb.NAFeatureHaploblock_sq;
 

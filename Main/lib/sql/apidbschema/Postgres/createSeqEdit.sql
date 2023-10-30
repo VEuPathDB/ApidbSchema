@@ -28,7 +28,7 @@ CREATE TABLE ApiDB.SeqEdit (
 GRANT INSERT, SELECT, UPDATE, DELETE ON ApiDB.SeqEdit TO gus_w;  
 GRANT SELECT ON ApiDB.SeqEdit TO gus_r;  
 
-CREATE INDEX seqedit_idIx ON apidb.SeqEdit(source_id, sequence_type) TABLESPACE indx;
+CREATE INDEX seqedit_idIx ON apidb.SeqEdit(source_id, sequence_type) ;
 
 -----------
 CREATE SEQUENCE ApiDB.SeqEdit_SQ;    

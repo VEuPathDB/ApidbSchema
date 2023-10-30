@@ -19,8 +19,8 @@ CREATE TABLE apidb.NAfeatureWGCNAResults (
  PRIMARY KEY (wgcna_result_id)
 );
 
-CREATE INDEX wgcnares_1 ON apidb.NAfeatureWGCNAResults (na_feature_id) TABLESPACE indx;
-CREATE INDEX wgcnares_2 ON apidb.NAfeatureWGCNAResults (protocol_app_node_id) TABLESPACE indx;
+CREATE INDEX wgcnares_1 ON apidb.NAfeatureWGCNAResults (na_feature_id);
+CREATE INDEX wgcnares_2 ON apidb.NAfeatureWGCNAResults (protocol_app_node_id);
 
 GRANT INSERT, SELECT, UPDATE, DELETE ON apidb.NAfeatureWGCNAResults TO gus_w;
 GRANT SELECT ON apidb.NAfeatureWGCNAResults TO gus_r;

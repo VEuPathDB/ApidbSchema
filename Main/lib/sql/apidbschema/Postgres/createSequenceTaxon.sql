@@ -25,7 +25,7 @@ GRANT SELECT ON apidb.TaxonString_sq TO gus_w;
 
 CREATE INDEX tx_ix
   ON apidb.TaxonString (taxon_id, taxon_string_id)
-  TABLESPACE indx;
+  ;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
@@ -75,15 +75,15 @@ GRANT SELECT ON apidb.SequenceTaxonString_sq TO gus_w;
 
 CREATE INDEX seqTxStr_seq_ix
   ON apidb.SequenceTaxonString (na_sequence_id, taxon_string_id, external_database_release_id)
-  TABLESPACE indx;
+  ;
 
 CREATE INDEX seqTxStr_tx_ix
   ON apidb.SequenceTaxonString (taxon_string_id, na_sequence_id, external_database_release_id)
-  TABLESPACE indx;
+  ;
 
 CREATE INDEX seqTxStr_dbrls_ix
   ON apidb.SequenceTaxonString (external_database_release_id, na_sequence_id, taxon_string_id)
-  TABLESPACE indx;
+  ;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,

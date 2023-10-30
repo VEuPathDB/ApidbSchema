@@ -33,9 +33,9 @@ GRANT select ON apidb.IntronJunction_sq TO gus_w;
 CREATE INDEX IntJunc_loc_ix
 ON apidb.IntronJunction
    (na_sequence_id, segment_start, segment_end, is_reversed)
-   TABLESPACE indx;
+   ;
 
-CREATE INDEX injun_revix0 ON apidb.IntronJunction (protocol_app_node_id, intron_junction_id) TABLESPACE indx;
+CREATE INDEX injun_revix0 ON apidb.IntronJunction (protocol_app_node_id, intron_junction_id) ;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,

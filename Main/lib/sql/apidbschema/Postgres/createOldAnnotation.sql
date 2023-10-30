@@ -22,7 +22,7 @@ ALTER TABLE apidb.OldAnnotation
 ADD CONSTRAINT old_annotation_fk1 FOREIGN KEY (external_database_release_id)
 REFERENCES sres.ExternalDatabaseRelease (external_database_release_id);
 
-CREATE INDEX oldann_revfk1_ix on apidb.OldAnnotation (external_database_release_id, old_annotation_id) tablespace indx;
+CREATE INDEX oldann_revfk1_ix on apidb.OldAnnotation (external_database_release_id, old_annotation_id) ;
 
 CREATE SEQUENCE apidb.OldAnnotation_sq;
 

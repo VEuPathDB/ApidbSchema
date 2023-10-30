@@ -33,7 +33,7 @@ CREATE SEQUENCE :VAR1.Study_sq;
 GRANT SELECT ON :VAR1.Study_sq TO gus_w;
 GRANT SELECT ON :VAR1.Study_sq TO gus_r;
 
-CREATE INDEX study_ix_1 ON :VAR1.study (external_database_release_id, stable_id, internal_abbrev, study_id) TABLESPACE indx;
+CREATE INDEX study_ix_1 ON :VAR1.study (external_database_release_id, stable_id, internal_abbrev, study_id) ;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
@@ -83,9 +83,9 @@ CREATE SEQUENCE :VAR1.EntityType_sq;
 GRANT SELECT ON :VAR1.EntityType_sq TO gus_w;
 GRANT SELECT ON :VAR1.EntityType_sq TO gus_r;
 
-CREATE UNIQUE INDEX entitytype_ix_1 ON :VAR1.entitytype (study_id, entity_type_id) TABLESPACE indx;
-CREATE UNIQUE INDEX entitytype_ix_2 ON :VAR1.entitytype (type_id, entity_type_id) TABLESPACE indx;
-CREATE UNIQUE INDEX entitytype_ix_3 ON :VAR1.entitytype (study_id, internal_abbrev) TABLESPACE indx;
+CREATE UNIQUE INDEX entitytype_ix_1 ON :VAR1.entitytype (study_id, entity_type_id) ;
+CREATE UNIQUE INDEX entitytype_ix_2 ON :VAR1.entitytype (type_id, entity_type_id) ;
+CREATE UNIQUE INDEX entitytype_ix_3 ON :VAR1.entitytype (study_id, internal_abbrev) ;
 
 
 INSERT INTO core.TableInfo
@@ -133,7 +133,7 @@ CREATE SEQUENCE :VAR1.ProcessType_sq;
 GRANT SELECT ON :VAR1.ProcessType_sq TO gus_w;
 GRANT SELECT ON :VAR1.ProcessType_sq TO gus_r;
 
-CREATE INDEX processtype_ix_1 ON :VAR1.processtype (type_id, process_type_id) TABLESPACE indx;
+CREATE INDEX processtype_ix_1 ON :VAR1.processtype (type_id, process_type_id) ;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
@@ -177,7 +177,7 @@ FOREIGN KEY (entity_type_id) REFERENCES :VAR1.EntityType (entity_type_id) --,
 -- 
 --CREATE SEARCH INDEX :VAR1.va_search_ix ON :VAR1.entityattributes (atts) FOR JSON;
 
-CREATE INDEX entityattributes_ix_1 ON :VAR1.entityattributes (entity_type_id, entity_attributes_id) TABLESPACE indx;
+CREATE INDEX entityattributes_ix_1 ON :VAR1.entityattributes (entity_type_id, entity_attributes_id) ;
 
 GRANT INSERT, SELECT, UPDATE, DELETE ON :VAR1.EntityAttributes TO gus_w;
 GRANT SELECT ON :VAR1.EntityAttributes TO gus_r;
@@ -224,8 +224,8 @@ CREATE TABLE :VAR1.EntityClassification (
  PRIMARY KEY (entity_classification_id)
 );
 
-CREATE INDEX entityclassification_ix_1 ON :VAR1.entityclassification (entity_type_id, entity_attributes_id) TABLESPACE indx;
-CREATE INDEX entityclassification_ix_2 ON :VAR1.entityclassification (entity_attributes_id, entity_type_id) TABLESPACE indx;
+CREATE INDEX entityclassification_ix_1 ON :VAR1.entityclassification (entity_type_id, entity_attributes_id) ;
+CREATE INDEX entityclassification_ix_2 ON :VAR1.entityclassification (entity_attributes_id, entity_type_id) ;
 
 GRANT INSERT, SELECT, UPDATE, DELETE ON :VAR1.EntityClassification TO gus_w;
 GRANT SELECT ON :VAR1.EntityClassification TO gus_r;
@@ -276,10 +276,10 @@ CREATE TABLE :VAR1.ProcessAttributes (
 --  CONSTRAINT ensure_ea_json CHECK (atts is json)   
 );
 
-CREATE INDEX ea_in_ix ON :VAR1.processattributes (in_entity_id, out_entity_id, process_attributes_id) tablespace indx;
-CREATE INDEX ea_out_ix ON :VAR1.processattributes (out_entity_id, in_entity_id, process_attributes_id) tablespace indx;
+CREATE INDEX ea_in_ix ON :VAR1.processattributes (in_entity_id, out_entity_id, process_attributes_id) ;
+CREATE INDEX ea_out_ix ON :VAR1.processattributes (out_entity_id, in_entity_id, process_attributes_id) ;
 
-CREATE INDEX ea_ix_1 ON :VAR1.processattributes (process_type_id, process_attributes_id) TABLESPACE indx;
+CREATE INDEX ea_ix_1 ON :VAR1.processattributes (process_type_id, process_attributes_id) ;
 
 GRANT INSERT, SELECT, UPDATE, DELETE ON :VAR1.ProcessAttributes TO gus_w;
 GRANT SELECT ON :VAR1.ProcessAttributes TO gus_r;
@@ -345,9 +345,9 @@ CREATE SEQUENCE :VAR1.EntityTypeGraph_sq;
 GRANT SELECT ON :VAR1.EntityTypeGraph_sq TO gus_w;
 GRANT SELECT ON :VAR1.EntityTypeGraph_sq TO gus_r;
 
-CREATE INDEX entitytypegraph_ix_1 ON :VAR1.entitytypegraph (study_id, entity_type_id, parent_id, entity_type_graph_id) TABLESPACE indx;
-CREATE INDEX entitytypegraph_ix_2 ON :VAR1.entitytypegraph (parent_id, entity_type_graph_id) TABLESPACE indx;
-CREATE INDEX entitytypegraph_ix_3 ON :VAR1.entitytypegraph (entity_type_id, entity_type_graph_id) TABLESPACE indx;
+CREATE INDEX entitytypegraph_ix_1 ON :VAR1.entitytypegraph (study_id, entity_type_id, parent_id, entity_type_graph_id) ;
+CREATE INDEX entitytypegraph_ix_2 ON :VAR1.entitytypegraph (parent_id, entity_type_graph_id) ;
+CREATE INDEX entitytypegraph_ix_3 ON :VAR1.entitytypegraph (entity_type_id, entity_type_graph_id) ;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
@@ -397,9 +397,9 @@ CREATE SEQUENCE :VAR1.AttributeUnit_sq;
 GRANT SELECT ON :VAR1.AttributeUnit_sq TO gus_w;
 GRANT SELECT ON :VAR1.AttributeUnit_sq TO gus_r;
 
-CREATE INDEX attributeunit_ix_1 ON :VAR1.attributeunit (entity_type_id, attr_ontology_term_id, unit_ontology_term_id, attribute_unit_id) TABLESPACE indx;
-CREATE INDEX attributeunit_ix_2 ON :VAR1.attributeunit (attr_ontology_term_id, attribute_unit_id) TABLESPACE indx;
-CREATE INDEX attributeunit_ix_3 ON :VAR1.attributeunit (unit_ontology_term_id, attribute_unit_id) TABLESPACE indx;
+CREATE INDEX attributeunit_ix_1 ON :VAR1.attributeunit (entity_type_id, attr_ontology_term_id, unit_ontology_term_id, attribute_unit_id) ;
+CREATE INDEX attributeunit_ix_2 ON :VAR1.attributeunit (attr_ontology_term_id, attribute_unit_id) ;
+CREATE INDEX attributeunit_ix_3 ON :VAR1.attributeunit (unit_ontology_term_id, attribute_unit_id) ;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
@@ -448,8 +448,8 @@ CREATE SEQUENCE :VAR1.ProcessTypeComponent_sq;
 GRANT SELECT ON :VAR1.ProcessTypeComponent_sq TO gus_w;
 GRANT SELECT ON :VAR1.ProcessTypeComponent_sq TO gus_r;
 
-CREATE INDEX ptc_ix_1 ON :VAR1.processtypecomponent (process_type_id, component_id, order_num, process_type_component_id) TABLESPACE indx;
-CREATE INDEX ptc_ix_2 ON :VAR1.processtypecomponent (component_id, process_type_component_id) TABLESPACE indx;
+CREATE INDEX ptc_ix_1 ON :VAR1.processtypecomponent (process_type_id, component_id, order_num, process_type_component_id) ;
+CREATE INDEX ptc_ix_2 ON :VAR1.processtypecomponent (component_id, process_type_component_id) ;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
@@ -522,7 +522,7 @@ CREATE SEQUENCE :VAR1.Attribute_sq;
 GRANT SELECT ON :VAR1.Attribute_sq TO gus_w;
 GRANT SELECT ON :VAR1.Attribute_sq TO gus_r;
 
-CREATE INDEX attribute_ix_1 ON :VAR1.attribute (entity_type_id, process_type_id, stable_id, attribute_id) TABLESPACE indx;
+CREATE INDEX attribute_ix_1 ON :VAR1.attribute (entity_type_id, process_type_id, stable_id, attribute_id) ;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
@@ -597,7 +597,7 @@ CREATE SEQUENCE :VAR1.AttributeGraph_sq;
 GRANT SELECT ON :VAR1.AttributeGraph_sq TO gus_w;
 GRANT SELECT ON :VAR1.AttributeGraph_sq TO gus_r;
 
-CREATE INDEX attributegraph_ix_1 ON :VAR1.attributegraph (study_id, ontology_term_id, parent_ontology_term_id, attribute_graph_id) TABLESPACE indx;
+CREATE INDEX attributegraph_ix_1 ON :VAR1.attributegraph (study_id, ontology_term_id, parent_ontology_term_id, attribute_graph_id) ;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
@@ -646,7 +646,7 @@ CREATE SEQUENCE :VAR1.StudyCharacteristic_sq;
 GRANT SELECT ON :VAR1.StudyCharacteristic_sq TO gus_w;
 GRANT SELECT ON :VAR1.StudyCharacteristic_sq TO gus_r;
 
-CREATE INDEX StudyCharacteristic_ix_1 ON :VAR1.StudyCharacteristic (study_id, attribute_id, value) TABLESPACE indx;
+CREATE INDEX StudyCharacteristic_ix_1 ON :VAR1.StudyCharacteristic (study_id, attribute_id, value) ;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,

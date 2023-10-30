@@ -33,15 +33,15 @@ GRANT select ON apidb.PolyAGenes_sq TO gus_w;
 
 create index polyagenes_data_idx
 ON Apidb.PolyAGenes (splice_site_feature_id, protocol_app_node_id, source_id)
-tablespace indx;
+;
 
 create index polyagenes_revfk_idx
 ON Apidb.PolyAGenes (splice_site_feature_id, poly_a_gene_id)
-tablespace indx;
+;
 
 CREATE INDEX polyagenes_revfk_ix1
 ON apidb.PolyAGenes (protocol_app_node_id, poly_a_gene_id)
-TABLESPACE indx;
+;
 
 
 INSERT INTO core.TableInfo

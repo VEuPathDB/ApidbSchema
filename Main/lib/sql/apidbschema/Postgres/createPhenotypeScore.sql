@@ -21,9 +21,9 @@ create table ApiDB.PhenotypeScore (
 );
 
 create index phenscore_1
-  on apidb.PhenotypeScore (na_feature_id, phenotype_score_id) tablespace indx;
+  on apidb.PhenotypeScore (na_feature_id, phenotype_score_id);
 create index phenscore_2
-  on apidb.PhenotypeScore (protocol_app_node_id, phenotype_score_id) tablespace indx;
+  on apidb.PhenotypeScore (protocol_app_node_id, phenotype_score_id);
 
 CREATE SEQUENCE apidb.PhenotypeScore_sq;
 

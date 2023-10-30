@@ -35,11 +35,11 @@ grant insert, select, update, delete on Apidb.SpliceSiteGenes to gus_w;
 
 create index splicesitegenes_data_idx
 ON Apidb.SpliceSiteGenes (splice_site_feature_id, protocol_app_node_id, source_id)
-tablespace indx;
+;
 
 create index splicesitegenes_revix1
 ON apidb.SpliceSiteGenes (protocol_app_node_id, splice_site_gene_id)
-tablespace indx;
+;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,

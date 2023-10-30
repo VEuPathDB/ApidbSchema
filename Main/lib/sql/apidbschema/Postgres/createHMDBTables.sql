@@ -21,7 +21,7 @@ CREATE TABLE hmdb.compounds(
     FOREIGN KEY (PARENT_ID) REFERENCES hmdb.compounds(ID)
 );
 
-CREATE INDEX c_revix0 ON hmdb.compounds(parent_id) TABLESPACE indx;
+CREATE INDEX c_revix0 ON hmdb.compounds(parent_id) ;
 
 CREATE TABLE hmdb.chemical_data (
   ID                            NUMERIC(12)    NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE hmdb.chemical_data (
   PRIMARY KEY (ID),
   FOREIGN KEY (COMPOUND_ID) REFERENCES hmdb.compounds(ID)
 );
-CREATE INDEX cd_revix0 ON hmdb.chemical_data(compound_id) TABLESPACE indx;
+CREATE INDEX cd_revix0 ON hmdb.chemical_data(compound_id) ;
 
 CREATE TABLE hmdb.database_accession (
     ID                NUMERIC(12)      NOT NULL,
@@ -65,7 +65,7 @@ CREATE TABLE hmdb.database_accession (
     PRIMARY KEY (ID),
     FOREIGN KEY (COMPOUND_ID) REFERENCES hmdb.compounds(ID)
 );
-CREATE INDEX da_revix0 ON hmdb.database_accession(compound_id) TABLESPACE indx;
+CREATE INDEX da_revix0 ON hmdb.database_accession(compound_id) ;
 
 CREATE TABLE hmdb.names (
     ID              NUMERIC(12)      NOT NULL,
@@ -87,7 +87,7 @@ CREATE TABLE hmdb.names (
     PRIMARY KEY (ID),
     FOREIGN KEY (COMPOUND_ID) REFERENCES hmdb.compounds(ID)
 );
-CREATE INDEX names_revix0 ON hmdb.names(compound_id) TABLESPACE indx;
+CREATE INDEX names_revix0 ON hmdb.names(compound_id) ;
 
 CREATE TABLE hmdb.structures (
     ID              NUMERIC(12)      NOT NULL,
@@ -109,7 +109,7 @@ CREATE TABLE hmdb.structures (
     PRIMARY KEY (ID),
     FOREIGN KEY (COMPOUND_ID) REFERENCES hmdb.compounds(ID)
 );
-CREATE INDEX s_revix0 ON hmdb.structures(compound_id) TABLESPACE indx;
+CREATE INDEX s_revix0 ON hmdb.structures(compound_id) ;
 
 CREATE TABLE hmdb.default_structures (
     ID              NUMERIC(12)      NOT NULL,
@@ -128,7 +128,7 @@ CREATE TABLE hmdb.default_structures (
     PRIMARY KEY (ID),
     FOREIGN KEY (STRUCTURE_ID) REFERENCES hmdb.structures(ID)
 );
-CREATE INDEX ds_revix0 ON hmdb.default_structures(structure_id) TABLESPACE indx;
+CREATE INDEX ds_revix0 ON hmdb.default_structures(structure_id) ;
 
 CREATE TABLE hmdb.autogen_structures (
     ID              NUMERIC(12)      NOT NULL,
@@ -147,7 +147,7 @@ CREATE TABLE hmdb.autogen_structures (
     PRIMARY KEY (ID),
     FOREIGN KEY (STRUCTURE_ID) REFERENCES hmdb.structures(ID)
 );
-CREATE INDEX as_revix0 ON hmdb.autogen_structures(structure_id) TABLESPACE indx;
+CREATE INDEX as_revix0 ON hmdb.autogen_structures(structure_id) ;
 
 CREATE SEQUENCE hmdb.chemical_data_SQ;
 CREATE SEQUENCE hmdb.compounds_SQ;

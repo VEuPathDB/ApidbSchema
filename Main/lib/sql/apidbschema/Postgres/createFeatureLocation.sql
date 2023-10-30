@@ -35,42 +35,42 @@ CREATE TABLE apidb.FeatureLocation (
 CREATE INDEX featloc_ix1
 ON apidb.FeatureLocation (na_sequence_id, start_min, end_max, is_reversed,
                           sequence_ontology_id, na_feature_id, feature_type, parent_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX featloc_ix2
 ON apidb.FeatureLocation (na_feature_id, na_sequence_id, start_min, end_max,
                           is_reversed, sequence_ontology_id, feature_type, parent_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX featloc_ix3
 ON apidb.FeatureLocation (na_sequence_id, feature_type, start_min, end_max, is_reversed,
                           sequence_ontology_id, na_feature_id, parent_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX featloc_ix4
 ON apidb.FeatureLocation (na_sequence_id, feature_type, end_max, start_min, is_reversed,
                           sequence_ontology_id, na_feature_id, parent_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX featloc_revix2
 ON apidb.FeatureLocation (na_feature_id, feature_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX featloc_revix3
 ON apidb.FeatureLocation (parent_id, feature_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX featloc_revix4
 ON apidb.FeatureLocation (sequence_ontology_id, feature_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX featloc_revix5
 ON apidb.FeatureLocation (external_database_release_id, feature_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX featloc_revix6
 ON apidb.FeatureLocation (row_alg_invocation_id, feature_location_id)
-TABLESPACE INDX;
+;
 
 CREATE SEQUENCE apidb.FeatureLocation_sq;
 
@@ -130,32 +130,32 @@ CREATE TABLE apidb.GeneLocation (
 CREATE INDEX geneloc_ix1
 ON apidb.GeneLocation (na_sequence_id, start_min, end_max, is_reversed,
                           sequence_ontology_id, na_feature_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX geneloc_ix2
 ON apidb.GeneLocation (na_feature_id, na_sequence_id, start_min, end_max,
                           is_reversed, sequence_ontology_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX geneloc_revix1
 ON apidb.GeneLocation (na_sequence_id, gene_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX geneloc_revix2
 ON apidb.GeneLocation (na_feature_id, gene_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX geneloc_revix4
 ON apidb.GeneLocation (sequence_ontology_id, gene_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX geneloc_revix5
 ON apidb.GeneLocation (external_database_release_id, gene_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX geneloc_revix6
 ON apidb.GeneLocation (row_alg_invocation_id, gene_location_id)
-TABLESPACE INDX;
+;
 
 CREATE SEQUENCE apidb.GeneLocation_sq;
 
@@ -217,36 +217,36 @@ CREATE TABLE apidb.TranscriptLocation (
 CREATE INDEX transcriptloc_ix1
 ON apidb.TranscriptLocation (na_sequence_id, start_min, end_max, is_reversed,
                           sequence_ontology_id, na_feature_id, is_top_level)
-TABLESPACE INDX;
+;
 
 CREATE INDEX transcriptloc_ix2
 ON apidb.TranscriptLocation (na_feature_id, na_sequence_id, start_min, end_max,
                           is_reversed, sequence_ontology_id, is_top_level)
-TABLESPACE INDX;
+;
 
 CREATE INDEX transcriptloc_revix1
 ON apidb.TranscriptLocation (na_sequence_id, transcript_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX transcriptloc_revix2
 ON apidb.TranscriptLocation (na_feature_id, transcript_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX transcriptloc_revix3
 ON apidb.TranscriptLocation (parent_id, transcript_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX transcriptloc_revix4
 ON apidb.TranscriptLocation (sequence_ontology_id, transcript_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX transcriptloc_revix5
 ON apidb.TranscriptLocation (external_database_release_id, transcript_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX transcriptloc_revix6
 ON apidb.TranscriptLocation (row_alg_invocation_id, transcript_location_id)
-TABLESPACE INDX;
+;
 
 CREATE SEQUENCE apidb.TranscriptLocation_sq;
 
@@ -307,36 +307,36 @@ CREATE TABLE apidb.ExonLocation (
 CREATE INDEX exonloc_ix1
 ON apidb.ExonLocation (na_sequence_id, start_min, end_max, is_reversed,
                           sequence_ontology_id, na_feature_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX exonloc_ix2
 ON apidb.ExonLocation (na_feature_id, na_sequence_id, start_min, end_max,
                           is_reversed, sequence_ontology_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX exonloc_revix1
 ON apidb.ExonLocation (na_sequence_id, exon_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX exonloc_revix2
 ON apidb.ExonLocation (na_feature_id, exon_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX exonloc_revix3
 ON apidb.ExonLocation (parent_id, exon_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX exonloc_revix4
 ON apidb.ExonLocation (sequence_ontology_id, exon_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX exonloc_revix5
 ON apidb.ExonLocation (external_database_release_id, exon_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX exonloc_revix6
 ON apidb.ExonLocation (row_alg_invocation_id, exon_location_id)
-TABLESPACE INDX;
+;
 
 CREATE SEQUENCE apidb.ExonLocation_sq;
 
@@ -394,28 +394,28 @@ CREATE TABLE apidb.CdsLocation (
 CREATE INDEX cdsloc_ix1
 ON apidb.CdsLocation (na_sequence_id, start_min, end_max, is_reversed,
                       parent_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX cdsloc_ix2
 ON apidb.CdsLocation (parent_id, na_sequence_id, start_min, end_max,
                       is_reversed)
-TABLESPACE INDX;
+;
 
 CREATE INDEX cdsloc_revix1
 ON apidb.CdsLocation (na_sequence_id, cds_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX cdsloc_revix3
 ON apidb.CdsLocation (parent_id, cds_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX cdsloc_revix5
 ON apidb.CdsLocation (external_database_release_id, cds_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX cdsloc_revix6
 ON apidb.CdsLocation (row_alg_invocation_id, cds_location_id)
-TABLESPACE INDX;
+;
 
 CREATE SEQUENCE apidb.CdsLocation_sq;
 
@@ -472,28 +472,28 @@ CREATE TABLE apidb.UtrLocation (
 CREATE INDEX utrloc_ix1
 ON apidb.UtrLocation (na_sequence_id, start_min, end_max, is_reversed,
                       parent_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX utrloc_ix2
 ON apidb.UtrLocation (parent_id, na_sequence_id, start_min, end_max,
                           is_reversed)
-TABLESPACE INDX;
+;
 
 CREATE INDEX utrloc_revix1
 ON apidb.UtrLocation (na_sequence_id, utr_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX utrloc_revix3
 ON apidb.UtrLocation (parent_id, utr_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX utrloc_revix5
 ON apidb.UtrLocation (external_database_release_id, utr_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX utrloc_revix6
 ON apidb.UtrLocation (row_alg_invocation_id, utr_location_id)
-TABLESPACE INDX;
+;
 
 CREATE SEQUENCE apidb.UtrLocation_sq;
 
@@ -549,28 +549,28 @@ CREATE TABLE apidb.IntronLocation (
 CREATE INDEX intronloc_ix1
 ON apidb.IntronLocation (na_sequence_id, start_min, end_max, is_reversed,
                       parent_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX intronloc_ix2
 ON apidb.IntronLocation (parent_id, na_sequence_id, start_min, end_max,
                           is_reversed)
-TABLESPACE INDX;
+;
 
 CREATE INDEX intronloc_revix1
 ON apidb.IntronLocation (na_sequence_id, intron_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX intronloc_revix3
 ON apidb.IntronLocation (parent_id, intron_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX intronloc_revix5
 ON apidb.IntronLocation (external_database_release_id, intron_location_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX intronloc_revix6
 ON apidb.IntronLocation (row_alg_invocation_id, intron_location_id)
-TABLESPACE INDX;
+;
 
 CREATE SEQUENCE apidb.IntronLocation_sq;
 

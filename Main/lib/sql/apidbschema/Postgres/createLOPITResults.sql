@@ -24,9 +24,9 @@ CREATE TABLE apidb.LopitResults (
 
 
 
-CREATE INDEX lopitres_1 ON apidb.LopitResults (na_feature_id) TABLESPACE indx;
-CREATE INDEX lopitres_2 ON apidb.LopitResults (protocol_app_node_id) TABLESPACE indx;
---CREATE INDEX apidb.lopitres_3 ON apidb.LopitResults (lopit_result_id) TABLESPACE indx;
+CREATE INDEX lopitres_1 ON apidb.LopitResults (na_feature_id) ;
+CREATE INDEX lopitres_2 ON apidb.LopitResults (protocol_app_node_id) ;
+--CREATE INDEX apidb.lopitres_3 ON apidb.LopitResults (lopit_result_id) ;
 
 
 GRANT INSERT, SELECT, UPDATE, DELETE ON apidb.LopitResults TO gus_w;

@@ -30,15 +30,15 @@ CREATE TABLE ApiDB.Synteny (
 
 CREATE INDEX synteny_revix1
 ON apidb.Synteny (b_na_sequence_id, synteny_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX synteny_revix2
 ON apidb.Synteny (external_database_release_id, synteny_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX syn_mod_ix
 ON apidb.Synteny (modification_date, synteny_id)
-TABLESPACE INDX;
+;
 
 CREATE SEQUENCE ApiDB.Synteny_sq;
 
@@ -48,11 +48,11 @@ GRANT select ON ApiDB.Synteny_sq TO gus_w;
 
 CREATE INDEX syn_ix
 ON apidb.Synteny(a_na_sequence_id, a_start, a_end, external_database_release_id)
-TABLESPACE INDX;
+;
 
 CREATE INDEX syn_loc_ix
 ON apidb.Synteny(a_na_sequence_id, b_na_sequence_id, a_start, a_end, b_start, b_end)
-TABLESPACE INDX;
+;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
@@ -123,18 +123,18 @@ WHERE 'SyntenicGene' NOT IN (SELECT name FROM core.TableInfo
 
  CREATE INDEX SyntGene_f_ix
         ON apidb.SyntenicGene (na_sequence_id, start_min, end_max, synteny_id, syn_na_feature_id, syn_organism_abbrev)
- TABLESPACE INDX;
+ ;
 
  CREATE INDEX SyntGene_f2_ix
         ON apidb.SyntenicGene (na_sequence_id, end_max, start_min, synteny_id, syn_na_feature_id, syn_organism_abbrev)
- TABLESPACE INDX;
+ ;
 
  CREATE INDEX SyntGene_featix
         ON apidb.SyntenicGene (syn_na_feature_id, syntenic_gene_id)
- TABLESPACE INDX;
+ ;
 
  CREATE INDEX SyntGene_synix
         ON apidb.SyntenicGene (synteny_id, syntenic_gene_id)
- TABLESPACE INDX;
+ ;
 
 ------------------------------------------------------------------------------

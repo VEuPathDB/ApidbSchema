@@ -23,8 +23,8 @@ create table ApiDB.CrisprPhenotype (
  PRIMARY KEY (crispr_phenotype_id)
 );
 
-CREATE INDEX crsprp_revix0 ON apidb.CrisprPhenotype (na_feature_id, crispr_phenotype_id) TABLESPACE indx;
-CREATE INDEX crsprp_revix1 ON apidb.CrisprPhenotype (protocol_app_node_id, crispr_phenotype_id) TABLESPACE indx;
+CREATE INDEX crsprp_revix0 ON apidb.CrisprPhenotype (na_feature_id, crispr_phenotype_id) ;
+CREATE INDEX crsprp_revix1 ON apidb.CrisprPhenotype (protocol_app_node_id, crispr_phenotype_id) ;
 
 CREATE SEQUENCE apidb.CrisprPhenotype_sq;
 
