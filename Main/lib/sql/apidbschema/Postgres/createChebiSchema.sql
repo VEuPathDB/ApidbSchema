@@ -1,24 +1,4 @@
--- depreacated; have the DBAs do this
--- CREATE USER chebi
--- IDENTIFIED BY "<password>"
--- QUOTA UNLIMITED ON users 
--- QUOTA UNLIMITED ON gus
--- QUOTA UNLIMITED ON indx
--- DEFAULT TABLESPACE users
--- TEMPORARY TABLESPACE temp;
-
 CREATE SCHEMA chebi;
-
--- GRANT GUS_R TO chebi;
--- GRANT GUS_W TO chebi;
--- GRANT CREATE VIEW TO chebi;
--- GRANT CREATE MATERIALIZED VIEW TO chebi;
--- GRANT CREATE TABLE TO chebi;
--- GRANT CREATE SYNONYM TO chebi;
--- GRANT CREATE SESSION TO chebi;
--- GRANT CREATE ANY INDEX TO chebi;
--- GRANT CREATE TRIGGER TO chebi;
--- GRANT CREATE ANY TRIGGER TO chebi;
 
 INSERT INTO core.DatabaseInfo
    (database_id, name, description, modification_date, user_read, user_write,
@@ -195,7 +175,7 @@ CREATE TABLE chebi.compound_origins (
   species_text        text            not null,
   species_accession   text                    ,
   component_text      text                    ,
-  component_accesion  text                    ,
+  component_accession  text                    ,
   strain_text         text                    ,
   source_type         text            not null,
   source_accession    text            not null,
