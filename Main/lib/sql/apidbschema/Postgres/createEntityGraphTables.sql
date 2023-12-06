@@ -46,7 +46,7 @@ SELECT NEXTVAL('core.tableinfo_sq'), 'Study',
        d.database_id, 0, 0, NULL, NULL, 1,localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
        p.project_id, 0
 FROM (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
-     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(':VAR1')) d
+     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(:'VAR1')) d
 WHERE 'study' NOT IN (SELECT lower(name) FROM core.TableInfo
                                     WHERE database_id = d.database_id);
 
@@ -100,7 +100,7 @@ SELECT NEXTVAL('core.tableinfo_sq'), 'EntityType',
        p.project_id, 0
 FROM 
      (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
-     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(':VAR1')) d
+     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(:'VAR1')) d
 WHERE 'entitytype' NOT IN (SELECT lower(name) FROM core.TableInfo
                                     WHERE database_id = d.database_id);
 
@@ -147,7 +147,7 @@ SELECT NEXTVAL('core.tableinfo_sq'), 'ProcessType',
        p.project_id, 0
 FROM 
      (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
-     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(':VAR1')) d
+     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(:'VAR1')) d
 WHERE 'processtype' NOT IN (SELECT lower(name) FROM core.TableInfo
                                     WHERE database_id = d.database_id);
 
@@ -198,7 +198,7 @@ SELECT NEXTVAL('core.tableinfo_sq'), 'EntityAttributes',
        p.project_id, 0
 FROM 
      (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
-     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(':VAR1')) d
+     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(:'VAR1')) d
 WHERE 'entityattributes' NOT IN (SELECT lower(name) FROM core.TableInfo
                                     WHERE database_id = d.database_id);
 
@@ -246,7 +246,7 @@ SELECT NEXTVAL('core.tableinfo_sq'), 'EntityClassification',
        p.project_id, 0
 FROM 
      (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
-     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(':VAR1')) d
+     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(:'VAR1')) d
 WHERE 'entityclassification' NOT IN (SELECT lower(name) FROM core.TableInfo
                                     WHERE database_id = d.database_id);
 
@@ -300,7 +300,7 @@ SELECT NEXTVAL('core.tableinfo_sq'), 'ProcessAttributes',
        p.project_id, 0
 FROM 
      (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
-     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(':VAR1')) d
+     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(:'VAR1')) d
 WHERE 'processattributes' NOT IN (SELECT lower(name) FROM core.TableInfo
                                     WHERE database_id = d.database_id);
 
@@ -361,7 +361,7 @@ SELECT NEXTVAL('core.tableinfo_sq'), 'EntityTypeGraph',
        p.project_id, 0
 FROM 
      (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
-     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(':VAR1')) d
+     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(:'VAR1')) d
 WHERE 'entitytypegraph' NOT IN (SELECT lower(name) FROM core.TableInfo
                                     WHERE database_id = d.database_id);
 
@@ -413,7 +413,7 @@ SELECT NEXTVAL('core.tableinfo_sq'), 'AttributeUnit',
        p.project_id, 0
 FROM 
      (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
-     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(':VAR1')) d
+     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(:'VAR1')) d
 WHERE 'attributeunit' NOT IN (SELECT lower(name) FROM core.TableInfo
                                     WHERE database_id = d.database_id);
 
@@ -463,7 +463,7 @@ SELECT NEXTVAL('core.tableinfo_sq'), 'ProcessTypeComponent',
        p.project_id, 0
 FROM 
      (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
-     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(':VAR1')) d
+     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(:'VAR1')) d
 WHERE 'processtypecomponent' NOT IN (SELECT lower(name) FROM core.TableInfo
                                     WHERE database_id = d.database_id);
 
@@ -536,7 +536,7 @@ SELECT NEXTVAL('core.tableinfo_sq'), 'Attribute',
        p.project_id, 0
 FROM 
      (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
-     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(':VAR1')) d
+     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(:'VAR1')) d
 WHERE 'attribute' NOT IN (SELECT lower(name) FROM core.TableInfo
                                     WHERE database_id = d.database_id);
 
@@ -611,7 +611,7 @@ SELECT NEXTVAL('core.tableinfo_sq'), 'AttributeGraph',
        p.project_id, 0
 FROM 
      (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
-     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(':VAR1')) d
+     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(:'VAR1')) d
 WHERE 'attributegraph' NOT IN (SELECT lower(name) FROM core.TableInfo
                                     WHERE database_id = d.database_id);
 
@@ -660,7 +660,7 @@ SELECT NEXTVAL('core.tableinfo_sq'), 'StudyCharacteristic',
        p.project_id, 0
 FROM 
      (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
-     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(':VAR1')) d
+     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(:'VAR1')) d
 WHERE 'study_characteristic_id' NOT IN (SELECT lower(name) FROM core.TableInfo
                                     WHERE database_id = d.database_id);
 
@@ -738,7 +738,7 @@ SELECT NEXTVAL('core.tableinfo_sq'), 'AnnotationProperties',
        p.project_id, 0
 FROM 
      (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
-     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(':VAR1')) d
+     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(:'VAR1')) d
 WHERE 'annotationproperties' NOT IN (SELECT lower(name) FROM core.TableInfo
                                     WHERE database_id = d.database_id);
 
