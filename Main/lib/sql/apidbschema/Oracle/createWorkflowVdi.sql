@@ -15,7 +15,7 @@ GRANT SELECT ON apidb.WorkflowArtifactVdiId TO gus_r;
 ----------------------------------------------------------------------------
 
 -- Capture the time boundaries of the most recent batch of tuning tables submitted to VDI for a given data source
-create table apidb.WorkflowTuningTableBatch (
+create table apidb.WorkflowVdiTuningTableBatch (
   workflow_id number(10) NOT NULL,
   organism_abbrev varchar(20),  -- nullable for eg global workflow
   start_timestamp DATE NOT NULL,  -- time from apidb.tuningtable
