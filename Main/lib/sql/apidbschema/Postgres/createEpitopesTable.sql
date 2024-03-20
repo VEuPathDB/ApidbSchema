@@ -22,10 +22,9 @@ CREATE TABLE ApiDB.AASequenceEpitopeAccession (
 
 CREATE SEQUENCE ApiDB.AASequenceEpitopeAccession_sq;
 
-
-GRANT insert, select, update, delete ON ApiDB.AASequenceEpitopeAccession TO gus_w;
-GRANT select ON ApiDB.AASequenceEpitopeAccession TO gus_r;
-GRANT select ON ApiDB.AASequenceEpitopeAccession_sq TO gus_w;
+GRANT INSERT, SELECT, UPDATE, DELETE ON ApiDB.AASequenceEpitopeAccession TO gus_w;
+GRANT SELECT ON ApiDB.AASequenceEpitopeAccession TO gus_r;
+GRANT SELECT ON ApiDB.AASequenceEpitopeAccession_sq TO gus_w;
 
 
 
@@ -36,7 +35,7 @@ INSERT INTO core.TableInfo
     other_read, other_write, row_user_id, row_group_id, row_project_id,
     row_alg_invocation_id)
   SELECT core.tableinfo_sq.nextval, 'AASequenceEpitopeAccession', 'Standard', 'AASequenceEpitopeAccession_id',
-    d.database_id, 0, 0, '', '', 1,sysdate, 1, 1, 1, 1, 1, 1, 1, 1, p.project_id, 0
+    d.database_id, 0, 0, NULL, NULL, 1, localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1, p.project_id, 0
   FROM dual,
        (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
        (SELECT database_id FROM core.DatabaseInfo WHERE name = 'ApiDB') d
@@ -76,9 +75,9 @@ CREATE TABLE ApiDB.AASequenceEpitope (
 
 CREATE SEQUENCE ApiDB.AASequenceEpitope_sq;
 
-GRANT insert, select, update, delete ON ApiDB.AASequenceEpitope TO gus_w;
-GRANT select ON ApiDB.AASequenceEpitope TO gus_r;
-GRANT select ON ApiDB.AASequenceEpitope_sq TO gus_w;
+GRANT INSERT, SELECT, UPDATE, DELETE ON ApiDB.AASequenceEpitope TO gus_w;
+GRANT SELECT ON ApiDB.AASequenceEpitope TO gus_r;
+GRANT SELECT ON ApiDB.AASequenceEpitope_sq TO gus_w;
 
 INSERT INTO core.TableInfo
   (table_id, name, table_type, primary_key_column, database_id,
@@ -87,7 +86,7 @@ INSERT INTO core.TableInfo
     other_read, other_write, row_user_id, row_group_id, row_project_id,
     row_alg_invocation_id)
   SELECT core.tableinfo_sq.nextval, 'AASequenceEpitope', 'Standard', 'AASequenceEpitope_id',
-    d.database_id, 0, 0, '', '', 1,sysdate, 1, 1, 1, 1, 1, 1, 1, 1, p.project_id, 0
+    d.database_id, 0, 0, NULL, NULL, 1, localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1, p.project_id, 0
   FROM dual,
        (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
        (SELECT database_id FROM core.DatabaseInfo WHERE name = 'ApiDB') d
