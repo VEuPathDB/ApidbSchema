@@ -4,6 +4,7 @@ CREATE TABLE apidb.GeneFeatureProduct (
  external_database_release_id NUMBER(12) NOT NULL,
  product                      VARCHAR(500) NOT NULL,
  is_preferred                 NUMBER(1) NOT NULL,
+ assigned_by                  VARCHAR(100),
  modification_date            DATE NOT NULL,
  user_read                    NUMBER(1) NOT NULL,
  user_write                   NUMBER(1) NOT NULL,
