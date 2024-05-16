@@ -23,18 +23,19 @@ WHERE lower('chEBI') NOT IN (SELECT lower(name) FROM core.DatabaseInfo);
 --
 
 CREATE TABLE chebi.compounds (
-  id                  numeric             primary key,
-  name                text            ,
-  source              varchar(32)     not null,
-  parent_id           numeric             ,
-  chebi_accession     varchar(30)     not null,
-  status              varchar(1)      not null,
-  definition          text	    ,
-  star                int             ,
-  modified_on         text            ,
-  created_by          text,
-  MODIFICATION_DATE   timestamp DEFAULT localtimestamp
-) without oids;
+  id                NUMERIC PRIMARY KEY,
+  name              TEXT,
+  source            VARCHAR(32) NOT NULL,
+  parent_id         NUMERIC,
+  chebi_accession   VARCHAR(30) NOT NULL,
+  status            VARCHAR(1)  NOT NULL,
+  definition        TEXT,
+  star              INT,
+  modified_on       TEXT,
+  created_by        TEXT,
+  MODIFICATION_DATE TIMESTAMP DEFAULT localtimestamp
+)
+  WITHOUT OIDS;
 
 
 --
@@ -42,18 +43,19 @@ CREATE TABLE chebi.compounds (
 --
 
 CREATE TABLE chebi.chemical_data (
-  id                  numeric             primary key,
-  compound_id         numeric             not null
-    references chebi.compounds(id)
-      on delete cascade,
-  chemical_data       text            not null,
-  source              text            not null,
-  type                text            not null,
-  MODIFICATION_DATE   timestamp DEFAULT localtimestamp
+  id                NUMERIC PRIMARY KEY,
+  compound_id       NUMERIC NOT NULL
+    REFERENCES chebi.compounds(id)
+      ON DELETE CASCADE,
+  chemical_data     TEXT    NOT NULL,
+  source            TEXT    NOT NULL,
+  type              TEXT    NOT NULL,
+  MODIFICATION_DATE TIMESTAMP DEFAULT localtimestamp
 
-) without oids;
+)
+  WITHOUT OIDS;
 
-create index chemical_data_compound_id_idx on chebi.chemical_data(compound_id);
+CREATE INDEX chemical_data_compound_id_idx ON chebi.chemical_data(compound_id);
 
 
 --
@@ -61,18 +63,19 @@ create index chemical_data_compound_id_idx on chebi.chemical_data(compound_id);
 --
 
 CREATE TABLE chebi.comments (
-  id                  numeric             primary key,
-  compound_id         numeric             not null
-    references chebi.compounds(id)
-      on delete cascade,
-  text                text            not null,
-  created_on          timestamp(0)    not null,
-  datatype            varchar(80)     ,
-  datatype_id         numeric             not null,
-  MODIFICATION_DATE   timestamp DEFAULT localtimestamp
-) without oids;
+  id                NUMERIC PRIMARY KEY,
+  compound_id       NUMERIC      NOT NULL
+    REFERENCES chebi.compounds(id)
+      ON DELETE CASCADE,
+  text              TEXT         NOT NULL,
+  created_on        TIMESTAMP(0) NOT NULL,
+  datatype          VARCHAR(80),
+  datatype_id       NUMERIC      NOT NULL,
+  MODIFICATION_DATE TIMESTAMP DEFAULT localtimestamp
+)
+  WITHOUT OIDS;
 
-create index comments_compound_id_idx on chebi.comments(compound_id);
+CREATE INDEX comments_compound_id_idx ON chebi.comments(compound_id);
 
 
 
@@ -81,17 +84,18 @@ create index comments_compound_id_idx on chebi.comments(compound_id);
 --
 
 CREATE TABLE chebi.database_accession (
-  id                  numeric             primary key,
-  compound_id         numeric             not null
-    references chebi.compounds(id)
-      on delete cascade,
-  accession_number    varchar(255)    not null,
-  type                text            not null,
-  source              text            not null,
-  MODIFICATION_DATE   timestamp DEFAULT localtimestamp
-) without oids;
+  id                NUMERIC PRIMARY KEY,
+  compound_id       NUMERIC      NOT NULL
+    REFERENCES chebi.compounds(id)
+      ON DELETE CASCADE,
+  accession_number  VARCHAR(255) NOT NULL,
+  type              TEXT         NOT NULL,
+  source            TEXT         NOT NULL,
+  MODIFICATION_DATE TIMESTAMP DEFAULT localtimestamp
+)
+  WITHOUT OIDS;
 
-create index database_accession_compound_id_idx on chebi.database_accession(compound_id);
+CREATE INDEX database_accession_compound_id_idx ON chebi.database_accession(compound_id);
 
 
 --
@@ -99,20 +103,21 @@ create index database_accession_compound_id_idx on chebi.database_accession(comp
 --
 
 CREATE TABLE chebi.names (
-  id                  numeric             primary key,
-  compound_id         numeric             not null
-    references chebi.compounds(id)
-      on delete cascade,
-  name                text            not null,
-  type                text            not null,
-  source              text            not null,
-  adapted             text            not null,
-  language            text            not null,
-  MODIFICATION_DATE   timestamp       DEFAULT localtimestamp
+  id                NUMERIC PRIMARY KEY,
+  compound_id       NUMERIC NOT NULL
+    REFERENCES chebi.compounds(id)
+      ON DELETE CASCADE,
+  name              TEXT    NOT NULL,
+  type              TEXT    NOT NULL,
+  source            TEXT    NOT NULL,
+  adapted           TEXT    NOT NULL,
+  language          TEXT    NOT NULL,
+  MODIFICATION_DATE TIMESTAMP DEFAULT localtimestamp
 
-) without oids;
+)
+  WITHOUT OIDS;
 
-create index names_compound_id_idx on chebi.names(compound_id);
+CREATE INDEX names_compound_id_idx ON chebi.names(compound_id);
 
 
 --
@@ -120,57 +125,60 @@ create index names_compound_id_idx on chebi.names(compound_id);
 --
 
 CREATE TABLE chebi.reference (
-  id                  numeric             primary key,
-  compound_id         numeric             not null
-    references chebi.compounds(id)
-      on delete cascade,
-  reference_id        varchar(60)     not null,
-  reference_db_name   varchar(60)     not null,
-  location_in_ref     varchar(90)             ,
-  reference_name      varchar(1024),
-  MODIFICATION_DATE   timestamp DEFAULT localtimestamp
+  id                NUMERIC PRIMARY KEY,
+  compound_id       NUMERIC     NOT NULL
+    REFERENCES chebi.compounds(id)
+      ON DELETE CASCADE,
+  reference_id      VARCHAR(60) NOT NULL,
+  reference_db_name VARCHAR(60) NOT NULL,
+  location_in_ref   VARCHAR(90),
+  reference_name    VARCHAR(1024),
+  MODIFICATION_DATE TIMESTAMP DEFAULT localtimestamp
 
-) without oids;
+)
+  WITHOUT OIDS;
 
-create index reference_compound_id_idx on chebi.reference(compound_id);
+CREATE INDEX reference_compound_id_idx ON chebi.reference(compound_id);
 
 --
 -- Table relation
 --
 
 CREATE TABLE chebi.relation (
-  id                  numeric             primary key,
-  type                text            not null,
-  init_id             numeric             not null
-    references chebi.compounds(id),
-  final_id            numeric             not null
-    references chebi.compounds(id),
-  status              varchar(1)      not null,
-  MODIFICATION_DATE   timestamp DEFAULT localtimestamp,
-    unique (type,init_id,final_id)
-) without oids;
+  id                NUMERIC PRIMARY KEY,
+  type              TEXT       NOT NULL,
+  init_id           NUMERIC    NOT NULL
+    REFERENCES chebi.compounds(id),
+  final_id          NUMERIC    NOT NULL
+    REFERENCES chebi.compounds(id),
+  status            VARCHAR(1) NOT NULL,
+  MODIFICATION_DATE TIMESTAMP DEFAULT localtimestamp,
+  UNIQUE (type, init_id, final_id)
+)
+  WITHOUT OIDS;
 
-create index relation_init_id_idx on chebi.relation(init_id);
-create index relation_final_id_idx on chebi.relation(final_id);
+CREATE INDEX relation_init_id_idx ON chebi.relation(init_id);
+CREATE INDEX relation_final_id_idx ON chebi.relation(final_id);
 
 --
 -- Table structures
 --
 
 CREATE TABLE chebi.structures (
-  id                  numeric             primary key,
-  compound_id         numeric             not null
-    references chebi.compounds(id)
-      on delete cascade,
-  structure           text            not null,
-  type                text            not null,
-  dimension           text            not null,
-  default_structure   varchar(1)      not null,
-  autogen_structure   varchar(1)      not null,
-  MODIFICATION_DATE   timestamp DEFAULT localtimestamp
-) without oids;
+  id                NUMERIC PRIMARY KEY,
+  compound_id       NUMERIC    NOT NULL
+    REFERENCES chebi.compounds(id)
+      ON DELETE CASCADE,
+  structure         TEXT       NOT NULL,
+  type              TEXT       NOT NULL,
+  dimension         TEXT       NOT NULL,
+  default_structure VARCHAR(1) NOT NULL,
+  autogen_structure VARCHAR(1) NOT NULL,
+  MODIFICATION_DATE TIMESTAMP DEFAULT localtimestamp
+)
+  WITHOUT OIDS;
 
-create index structures_compound_id_idx on chebi.structures(compound_id);
+CREATE INDEX structures_compound_id_idx ON chebi.structures(compound_id);
 
 
 
@@ -179,21 +187,21 @@ create index structures_compound_id_idx on chebi.structures(compound_id);
 --
 
 CREATE TABLE chebi.compound_origins (
-  id                  numeric             primary key,
-  compound_id         numeric             not null
-    references chebi.compounds(id)
-      on delete cascade,
-  species_text        text            not null,
-  species_accession   text                    ,
-  component_text      text                    ,
-  component_accession  text                    ,
-  strain_text         text                    ,
-  source_type         text            not null,
-  source_accession    text            not null,
-  comments            text,
-  MODIFICATION_DATE   timestamp DEFAULT localtimestamp
+  id                  NUMERIC PRIMARY KEY,
+  compound_id         NUMERIC NOT NULL
+    REFERENCES chebi.compounds(id)
+      ON DELETE CASCADE,
+  species_text        TEXT    NOT NULL,
+  species_accession   TEXT,
+  component_text      TEXT,
+  component_accession TEXT,
+  strain_text         TEXT,
+  source_type         TEXT    NOT NULL,
+  source_accession    TEXT    NOT NULL,
+  comments            TEXT,
+  MODIFICATION_DATE   TIMESTAMP DEFAULT localtimestamp
+)
+  WITHOUT OIDS;
 
-) without oids;
-
-create index compound_origins_id_idx on chebi.compound_origins(compound_id);
+CREATE INDEX compound_origins_id_idx ON chebi.compound_origins(compound_id);
 
