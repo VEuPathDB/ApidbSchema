@@ -32,7 +32,8 @@ CREATE TABLE chebi.compounds (
   definition          text	    ,
   star                int             ,
   modified_on         text            ,
-  created_by          text
+  created_by          text,
+  MODIFICATION_DATE   timestamp DEFAULT localtimestamp
 ) without oids;
 
 
@@ -47,7 +48,9 @@ CREATE TABLE chebi.chemical_data (
       on delete cascade,
   chemical_data       text            not null,
   source              text            not null,
-  type                text            not null
+  type                text            not null,
+  MODIFICATION_DATE   timestamp DEFAULT localtimestamp
+
 ) without oids;
 
 create index chemical_data_compound_id_idx on chebi.chemical_data(compound_id);
@@ -65,7 +68,8 @@ CREATE TABLE chebi.comments (
   text                text            not null,
   created_on          timestamp(0)    not null,
   datatype            varchar(80)     ,
-  datatype_id         numeric             not null
+  datatype_id         numeric             not null,
+  MODIFICATION_DATE   timestamp DEFAULT localtimestamp
 ) without oids;
 
 create index comments_compound_id_idx on chebi.comments(compound_id);
@@ -83,7 +87,8 @@ CREATE TABLE chebi.database_accession (
       on delete cascade,
   accession_number    varchar(255)    not null,
   type                text            not null,
-  source              text            not null
+  source              text            not null,
+  MODIFICATION_DATE   timestamp DEFAULT localtimestamp
 ) without oids;
 
 create index database_accession_compound_id_idx on chebi.database_accession(compound_id);
@@ -102,7 +107,9 @@ CREATE TABLE chebi.names (
   type                text            not null,
   source              text            not null,
   adapted             text            not null,
-  language            text            not null
+  language            text            not null,
+  MODIFICATION_DATE   timestamp       DEFAULT localtimestamp
+
 ) without oids;
 
 create index names_compound_id_idx on chebi.names(compound_id);
@@ -120,7 +127,9 @@ CREATE TABLE chebi.reference (
   reference_id        varchar(60)     not null,
   reference_db_name   varchar(60)     not null,
   location_in_ref     varchar(90)             ,
-  reference_name      varchar(1024)
+  reference_name      varchar(1024),
+  MODIFICATION_DATE   timestamp DEFAULT localtimestamp
+
 ) without oids;
 
 create index reference_compound_id_idx on chebi.reference(compound_id);
@@ -137,7 +146,8 @@ CREATE TABLE chebi.relation (
   final_id            numeric             not null
     references chebi.compounds(id),
   status              varchar(1)      not null,
-  unique (type,init_id,final_id)
+  MODIFICATION_DATE   timestamp DEFAULT localtimestamp,
+    unique (type,init_id,final_id)
 ) without oids;
 
 create index relation_init_id_idx on chebi.relation(init_id);
@@ -156,7 +166,8 @@ CREATE TABLE chebi.structures (
   type                text            not null,
   dimension           text            not null,
   default_structure   varchar(1)      not null,
-  autogen_structure   varchar(1)      not null
+  autogen_structure   varchar(1)      not null,
+  MODIFICATION_DATE   timestamp DEFAULT localtimestamp
 ) without oids;
 
 create index structures_compound_id_idx on chebi.structures(compound_id);
@@ -179,7 +190,9 @@ CREATE TABLE chebi.compound_origins (
   strain_text         text                    ,
   source_type         text            not null,
   source_accession    text            not null,
-  comments            text
+  comments            text,
+  MODIFICATION_DATE   timestamp DEFAULT localtimestamp
+
 ) without oids;
 
 create index compound_origins_id_idx on chebi.compound_origins(compound_id);
