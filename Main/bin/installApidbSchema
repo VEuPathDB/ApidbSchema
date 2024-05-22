@@ -158,6 +158,7 @@ my @create = qw(
   createBusco.sql
   createCellxgene.sql
   grantChebiTables.sql
+  createEpitopesTable.sql
 );
 
 my @delete = qw(
