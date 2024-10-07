@@ -51,7 +51,6 @@ CREATE TABLE chebi.chemical_data (
   source            TEXT    NOT NULL,
   type              TEXT    NOT NULL,
   MODIFICATION_DATE TIMESTAMP DEFAULT localtimestamp
-
 )
   WITHOUT OIDS;
 
@@ -113,7 +112,6 @@ CREATE TABLE chebi.names (
   adapted           TEXT    NOT NULL,
   language          TEXT    NOT NULL,
   MODIFICATION_DATE TIMESTAMP DEFAULT localtimestamp
-
 )
   WITHOUT OIDS;
 
@@ -134,7 +132,6 @@ CREATE TABLE chebi.reference (
   location_in_ref   VARCHAR(90),
   reference_name    VARCHAR(1024),
   MODIFICATION_DATE TIMESTAMP DEFAULT localtimestamp
-
 )
   WITHOUT OIDS;
 
