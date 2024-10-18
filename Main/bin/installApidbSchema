@@ -158,6 +158,9 @@ my @create = qw(
   createBusco.sql
   createCellxgene.sql
   grantChebiTables.sql
+  createInterproResults.sql
+  createGenomeBedGraph.sql
+  createProteinBedGraph.sql
 );
 
 my @delete = qw(
