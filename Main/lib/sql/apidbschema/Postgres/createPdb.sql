@@ -71,7 +71,7 @@ CREATE TABLE ApiDB.PDBSimilarity (
   FOREIGN KEY (protein_data_bank_id) REFERENCES apidb.proteindatabank (protein_data_bank_id),
   FOREIGN KEY (aa_sequence_id) REFERENCES dots.aasequenceimp (aa_sequence_id),
   FOREIGN KEY (EXTERNAL_DATABASE_RELEASE_ID) REFERENCES sres.ExternalDatabaseRelease (EXTERNAL_DATABASE_RELEASE_ID),
-  PRIMARY KEY (protein_data_bank_id)
+  PRIMARY KEY (pdb_similarity_id)
 );
 
 CREATE SEQUENCE ApiDB.PDBSimilarity_sq;
