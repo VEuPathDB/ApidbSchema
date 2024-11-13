@@ -2,7 +2,7 @@ CREATE TABLE ApiDB.ProteinDataBank (
   protein_data_bank_id  NUMERIC(10) NOT NULL,
   taxon_id              NUMERIC(12) NOT NULL,
   source_id             VARCHAR(60) NOT NULL,
-  description           VARCHAR(500),
+  description           VARCHAR(2000),
   external_database_release_id NUMERIC(10) NOT NULL,
   MODIFICATION_DATE     TIMESTAMP,
   USER_READ             NUMERIC(1),
