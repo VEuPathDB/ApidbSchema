@@ -489,6 +489,64 @@ FROM
 WHERE 'lineagetaxon' NOT IN (SELECT lower(name) FROM core.TableInfo
                                     where DATABASE_ID = D.DATABASE_ID);
 
+
+--------------------------- create a study.NodeSet --------------------------------------
+
+create table study.NodeSet
+  (
+    node_set_id    	  numeric(12) not null,
+    name             	  varchar(254) not null,
+    node_type             varchar(254) not null,
+    MODIFICATION_DATE     TIMESTAMP not null,
+    USER_READ             numeric(1) not null,
+    USER_WRITE            numeric(1) not null,
+    GROUP_READ            numeric(1) not null,
+    GROUP_WRITE           numeric(1) not null,
+    OTHER_READ            numeric(1) not null,
+    OTHER_WRITE           numeric(1) not null,
+    ROW_USER_ID           numeric(12) not null,
+    ROW_GROUP_ID          numeric(4) not null,
+    ROW_PROJECT_ID        numeric(4) not null,
+    ROW_ALG_INVOCATION_ID numeric(12) not null,
+    foreign key (taxon_id) references SRES.EXTERNALDATABASERELEASE, 
+    primary key (node_set_id)
+  );
+
+GRANT insert, select, update, delete ON  STUDY.NodeSet TO gus_w;
+GRANT select ON STUDY.NodeSet TO gus_r;
+
+CREATE SEQUENCE STUDY.NodeSet_SQ;
+
+INSERT INTO core.TableInfo
+    (table_id, name, table_type, primary_key_column, database_id, is_versioned,
+     is_view, view_on_table_id, superclass_table_id, is_updatable,
+     modification_date, user_read, user_write, group_read, group_write,
+     other_read, other_write, row_user_id, row_group_id, row_project_id,
+     ROW_ALG_INVOCATION_ID)
+select NEXTVAL('CORE.TABLEINFO_SQ'), 'NodeSet',
+       'Standard', 'node_set_id',
+       d.database_id, 0, 0, NULL, NULL, 1,localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
+       p.project_id, 0
+FROM
+     (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
+     (select DATABASE_ID from CORE.DATABASEINFO where name = 'Results') D
+WHERE 'lineagetaxon' NOT IN (SELECT lower(name) FROM core.TableInfo
+                                    where DATABASE_ID = D.DATABASE_ID);
+
+
+
+------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+------------------------- create a Study.NodeNodeSet --------------------------------------
+
 -------------------------------------------------------------------------------------------
 -- unique constraints in the Results schema
 
