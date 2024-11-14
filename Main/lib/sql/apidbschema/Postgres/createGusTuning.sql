@@ -494,9 +494,9 @@ WHERE 'lineagetaxon' NOT IN (SELECT lower(name) FROM core.TableInfo
 
 create table study.NodeSet
   (
-    node_set_id    	  numeric(12) not null,
-    name             	  varchar(254) not null,
-    node_type             varchar(254) not null,
+    node_set_id           numeric(12) not null,
+    name                  varchar(254) not null,
+    node_type             numeric(12) not null,
     MODIFICATION_DATE     TIMESTAMP not null,
     USER_READ             numeric(1) not null,
     USER_WRITE            numeric(1) not null,
@@ -508,14 +508,15 @@ create table study.NodeSet
     ROW_GROUP_ID          numeric(4) not null,
     ROW_PROJECT_ID        numeric(4) not null,
     ROW_ALG_INVOCATION_ID numeric(12) not null,
-    foreign key (node_type) references SRES.EXTERNALDATABASERELEASE, 
+    foreign key (node_type) references SRES.EXTERNALDATABASERELEASE,
     primary key (node_set_id)
   );
+
+CREATE SEQUENCE STUDY.NodeSet_SQ;
 
 GRANT insert, select, update, delete ON  STUDY.NodeSet TO gus_w;
 GRANT select ON STUDY.NodeSet TO gus_r;
 
-CREATE SEQUENCE STUDY.NodeSet_SQ;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
@@ -530,9 +531,9 @@ select NEXTVAL('CORE.TABLEINFO_SQ'), 'NodeSet',
 FROM
      (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
      (select DATABASE_ID from CORE.DATABASEINFO where name = 'Results') D
-WHERE 'lineagetaxon' NOT IN (SELECT lower(name) FROM core.TableInfo
-                                    where DATABASE_ID = D.DATABASE_ID);
-
+WHERE 'NodeSet' NOT IN (SELECT lower(name) FROM core.TableInfo
+                                    where DATABASE_ID = D.DATABASE_ID)
+;
 ------------------------------------------------------------------------------------------
 
 
@@ -575,7 +576,7 @@ select NEXTVAL('CORE.TABLEINFO_SQ'), 'NodeNodeSet',
 FROM
      (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
      (select DATABASE_ID from CORE.DATABASEINFO where name = 'Results') D
-WHERE 'lineagetaxon' NOT IN (SELECT lower(name) FROM core.TableInfo
+WHERE 'NodeNodeSet' NOT IN (SELECT lower(name) FROM core.TableInfo
                                     where DATABASE_ID = D.DATABASE_ID);
 
 -------------------------------------------------------------------------------------------
