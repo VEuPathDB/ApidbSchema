@@ -530,7 +530,7 @@ select NEXTVAL('CORE.TABLEINFO_SQ'), 'NodeSet',
        p.project_id, 0
 FROM
      (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
-     (select DATABASE_ID from CORE.DATABASEINFO where name = 'Results') D
+     (select DATABASE_ID from CORE.DATABASEINFO where name = 'Study') D
 WHERE 'NodeSet' NOT IN (SELECT lower(name) FROM core.TableInfo
                                     where DATABASE_ID = D.DATABASE_ID)
 ;
@@ -575,7 +575,7 @@ select NEXTVAL('CORE.TABLEINFO_SQ'), 'NodeNodeSet',
        p.project_id, 0
 FROM
      (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
-     (select DATABASE_ID from CORE.DATABASEINFO where name = 'Results') D
+     (select DATABASE_ID from CORE.DATABASEINFO where name = 'Study') D
 WHERE 'NodeNodeSet' NOT IN (SELECT lower(name) FROM core.TableInfo
                                     where DATABASE_ID = D.DATABASE_ID);
 
