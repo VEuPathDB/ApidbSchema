@@ -10,7 +10,7 @@ CREATE TABLE ApiDB.InterproResults (
   INTERPRO_DESC		              VARCHAR(1600),
   INTERPRO_START_MIN	          NUMERIC(12),
   INTERPRO_END_MIN	            NUMERIC(12),
-  INTERPRO_E_VALUE	            VARCHAR(9),
+  INTERPRO_E_VALUE	            VARCHAR(15),
   INTERPRO_FAMILY_ID            VARCHAR(50),
   MODIFICATION_DATE             TIMESTAMP,
   USER_READ                     NUMERIC(1),
