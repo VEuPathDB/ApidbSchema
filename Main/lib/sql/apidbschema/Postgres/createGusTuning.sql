@@ -491,12 +491,12 @@ WHERE 'lineagetaxon' NOT IN (SELECT lower(name) FROM core.TableInfo
 
 
 --------------------------- create a study.NodeSet --------------------------------------
-
 create table study.NodeSet
   (
     node_set_id           numeric(12) not null,
+    external_database_release_id numeric(12) not null,
     name                  varchar(254) not null,
-    node_type             numeric(12) not null,
+    node_type             varchar(200) not null,
     MODIFICATION_DATE     TIMESTAMP not null,
     USER_READ             numeric(1) not null,
     USER_WRITE            numeric(1) not null,
@@ -508,11 +508,13 @@ create table study.NodeSet
     ROW_GROUP_ID          numeric(4) not null,
     ROW_PROJECT_ID        numeric(4) not null,
     ROW_ALG_INVOCATION_ID numeric(12) not null,
-    foreign key (node_type) references SRES.EXTERNALDATABASERELEASE,
+    foreign key (external_database_release_id) references SRES.EXTERNALDATABASERELEASE,
     primary key (node_set_id)
   );
 
-CREATE SEQUENCE STUDY.NodeSet_SQ;
+create SEQUENCE STUDY.NodeSet_SQ;
+
+GRANT select ON STUDY.NodeSet_SQ to gus_w;
 
 GRANT insert, select, update, delete ON  STUDY.NodeSet TO gus_w;
 GRANT select ON STUDY.NodeSet TO gus_r;
@@ -534,6 +536,7 @@ FROM
 WHERE 'NodeSet' NOT IN (SELECT lower(name) FROM core.TableInfo
                                     where DATABASE_ID = D.DATABASE_ID)
 ;
+
 ------------------------------------------------------------------------------------------
 
 
@@ -542,6 +545,8 @@ WHERE 'NodeSet' NOT IN (SELECT lower(name) FROM core.TableInfo
 create table study.NodeNodeSet
   (
     node_node_set_id      numeric(12) not null,
+    node_set_id 		  numeric(12) not null,
+    protocol_app_node_id  numeric(12) not null,
     MODIFICATION_DATE     TIMESTAMP not null,
     USER_READ             numeric(1) not null,
     USER_WRITE            numeric(1) not null,
@@ -553,8 +558,8 @@ create table study.NodeNodeSet
     ROW_GROUP_ID          numeric(4) not null,
     ROW_PROJECT_ID        numeric(4) not null,
     ROW_ALG_INVOCATION_ID numeric(12) not null,
-    foreign key (node_node_set_id) references STUDY.NODESET(NODE_SET_ID),
-    foreign key (node_node_set_id) references STUDY.PROTOCOLAPPNODE(PROTOCOL_APP_NODE_ID),
+    foreign key (node_set_id) references STUDY.NODESET(NODE_SET_ID),
+    foreign key (protocol_app_node_id) references STUDY.PROTOCOLAPPNODE(PROTOCOL_APP_NODE_ID),
     primary key (node_node_set_id)
   );
 
@@ -562,6 +567,7 @@ GRANT insert, select, update, delete ON  STUDY.NodeNodeSet TO gus_w;
 GRANT select ON STUDY.NodeNodeSet TO gus_r;
 
 CREATE SEQUENCE STUDY.NodeNodeSet_SQ;
+GRANT select ON STUDY.NodeNodeSet_SQ TO gus_r; 
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
