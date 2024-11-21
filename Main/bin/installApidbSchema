@@ -86,9 +86,7 @@ my @create = qw(
   createTestTuningSchema.sql
   createApidbSchema.sql
   createChebiSchema.sql
-  createHmdbSchema.sql
   createEdaSchema.sql
-  createHMDBTables.sql
   createAnalysisMethodInvocation.sql
   createDatasource.sql
   createSnpTables.sql
@@ -159,6 +157,9 @@ my @create = qw(
   createCellxgene.sql
   grantChebiTables.sql
   createEpitopesTable.sql
+  createInterproResults.sql
+  createGenomeBedGraph.sql
+  createProteinBedGraph.sql
 );
 
 my @delete = qw(
@@ -189,7 +190,6 @@ my @apiDbSchemas = qw(
   APIDBTUNING
   APIDBUSERDATASETS
   CHEBI
-  HMDB
   EDA
   EDA_UD
   TESTTUNING
