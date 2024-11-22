@@ -489,6 +489,100 @@ FROM
 WHERE 'lineagetaxon' NOT IN (SELECT lower(name) FROM core.TableInfo
                                     where DATABASE_ID = D.DATABASE_ID);
 
+
+--------------------------- create a study.NodeSet --------------------------------------
+CREATE TABLE study.NodeSet (
+  node_set_id                  NUMERIC(12)  NOT NULL,
+  external_database_release_id NUMERIC(12)  NOT NULL,
+  name                         VARCHAR(254) NOT NULL,
+  node_type                    VARCHAR(200) NOT NULL,
+  MODIFICATION_DATE            TIMESTAMP    NOT NULL,
+  USER_READ                    NUMERIC(1)   NOT NULL,
+  USER_WRITE                   NUMERIC(1)   NOT NULL,
+  GROUP_READ                   NUMERIC(1)   NOT NULL,
+  GROUP_WRITE                  NUMERIC(1)   NOT NULL,
+  OTHER_READ                   NUMERIC(1)   NOT NULL,
+  OTHER_WRITE                  NUMERIC(1)   NOT NULL,
+  ROW_USER_ID                  NUMERIC(12)  NOT NULL,
+  ROW_GROUP_ID                 NUMERIC(4)   NOT NULL,
+  ROW_PROJECT_ID               NUMERIC(4)   NOT NULL,
+  ROW_ALG_INVOCATION_ID        NUMERIC(12)  NOT NULL,
+  FOREIGN KEY (external_database_release_id) REFERENCES SRES.EXTERNALDATABASERELEASE,
+  PRIMARY KEY (node_set_id)
+);
+
+CREATE SEQUENCE STUDY.NodeSet_SQ;
+
+GRANT SELECT ON STUDY.NodeSet_SQ TO gus_w;
+
+GRANT INSERT, SELECT, UPDATE, DELETE ON STUDY.NodeSet TO gus_w;
+GRANT SELECT ON STUDY.NodeSet TO gus_r;
+
+
+INSERT INTO core.TableInfo
+    (table_id, name, table_type, primary_key_column, database_id, is_versioned,
+     is_view, view_on_table_id, superclass_table_id, is_updatable,
+     modification_date, user_read, user_write, group_read, group_write,
+     other_read, other_write, row_user_id, row_group_id, row_project_id,
+     ROW_ALG_INVOCATION_ID)
+SELECT NEXTVAL('CORE.TABLEINFO_SQ'), 'NodeSet',
+       'Standard', 'node_set_id',
+       d.database_id, 0, 0, NULL, NULL, 1,localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
+       p.project_id, 0
+FROM
+     (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
+     (select DATABASE_ID from CORE.DATABASEINFO where name = 'Study') D
+WHERE 'NodeSet' NOT IN (SELECT lower(name) FROM core.TableInfo
+                                    where DATABASE_ID = D.DATABASE_ID)
+;
+
+------------------------------------------------------------------------------------------
+
+
+------------------------- create a Study.NodeNodeSet --------------------------------------
+
+CREATE TABLE study.NodeNodeSet (
+  node_node_set_id      NUMERIC(12) NOT NULL,
+  node_set_id           NUMERIC(12) NOT NULL,
+  protocol_app_node_id  NUMERIC(12) NOT NULL,
+  MODIFICATION_DATE     TIMESTAMP   NOT NULL,
+  USER_READ             NUMERIC(1)  NOT NULL,
+  USER_WRITE            NUMERIC(1)  NOT NULL,
+  GROUP_READ            NUMERIC(1)  NOT NULL,
+  GROUP_WRITE           NUMERIC(1)  NOT NULL,
+  OTHER_READ            NUMERIC(1)  NOT NULL,
+  OTHER_WRITE           NUMERIC(1)  NOT NULL,
+  ROW_USER_ID           NUMERIC(12) NOT NULL,
+  ROW_GROUP_ID          NUMERIC(4)  NOT NULL,
+  ROW_PROJECT_ID        NUMERIC(4)  NOT NULL,
+  ROW_ALG_INVOCATION_ID NUMERIC(12) NOT NULL,
+  FOREIGN KEY (node_set_id) REFERENCES STUDY.NODESET(NODE_SET_ID),
+  FOREIGN KEY (protocol_app_node_id) REFERENCES STUDY.PROTOCOLAPPNODE(PROTOCOL_APP_NODE_ID),
+  PRIMARY KEY (node_node_set_id)
+);
+
+GRANT INSERT, SELECT, UPDATE, DELETE ON STUDY.NodeNodeSet TO gus_w;
+GRANT SELECT ON STUDY.NodeNodeSet TO gus_r;
+
+CREATE SEQUENCE STUDY.NodeNodeSet_SQ;
+GRANT SELECT ON STUDY.NodeNodeSet_SQ TO gus_r;
+
+INSERT INTO core.TableInfo
+    (table_id, name, table_type, primary_key_column, database_id, is_versioned,
+     is_view, view_on_table_id, superclass_table_id, is_updatable,
+     modification_date, user_read, user_write, group_read, group_write,
+     other_read, other_write, row_user_id, row_group_id, row_project_id,
+     ROW_ALG_INVOCATION_ID)
+SELECT NEXTVAL('CORE.TABLEINFO_SQ'), 'NodeNodeSet',
+       'Standard', 'node_node_set_id',
+       d.database_id, 0, 0, NULL, NULL, 1,localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
+       p.project_id, 0
+FROM
+     (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
+     (select DATABASE_ID from CORE.DATABASEINFO where name = 'Study') D
+WHERE 'NodeNodeSet' NOT IN (SELECT lower(name) FROM core.TableInfo
+                                    where DATABASE_ID = D.DATABASE_ID);
+
 -------------------------------------------------------------------------------------------
 -- unique constraints in the Results schema
 
