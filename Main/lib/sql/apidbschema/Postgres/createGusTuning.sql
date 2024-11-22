@@ -491,33 +491,32 @@ WHERE 'lineagetaxon' NOT IN (SELECT lower(name) FROM core.TableInfo
 
 
 --------------------------- create a study.NodeSet --------------------------------------
-create table study.NodeSet
-  (
-    node_set_id           numeric(12) not null,
-    external_database_release_id numeric(12) not null,
-    name                  varchar(254) not null,
-    node_type             varchar(200) not null,
-    MODIFICATION_DATE     TIMESTAMP not null,
-    USER_READ             numeric(1) not null,
-    USER_WRITE            numeric(1) not null,
-    GROUP_READ            numeric(1) not null,
-    GROUP_WRITE           numeric(1) not null,
-    OTHER_READ            numeric(1) not null,
-    OTHER_WRITE           numeric(1) not null,
-    ROW_USER_ID           numeric(12) not null,
-    ROW_GROUP_ID          numeric(4) not null,
-    ROW_PROJECT_ID        numeric(4) not null,
-    ROW_ALG_INVOCATION_ID numeric(12) not null,
-    foreign key (external_database_release_id) references SRES.EXTERNALDATABASERELEASE,
-    primary key (node_set_id)
-  );
+CREATE TABLE study.NodeSet (
+  node_set_id                  NUMERIC(12)  NOT NULL,
+  external_database_release_id NUMERIC(12)  NOT NULL,
+  name                         VARCHAR(254) NOT NULL,
+  node_type                    VARCHAR(200) NOT NULL,
+  MODIFICATION_DATE            TIMESTAMP    NOT NULL,
+  USER_READ                    NUMERIC(1)   NOT NULL,
+  USER_WRITE                   NUMERIC(1)   NOT NULL,
+  GROUP_READ                   NUMERIC(1)   NOT NULL,
+  GROUP_WRITE                  NUMERIC(1)   NOT NULL,
+  OTHER_READ                   NUMERIC(1)   NOT NULL,
+  OTHER_WRITE                  NUMERIC(1)   NOT NULL,
+  ROW_USER_ID                  NUMERIC(12)  NOT NULL,
+  ROW_GROUP_ID                 NUMERIC(4)   NOT NULL,
+  ROW_PROJECT_ID               NUMERIC(4)   NOT NULL,
+  ROW_ALG_INVOCATION_ID        NUMERIC(12)  NOT NULL,
+  FOREIGN KEY (external_database_release_id) REFERENCES SRES.EXTERNALDATABASERELEASE,
+  PRIMARY KEY (node_set_id)
+);
 
-create SEQUENCE STUDY.NodeSet_SQ;
+CREATE SEQUENCE STUDY.NodeSet_SQ;
 
-GRANT select ON STUDY.NodeSet_SQ to gus_w;
+GRANT SELECT ON STUDY.NodeSet_SQ TO gus_w;
 
-GRANT insert, select, update, delete ON  STUDY.NodeSet TO gus_w;
-GRANT select ON STUDY.NodeSet TO gus_r;
+GRANT INSERT, SELECT, UPDATE, DELETE ON STUDY.NodeSet TO gus_w;
+GRANT SELECT ON STUDY.NodeSet TO gus_r;
 
 
 INSERT INTO core.TableInfo
@@ -526,7 +525,7 @@ INSERT INTO core.TableInfo
      modification_date, user_read, user_write, group_read, group_write,
      other_read, other_write, row_user_id, row_group_id, row_project_id,
      ROW_ALG_INVOCATION_ID)
-select NEXTVAL('CORE.TABLEINFO_SQ'), 'NodeSet',
+SELECT NEXTVAL('CORE.TABLEINFO_SQ'), 'NodeSet',
        'Standard', 'node_set_id',
        d.database_id, 0, 0, NULL, NULL, 1,localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
        p.project_id, 0
@@ -542,32 +541,31 @@ WHERE 'NodeSet' NOT IN (SELECT lower(name) FROM core.TableInfo
 
 ------------------------- create a Study.NodeNodeSet --------------------------------------
 
-create table study.NodeNodeSet
-  (
-    node_node_set_id      numeric(12) not null,
-    node_set_id 		  numeric(12) not null,
-    protocol_app_node_id  numeric(12) not null,
-    MODIFICATION_DATE     TIMESTAMP not null,
-    USER_READ             numeric(1) not null,
-    USER_WRITE            numeric(1) not null,
-    GROUP_READ            numeric(1) not null,
-    GROUP_WRITE           numeric(1) not null,
-    OTHER_READ            numeric(1) not null,
-    OTHER_WRITE           numeric(1) not null,
-    ROW_USER_ID           numeric(12) not null,
-    ROW_GROUP_ID          numeric(4) not null,
-    ROW_PROJECT_ID        numeric(4) not null,
-    ROW_ALG_INVOCATION_ID numeric(12) not null,
-    foreign key (node_set_id) references STUDY.NODESET(NODE_SET_ID),
-    foreign key (protocol_app_node_id) references STUDY.PROTOCOLAPPNODE(PROTOCOL_APP_NODE_ID),
-    primary key (node_node_set_id)
-  );
+CREATE TABLE study.NodeNodeSet (
+  node_node_set_id      NUMERIC(12) NOT NULL,
+  node_set_id           NUMERIC(12) NOT NULL,
+  protocol_app_node_id  NUMERIC(12) NOT NULL,
+  MODIFICATION_DATE     TIMESTAMP   NOT NULL,
+  USER_READ             NUMERIC(1)  NOT NULL,
+  USER_WRITE            NUMERIC(1)  NOT NULL,
+  GROUP_READ            NUMERIC(1)  NOT NULL,
+  GROUP_WRITE           NUMERIC(1)  NOT NULL,
+  OTHER_READ            NUMERIC(1)  NOT NULL,
+  OTHER_WRITE           NUMERIC(1)  NOT NULL,
+  ROW_USER_ID           NUMERIC(12) NOT NULL,
+  ROW_GROUP_ID          NUMERIC(4)  NOT NULL,
+  ROW_PROJECT_ID        NUMERIC(4)  NOT NULL,
+  ROW_ALG_INVOCATION_ID NUMERIC(12) NOT NULL,
+  FOREIGN KEY (node_set_id) REFERENCES STUDY.NODESET(NODE_SET_ID),
+  FOREIGN KEY (protocol_app_node_id) REFERENCES STUDY.PROTOCOLAPPNODE(PROTOCOL_APP_NODE_ID),
+  PRIMARY KEY (node_node_set_id)
+);
 
-GRANT insert, select, update, delete ON  STUDY.NodeNodeSet TO gus_w;
-GRANT select ON STUDY.NodeNodeSet TO gus_r;
+GRANT INSERT, SELECT, UPDATE, DELETE ON STUDY.NodeNodeSet TO gus_w;
+GRANT SELECT ON STUDY.NodeNodeSet TO gus_r;
 
 CREATE SEQUENCE STUDY.NodeNodeSet_SQ;
-GRANT select ON STUDY.NodeNodeSet_SQ TO gus_r; 
+GRANT SELECT ON STUDY.NodeNodeSet_SQ TO gus_r;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
@@ -575,7 +573,7 @@ INSERT INTO core.TableInfo
      modification_date, user_read, user_write, group_read, group_write,
      other_read, other_write, row_user_id, row_group_id, row_project_id,
      ROW_ALG_INVOCATION_ID)
-select NEXTVAL('CORE.TABLEINFO_SQ'), 'NodeNodeSet',
+SELECT NEXTVAL('CORE.TABLEINFO_SQ'), 'NodeNodeSet',
        'Standard', 'node_node_set_id',
        d.database_id, 0, 0, NULL, NULL, 1,localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
        p.project_id, 0
