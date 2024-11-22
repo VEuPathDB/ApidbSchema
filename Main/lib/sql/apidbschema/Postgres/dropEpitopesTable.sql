@@ -7,4 +7,3 @@ WHERE lower(name) = lower('AASequenceEpitope')
                      WHERE lower(name) = 'apidb');
 
 
-exit;

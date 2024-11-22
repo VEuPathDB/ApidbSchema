@@ -45,5 +45,3 @@ INSERT INTO core.TableInfo
   WHERE 'AASequenceEpitope' NOT IN (SELECT name FROM core.TableInfo
   WHERE database_id = d.database_id);
 ------------------------------------------------------------------------------
-
-exit;
