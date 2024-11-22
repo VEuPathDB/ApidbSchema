@@ -159,6 +159,7 @@ my @create = qw(
   createInterproResults.sql
   createGenomeBedGraph.sql
   createProteinBedGraph.sql
+  createMsPeptide.sql
 );
 
 my @delete = qw(
