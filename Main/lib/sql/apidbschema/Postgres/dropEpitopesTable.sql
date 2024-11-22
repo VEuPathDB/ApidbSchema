@@ -1,5 +1,5 @@
-drop table ApiDB.AASequenceEpitope;
-drop sequence ApiDB.AASequenceEpitope_sq;
+DROP TABLE ApiDB.AASequenceEpitope;
+DROP SEQUENCE ApiDB.AASequenceEpitope_sq;
 DELETE FROM core.TableInfo
 WHERE lower(name) = lower('AASequenceEpitope')
   AND database_id = (SELECT database_id
