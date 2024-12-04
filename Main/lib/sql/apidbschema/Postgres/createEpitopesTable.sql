@@ -8,7 +8,7 @@ CREATE TABLE ApiDB.AASequenceEpitope (
   blast_hit_identity     NUMERIC(10),
   blast_hit_align_len    NUMERIC(10),
   alignment              VARCHAR(100),
-  MODIFICATION_TIMESTAMP TIMESTAMP,
+  modification_date TIMESTAMP,
   USER_READ              NUMERIC(1),
   USER_WRITE             NUMERIC(1),
   GROUP_READ             NUMERIC(1),
