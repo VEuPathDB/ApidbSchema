@@ -7,7 +7,7 @@ CREATE TABLE ApiDB.AASequenceEpitope (
   taxon_match            NUMERIC(1),
   start_min              NUMERIC(10),
   end_max                NUMERIC(10),
-  modification_date TIMESTAMP,
+  modification_date      TIMESTAMP,
   USER_READ              NUMERIC(1),
   USER_WRITE             NUMERIC(1),
   GROUP_READ             NUMERIC(1),
