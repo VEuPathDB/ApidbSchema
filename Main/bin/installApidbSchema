@@ -157,6 +157,7 @@ my @create = qw(
   createPdb.sql
   createCellxgene.sql
   grantChebiTables.sql
+  createEpitopesTable.sql
   createInterproResults.sql
   createGenomeBedGraph.sql
   createProteinBedGraph.sql
