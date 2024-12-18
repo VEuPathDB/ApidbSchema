@@ -182,6 +182,7 @@ ALTER TABLE results.geneexpression ADD percentile_channel2 float8;
 ALTER TABLE results.nafeatureexpression ADD percentile_channel2 float8;
 ALTER TABLE results.reporterexpression ADD percentile_channel2 float8;
 ALTER TABLE results.rnaexpression ADD percentile_channel2 float8;
+ALTER TABLE results.nafeatureexpression ADD raw_count float8;
 
 CREATE INDEX pan_info_ix ON study.protocolappnode (protocol_app_node_id, isa_type, type_id, name, external_database_release_id, source_id, subtype_id, node_order_num);
 
