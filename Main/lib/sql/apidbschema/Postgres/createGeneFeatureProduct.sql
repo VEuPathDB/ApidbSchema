@@ -32,7 +32,7 @@ ALTER TABLE apidb.GeneFeatureProduct
 ADD CONSTRAINT gene_prod_fk2 FOREIGN KEY (external_database_release_id)
 REFERENCES sres.ExternalDatabaseRelease (external_database_release_id);
 
-ALTER TABLE apidb.TranscriptProduct
+ALTER TABLE apidb.GeneFeatureProduct
 ADD CONSTRAINT gene_prod_fk3 FOREIGN KEY (evidence_code)
 REFERENCES sres.OntologyTerm (ontology_term_id);
 
