@@ -4,6 +4,10 @@ CREATE TABLE apidb.GeneFeatureProduct (
  external_database_release_id NUMERIC(12) NOT NULL,
  product                      VARCHAR(500) NOT NULL,
  is_preferred                 NUMERIC(1) NOT NULL,
+ publication                  VARCHAR(20),           -- e.g. "PMID:18534909"
+ evidence_code                NUMERIC(10),           -- foreign key to sres.OntologyTerm
+ with_from                    VARCHAR(500),          -- e.g. "UniProtKB:RL2A_YEAST"
+ assigned_by                  VARCHAR(100),
  modification_date            TIMESTAMP NOT NULL,
  user_read                    NUMERIC(1) NOT NULL,
  user_write                   NUMERIC(1) NOT NULL,
@@ -27,6 +31,10 @@ REFERENCES dots.NaFeatureImp (na_feature_id);
 ALTER TABLE apidb.GeneFeatureProduct
 ADD CONSTRAINT gene_prod_fk2 FOREIGN KEY (external_database_release_id)
 REFERENCES sres.ExternalDatabaseRelease (external_database_release_id);
+
+ALTER TABLE apidb.GeneFeatureProduct
+ADD CONSTRAINT gene_prod_fk3 FOREIGN KEY (evidence_code)
+REFERENCES sres.OntologyTerm (ontology_term_id);
 
 GRANT INSERT, SELECT, UPDATE, DELETE ON apidb.GeneFeatureProduct TO gus_w;
 GRANT SELECT ON apidb.GeneFeatureProduct TO gus_r;
