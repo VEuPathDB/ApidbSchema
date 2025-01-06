@@ -335,6 +335,7 @@ alter table results.GeneExpression add (percentile_channel2 FLOAT(126));
 alter table results.NaFeatureExpression add (percentile_channel2 FLOAT(126));
 alter table results.ReporterExpression add (percentile_channel2 FLOAT(126));
 alter table results.RnaExpression add (percentile_channel2 FLOAT(126));
+alter table results.NaFeatureExpression add (mean_raw_count FLOAT(126));
 
 create index study.pan_info_ix
   on study.ProtocolAppNode
