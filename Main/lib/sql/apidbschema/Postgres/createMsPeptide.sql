@@ -54,6 +54,7 @@ CREATE TABLE ApiDB.ModifiedMassSpecPeptide (
   peptide_sequence              VARCHAR(4000) NOT NULL,
   external_database_release_id  NUMERIC(10)   NOT NULL,
   residue                       VARCHAR(10)   NOT NULL,
+  modification_type             VARCHAR(200)   NOT NULL,
   residue_location              NUMERIC(12)   NOT NULL,
   MODIFICATION_DATE             TIMESTAMP,
   USER_READ                     NUMERIC(1),
