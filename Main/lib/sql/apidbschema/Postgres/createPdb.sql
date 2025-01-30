@@ -54,7 +54,7 @@ CREATE TABLE ApiDB.PDBSimilarity (
   subject_start             NUMERIC(12),
   subject_end               NUMERIC(12),
   evalue_mant               FLOAT,
-  evalue_exp                DOUBLE PRECISION,
+  evalue_exp                NUMERIC(6),
   bit_score                 FLOAT,
   external_database_release_id NUMERIC(10) NOT NULL,
   MODIFICATION_DATE     TIMESTAMP,
