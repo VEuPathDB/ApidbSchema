@@ -4,7 +4,7 @@ CREATE TABLE apidb.TranscriptProduct (
  external_database_release_id NUMBER(12) NOT NULL,
  product                      VARCHAR(2000) NOT NULL,
  is_preferred                 NUMBER(1) NOT NULL,
- publication                  VARCHAR2(20),           -- e.g. "PMID:18534909"
+ publication                  VARCHAR2(50),           -- e.g. "PMID:18534909"
  evidence_code                NUMBER(10),             -- foreign key to sres.OntologyTerm 
  with_from                    VARCHAR2(500),           -- e.g. "UniProtKB:RL2A_YEAST"
  assigned_by                  VARCHAR(100),
