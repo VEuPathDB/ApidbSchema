@@ -1,23 +1,12 @@
- CREATE TABLE apidb.OrthologGroup (
+CREATE TABLE apidb.OrthologGroup (
  ortholog_group_id            NUMERIC(12) NOT NULL,
- subclass_view                VARCHAR(30) NOT NULL,
- name                         VARCHAR(500),
- core_peripheral_residual     VARCHAR(1) NOT NULL,
- description                  VARCHAR(2000),
- number_of_members            NUMERIC(12) NOT NULL,
- avg_percent_identity         FLOAT,
- avg_percent_match            FLOAT,
- avg_evalue_mant              FLOAT,
- avg_evalue_exp               NUMERIC,
- avg_connectivity             FLOAT8,
- number_of_match_pairs        NUMERIC,
- percent_match_pairs          NUMERIC,
- aa_seq_group_experiment_id   NUMERIC(12),
+ group_id                     VARCHAR(12) NOT NULL,
+ is_residual                  NUMERIC(1) NOT NULL,
+ number_of_members            NUMERIC(12),
+ number_of_core_members       NUMERIC(12),
+ number_of_peripheral_members NUMERIC(12),
  external_database_release_id NUMERIC(10) NOT NULL,
- multiple_sequence_alignment  TEXT,
- biolayout_image              BYTEA,
- svg_content                  TEXT,
- modification_date            TIMESTAMP NOT NULL,
+ modification_date            timestamp NOT NULL,
  user_read                    NUMERIC(1) NOT NULL,
  user_write                   NUMERIC(1) NOT NULL,
  group_read                   NUMERIC(1) NOT NULL,
@@ -34,12 +23,11 @@ ALTER TABLE apidb.OrthologGroup
 ADD CONSTRAINT og_pk PRIMARY KEY (ortholog_group_id);
 
 ALTER TABLE apidb.OrthologGroup
-ADD CONSTRAINT og_fk1 FOREIGN KEY (external_database_release_id)
-REFERENCES sres.ExternalDatabaseRelease;
+ADD CONSTRAINT group_uniq UNIQUE (group_id);
 
 ALTER TABLE apidb.OrthologGroup
-ADD CONSTRAINT og_fk2 FOREIGN KEY (aa_seq_group_experiment_id)
-REFERENCES dots.AaSeqGroupExperimentImp (aa_seq_group_experiment_id);
+ADD CONSTRAINT og_fk1 FOREIGN KEY (external_database_release_id)
+REFERENCES sres.ExternalDatabaseRelease;
 
 CREATE INDEX OrthologGroup_revix
 ON apidb.OrthologGroup (external_database_release_id, ortholog_group_id) ;
@@ -47,13 +35,8 @@ ON apidb.OrthologGroup (external_database_release_id, ortholog_group_id) ;
 GRANT INSERT, SELECT, UPDATE, DELETE ON apidb.OrthologGroup TO gus_w;
 GRANT SELECT ON apidb.OrthologGroup TO gus_r;
 
-CREATE INDEX og_name_ix ON apidb.OrthologGroup (name, ortholog_group_id) ;
-CREATE INDEX og_mem_ix ON apidb.OrthologGroup (number_of_members, ortholog_group_id, name) ;
-CREATE INDEX og_core_ix ON apidb.OrthologGroup (core_peripheral_residual, ortholog_group_id, name) ;
-
-CREATE INDEX og_match_ix ON apidb.OrthologGroup (avg_percent_match, ortholog_group_id, name) ;
-CREATE INDEX og_pct_ix ON apidb.OrthologGroup (percent_match_pairs, ortholog_group_id, name) ;
-CREATE INDEX og_id_ix ON apidb.OrthologGroup (avg_percent_identity, ortholog_group_id, name) ;
+CREATE INDEX og_name_ix ON apidb.OrthologGroup (group_id, ortholog_group_id) ;
+CREATE INDEX og_core_ix ON apidb.OrthologGroup (is_residual, ortholog_group_id, group_id) ;
 
 ------------------------------------------------------------------------------
 
@@ -65,36 +48,35 @@ GRANT SELECT ON apidb.OrthologGroup_sq TO gus_w;
 ------------------------------------------------------------------------------
 
 INSERT INTO core.TableInfo
-    (table_id, name, table_type, primary_key_column, database_id, is_versioned,
-     is_view, view_on_table_id, superclass_table_id, is_updatable, 
-     modification_date, user_read, user_write, group_read, group_write, 
-     other_read, other_write, row_user_id, row_group_id, row_project_id, 
-     row_alg_invocation_id)
-SELECT NEXTVAL('core.tableinfo_sq'), 'OrthologGroup',
-       'Standard', 'ORTHOLOG_GROUP_ID',
-       d.database_id, 0, 0, NULL, NULL, 1, localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
-       p.project_id, 0
-FROM 
-     (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
-     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = 'apidb') d
-WHERE 'orthologgroup' NOT IN (SELECT lower(name) FROM core.TableInfo
-                                    where database_id = d.database_id);
+  (table_id, name, table_type, primary_key_column, database_id,
+    is_versioned, is_view, view_on_table_id, superclass_table_id, is_updatable,
+    modification_date, user_read, user_write, group_read, group_write,
+    other_read, other_write, row_user_id, row_group_id, row_project_id,
+    row_alg_invocation_id)
+  SELECT nextval('core.tableinfo_sq'), 'OrthologGroup', 'Standard', 'ORTHOLOG_GROUP_ID',
+    d.database_id, 0, 0, NULL, NULL, 1, localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
+    p.project_id, 0
+  FROM
+       (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
+       (SELECT database_id FROM core.DatabaseInfo WHERE name = 'ApiDB') d
+  WHERE 'OrthologGroup' NOT IN (SELECT name FROM core.TableInfo
+  WHERE database_id = d.database_id);
 
 ------------------------------------------------------------------------------
-------------------------------------------------------------------------------
+
 CREATE TABLE apidb.OrthomclTaxon (
  orthomcl_taxon_id             NUMERIC(12) NOT NULL,
  parent_id                     NUMERIC(12),
  taxon_id                      NUMERIC(12),
  name                          VARCHAR(255),
  three_letter_abbrev           VARCHAR(8) NOT NULL,
- core_peripheral	           VARCHAR(1) NOT NULL,
+ core_peripheral	       VARCHAR(1) NOT NULL,
  is_species                    NUMERIC(1) NOT NULL,
  species_order                 NUMERIC(4),
  depth_first_index             NUMERIC(10) NOT NULL,
  sibling_depth_first_index     NUMERIC(10),
  common_name                   VARCHAR(255),
- modification_date             DATE NOT NULL,
+ modification_date             timestamp NOT NULL,
  user_read                     NUMERIC(1) NOT NULL,
  user_write                    NUMERIC(1) NOT NULL,
  group_read                    NUMERIC(1) NOT NULL,
@@ -137,26 +119,25 @@ GRANT SELECT ON apidb.OrthomclTaxon_sq TO gus_w;
 ------------------------------------------------------------------------------
 
 INSERT INTO core.TableInfo
-    (table_id, name, table_type, primary_key_column, database_id, is_versioned,
-     is_view, view_on_table_id, superclass_table_id, is_updatable, 
-     modification_date, user_read, user_write, group_read, group_write, 
-     other_read, other_write, row_user_id, row_group_id, row_project_id, 
-     row_alg_invocation_id)
-SELECT NEXTVAL('core.tableinfo_sq'), 'OrthomclTaxon',
-       'Standard', 'ORTHOMCL_TAXON_ID',
-       d.database_id, 0, 0, NULL, NULL, 1, localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
-       p.project_id, 0
-FROM 
-     (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
-     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = 'apidb') d
-WHERE 'orthomcltaxon' NOT IN (SELECT lower(name) FROM core.TableInfo
-                                    where database_id = d.database_id);
+  (table_id, name, table_type, primary_key_column, database_id,
+    is_versioned, is_view, view_on_table_id, superclass_table_id, is_updatable,
+    modification_date, user_read, user_write, group_read, group_write,
+    other_read, other_write, row_user_id, row_group_id, row_project_id,
+    row_alg_invocation_id)
+  SELECT nextval('core.tableinfo_sq'), 'OrthomclTaxon', 'Standard', 'ORTHOMCL_TAXON_ID',
+    d.database_id, 0, 0, NULL, NULL, 1, localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
+    p.project_id, 0
+  FROM
+       (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
+       (SELECT database_id FROM core.DatabaseInfo WHERE name = 'ApiDB') d
+  WHERE 'OrthomclTaxon' NOT IN (SELECT name FROM core.TableInfo
+  WHERE database_id = d.database_id);
 
 ------------------------------------------------------------------------------
-------------------------------------------------------------------------------
+
 CREATE TABLE apidb.GroupTaxonMatrix (
  group_taxon_matrix_id       NUMERIC(12) NOT NULL,
- ortholog_group_id       NUMERIC(12) NOT NULL,
+ ortholog_group_id           VARCHAR(12) NOT NULL,
  column1                     NUMERIC(8),
  column2                     NUMERIC(8),
  column3                     NUMERIC(8),
@@ -757,7 +738,7 @@ CREATE TABLE apidb.GroupTaxonMatrix (
  column598                     NUMERIC(8),
  column599                     NUMERIC(8),
  column600                     NUMERIC(8),
- modification_date             DATE NOT NULL,
+ modification_date             timestamp NOT NULL,
  user_read                     NUMERIC(1) NOT NULL,
  user_write                    NUMERIC(1) NOT NULL,
  group_read                    NUMERIC(1) NOT NULL,
@@ -775,9 +756,9 @@ ADD CONSTRAINT gtm_pk PRIMARY KEY (group_taxon_matrix_id);
 
 ALTER TABLE apidb.GroupTaxonMatrix
 ADD CONSTRAINT gtm_fk1 FOREIGN KEY (ortholog_group_id)
-REFERENCES apidb.OrthologGroup (ortholog_group_id);
+REFERENCES apidb.OrthologGroup (group_id);
 
-CREATE UNIQUE INDEX gtm_group_id
+CREATE UNIQUE INDEX gtm_group_id 
     ON apidb.GroupTaxonMatrix (ortholog_group_id) ;
 
 GRANT INSERT, SELECT, UPDATE, DELETE ON apidb.GroupTaxonMatrix TO gus_w;
@@ -793,85 +774,20 @@ GRANT SELECT ON apidb.GroupTaxonMatrix_sq TO gus_w;
 ------------------------------------------------------------------------------
 
 INSERT INTO core.TableInfo
-    (table_id, name, table_type, primary_key_column, database_id, is_versioned,
-     is_view, view_on_table_id, superclass_table_id, is_updatable, 
-     modification_date, user_read, user_write, group_read, group_write, 
-     other_read, other_write, row_user_id, row_group_id, row_project_id, 
-     row_alg_invocation_id)
-SELECT NEXTVAL('core.tableinfo_sq'), 'GroupTaxonMatrix',
-       'Standard', 'GROUP_TAXON_MATRIX_ID',
-       d.database_id, 0, 0, NULL, NULL, 1, localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
-       p.project_id, 0
-FROM 
-     (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
-     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = 'apidb') d
-WHERE 'grouptaxonmatrix' NOT IN (SELECT lower(name) FROM core.TableInfo
-                                    where database_id = d.database_id);
-                                    
-------------------------------------------------------------------------------
-
-CREATE TABLE apidb.OrthologGroupAaSequence (
- ortholog_group_aa_sequence_id NUMERIC(12) NOT NULL,
- ortholog_group_id             NUMERIC(12) NOT NULL,
- aa_sequence_id                NUMERIC(12) NOT NULL,
- connectivity                  FLOAT8,
- modification_date             DATE NOT NULL,
- user_read                     NUMERIC(1) NOT NULL,
- user_write                    NUMERIC(1) NOT NULL,
- group_read                    NUMERIC(1) NOT NULL,
- group_write                   NUMERIC(1) NOT NULL,
- other_read                    NUMERIC(1) NOT NULL,
- other_write                   NUMERIC(1) NOT NULL,
- row_user_id                   NUMERIC(12) NOT NULL,
- row_group_id                  NUMERIC(3) NOT NULL,
- row_project_id                NUMERIC(4) NOT NULL,
- row_alg_invocation_id         NUMERIC(12) NOT NULL
-);
-
-ALTER TABLE apidb.OrthologGroupAaSequence
-ADD CONSTRAINT ogas_pk PRIMARY KEY (ortholog_group_aa_sequence_id);
-
-ALTER TABLE apidb.OrthologGroupAaSequence
-ADD CONSTRAINT ogas_fk1 FOREIGN KEY (ortholog_group_id)
-REFERENCES apidb.OrthologGroup;
-
-ALTER TABLE apidb.OrthologGroupAaSequence
-ADD CONSTRAINT ogas_fk2 FOREIGN KEY (aa_sequence_id)
-REFERENCES dots.AaSequenceImp;
-
-GRANT INSERT, SELECT, UPDATE, DELETE ON apidb.OrthologGroupAaSequence TO gus_w;
-GRANT SELECT ON apidb.OrthologGroupAaSequence TO gus_r;
-
-CREATE INDEX ogas_ogas_ix
-ON apidb.OrthologGroupAaSequence (ortholog_group_id, aa_sequence_id) ;
-
-CREATE INDEX ogas_asog_ix
-ON apidb.OrthologGroupAaSequence (aa_sequence_id, ortholog_group_id) ;
-------------------------------------------------------------------------------
-
-CREATE SEQUENCE apidb.OrthologGroupAaSequence_sq;
-
-GRANT SELECT ON apidb.OrthologGroupAaSequence_sq TO gus_r;
-GRANT SELECT ON apidb.OrthologGroupAaSequence_sq TO gus_w;
-
-------------------------------------------------------------------------------
-
-INSERT INTO core.TableInfo
-    (table_id, name, table_type, primary_key_column, database_id, is_versioned,
-     is_view, view_on_table_id, superclass_table_id, is_updatable, 
-     modification_date, user_read, user_write, group_read, group_write, 
-     other_read, other_write, row_user_id, row_group_id, row_project_id, 
-     row_alg_invocation_id)
-SELECT NEXTVAL('core.tableinfo_sq'), 'OrthologGroupAaSequence',
-       'Standard', 'ORTHOLOG_GROUP_AA_SEQUENCE_ID',
-       d.database_id, 0, 0, NULL, NULL, 1, localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
-       p.project_id, 0
-FROM 
-     (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
-     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = 'apidb') d
-WHERE 'orthologgroupaasequence' NOT IN (SELECT lower(name) FROM core.TableInfo
-                                    where database_id = d.database_id);
-
+  (table_id, name, table_type, primary_key_column, database_id,
+    is_versioned, is_view, view_on_table_id, superclass_table_id, is_updatable,
+    modification_date, user_read, user_write, group_read, group_write,
+    other_read, other_write, row_user_id, row_group_id, row_project_id,
+    row_alg_invocation_id)
+  SELECT nextval('core.tableinfo_sq'), 'GroupTaxonMatrix', 'Standard', 'GROUP_TAXON_MATRIX_ID',
+    d.database_id, 0, 0, NULL, NULL, 1, localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
+    p.project_id, 0
+  FROM
+       (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
+       (SELECT database_id FROM core.DatabaseInfo WHERE name = 'ApiDB') d
+  WHERE 'GroupTaxonMatrix' NOT IN (SELECT name FROM core.TableInfo
+  WHERE database_id = d.database_id);
+                                 
 ------------------------------------------------------------------------------
 
 CREATE TABLE ApiDB.OrthomclResource (
@@ -883,7 +799,7 @@ CREATE TABLE ApiDB.OrthomclResource (
  strain                        VARCHAR(100),
  description                   VARCHAR(255),
  linkout_url                   VARCHAR(255),
- modification_date             DATE NOT NULL,
+ modification_date             timestamp NOT NULL,
  user_read                     NUMERIC(1) NOT NULL,
  user_write                    NUMERIC(1) NOT NULL,
  group_read                    NUMERIC(1) NOT NULL,
@@ -894,7 +810,7 @@ CREATE TABLE ApiDB.OrthomclResource (
  row_group_id                  NUMERIC(3) NOT NULL,
  row_project_id                NUMERIC(4) NOT NULL,
  row_alg_invocation_id         NUMERIC(12) NOT NULL,
- FOREIGN KEY (orthomcl_taxon_id) REFERENCES ApiDB.OrthomclTaxon (orthomcl_taxon_id),
+ FOREIGN KEY (orthomcl_taxon_id) REFERENCES ApiDB.organism (taxon_id),
  PRIMARY KEY (orthomcl_resource_id)
 );
 
@@ -914,29 +830,28 @@ GRANT SELECT ON ApiDB.OrthomclResource_sq TO gus_w;
 ------------------------------------------------------------------------------
 
 INSERT INTO core.TableInfo
-    (table_id, name, table_type, primary_key_column, database_id, is_versioned,
-     is_view, view_on_table_id, superclass_table_id, is_updatable,
-     modification_date, user_read, user_write, group_read, group_write,
-     other_read, other_write, row_user_id, row_group_id, row_project_id,
-     row_alg_invocation_id)
-SELECT NEXTVAL('core.tableinfo_sq'), 'OrthomclResource',
-       'Standard', 'orthomcl_resource_id',
-       d.database_id, 0, 0, NULL, NULL, 1, localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
-       p.project_id, 0
-FROM 
-     (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
-     (SELECT database_id FROM core.DatabaseInfo WHERE name = 'ApiDB') d
-WHERE 'OrthomclResource' NOT IN (SELECT name FROM core.TableInfo
-                                 WHERE database_id = d.database_id);
+  (table_id, name, table_type, primary_key_column, database_id,
+    is_versioned, is_view, view_on_table_id, superclass_table_id, is_updatable,
+    modification_date, user_read, user_write, group_read, group_write,
+    other_read, other_write, row_user_id, row_group_id, row_project_id,
+    row_alg_invocation_id)
+  SELECT nextval('core.tableinfo_sq'), 'OrthomclResource', 'Standard', 'ORTHOMCL_RESOURCE_ID',
+    d.database_id, 0, 0, NULL, NULL, 1, localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
+    p.project_id, 0
+  FROM
+       (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
+       (SELECT database_id FROM core.DatabaseInfo WHERE name = 'ApiDB') d
+  WHERE 'OrthomclResource' NOT IN (SELECT name FROM core.TableInfo
+  WHERE database_id = d.database_id);
 
 ---------------------------------------------------------------------------
 
 CREATE TABLE ApiDB.OrthomclGroupKeyword (
  orthomcl_keyword_id           NUMERIC(10) NOT NULL,
- ortholog_group_id             NUMERIC(10) NOT NULL,
+ ortholog_group_id             VARCHAR(12) NOT NULL,
  keyword                       VARCHAR(255) NOT NULL,
  frequency                     VARCHAR(20) NOT NULL,
- modification_date             DATE NOT NULL,
+ modification_date             timestamp NOT NULL,
  user_read                     NUMERIC(1) NOT NULL,
  user_write                    NUMERIC(1) NOT NULL,
  group_read                    NUMERIC(1) NOT NULL,
@@ -947,7 +862,7 @@ CREATE TABLE ApiDB.OrthomclGroupKeyword (
  row_group_id                  NUMERIC(3) NOT NULL,
  row_project_id                NUMERIC(4) NOT NULL,
  row_alg_invocation_id         NUMERIC(12) NOT NULL,
- FOREIGN KEY (ortholog_group_id) REFERENCES ApiDB.OrthologGroup (ortholog_group_id),
+ FOREIGN KEY (ortholog_group_id) REFERENCES ApiDB.OrthologGroup (group_id),
  PRIMARY KEY (orthomcl_keyword_id)
 );
 
@@ -966,29 +881,28 @@ GRANT SELECT ON ApiDB.OrthomclGroupKeyword_sq TO gus_w;
 ------------------------------------------------------------------------------
 
 INSERT INTO core.TableInfo
-    (table_id, name, table_type, primary_key_column, database_id, is_versioned,
-     is_view, view_on_table_id, superclass_table_id, is_updatable,
-     modification_date, user_read, user_write, group_read, group_write,
-     other_read, other_write, row_user_id, row_group_id, row_project_id,
-     row_alg_invocation_id)
-SELECT NEXTVAL('core.tableinfo_sq'), 'OrthomclGroupKeyword',
-       'Standard', 'orthomcl_keyword_id',
-       d.database_id, 0, 0, NULL, NULL, 1, localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
-       p.project_id, 0
-FROM 
-     (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
-     (SELECT database_id FROM core.DatabaseInfo WHERE name = 'ApiDB') d
-WHERE 'OrthomclGroupKeyword' NOT IN (SELECT name FROM core.TableInfo
-                                 WHERE database_id = d.database_id);
+  (table_id, name, table_type, primary_key_column, database_id,
+    is_versioned, is_view, view_on_table_id, superclass_table_id, is_updatable,
+    modification_date, user_read, user_write, group_read, group_write,
+    other_read, other_write, row_user_id, row_group_id, row_project_id,
+    row_alg_invocation_id)
+  SELECT nextval('core.tableinfo_sq'), 'OrthomclGroupKeyword', 'Standard', 'ORTHOMCL_KEYWORD_ID',
+    d.database_id, 0, 0, NULL, NULL, 1, localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
+    p.project_id, 0
+  FROM
+       (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
+       (SELECT database_id FROM core.DatabaseInfo WHERE name = 'ApiDB') d
+  WHERE 'OrthomclGroupKeyword' NOT IN (SELECT name FROM core.TableInfo
+  WHERE database_id = d.database_id);
 
 ---------------------------------------------------------------------------
 
 CREATE TABLE ApiDB.OrthomclGroupDomain (
  orthomcl_domain_id           NUMERIC(10) NOT NULL,
- ortholog_group_id             NUMERIC(10) NOT NULL,
+ ortholog_group_id             VARCHAR(12) NOT NULL,
  description                   VARCHAR(255) NOT NULL,
- frequency                     FLOAT NOT NULL,
- modification_date             DATE NOT NULL,
+ frequency                     FLOAT8 NOT NULL,
+ modification_date             timestamp NOT NULL,
  user_read                     NUMERIC(1) NOT NULL,
  user_write                    NUMERIC(1) NOT NULL,
  group_read                    NUMERIC(1) NOT NULL,
@@ -999,7 +913,7 @@ CREATE TABLE ApiDB.OrthomclGroupDomain (
  row_group_id                  NUMERIC(3) NOT NULL,
  row_project_id                NUMERIC(4) NOT NULL,
  row_alg_invocation_id         NUMERIC(12) NOT NULL,
- FOREIGN KEY (ortholog_group_id) REFERENCES ApiDB.OrthologGroup (ortholog_group_id),
+ FOREIGN KEY (ortholog_group_id) REFERENCES ApiDB.OrthologGroup (group_id),
  PRIMARY KEY (orthomcl_domain_id)
 );
 
@@ -1018,17 +932,212 @@ GRANT SELECT ON ApiDB.OrthomclGroupDomain_sq TO gus_w;
 ------------------------------------------------------------------------------
 
 INSERT INTO core.TableInfo
-    (table_id, name, table_type, primary_key_column, database_id, is_versioned,
-     is_view, view_on_table_id, superclass_table_id, is_updatable,
-     modification_date, user_read, user_write, group_read, group_write,
-     other_read, other_write, row_user_id, row_group_id, row_project_id,
-     row_alg_invocation_id)
-SELECT NEXTVAL('core.tableinfo_sq'), 'OrthomclGroupDomain',
-       'Standard', 'orthomcl_domain_id',
-       d.database_id, 0, 0, NULL, NULL, 1, localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
-       p.project_id, 0
-FROM 
-     (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
-     (SELECT database_id FROM core.DatabaseInfo WHERE name = 'ApiDB') d
-WHERE 'OrthomclGroupDomain' NOT IN (SELECT name FROM core.TableInfo
-                                 WHERE database_id = d.database_id);
+  (table_id, name, table_type, primary_key_column, database_id,
+    is_versioned, is_view, view_on_table_id, superclass_table_id, is_updatable,
+    modification_date, user_read, user_write, group_read, group_write,
+    other_read, other_write, row_user_id, row_group_id, row_project_id,
+    row_alg_invocation_id)
+  SELECT nextval('core.tableinfo_sq'), 'OrthomclGroupDomain', 'Standard', 'ORTHOMCL_DOMAIN_ID',
+    d.database_id, 0, 0, NULL, NULL, 1, localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
+    p.project_id, 0
+  FROM
+       (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
+       (SELECT database_id FROM core.DatabaseInfo WHERE name = 'ApiDB') d
+  WHERE 'OrthomclGroupDomain' NOT IN (SELECT name FROM core.TableInfo
+  WHERE database_id = d.database_id);
+
+------------------------------------------------------------------------------
+
+CREATE TABLE apidb.OrthologGroupStats (
+ ortholog_group_stat_id       NUMERIC(10) NOT NULL,
+ group_id                     VARCHAR(12) NOT NULL,
+ stat_type                    VARCHAR(10) NOT NULL,
+ evalue                       FLOAT8,
+ protein_subset               VARCHAR(3) NOT NULL,
+ modification_date            timestamp NOT NULL,
+ user_read                    NUMERIC(1) NOT NULL,
+ user_write                   NUMERIC(1) NOT NULL,
+ group_read                   NUMERIC(1) NOT NULL,
+ group_write                  NUMERIC(1) NOT NULL,
+ other_read                   NUMERIC(1) NOT NULL,
+ other_write                  NUMERIC(1) NOT NULL,
+ row_user_id                  NUMERIC(12) NOT NULL,
+ row_group_id                 NUMERIC(3) NOT NULL,
+ row_project_id               NUMERIC(4) NOT NULL,
+ row_alg_invocation_id        NUMERIC(12) NOT NULL,
+ FOREIGN KEY (group_id) REFERENCES apidb.OrthologGroup (group_id),
+ PRIMARY KEY (ortholog_group_stat_id)
+);
+
+GRANT INSERT, SELECT, UPDATE, DELETE ON apidb.OrthologGroupStats TO gus_w;
+GRANT SELECT ON apidb.OrthologGroupStats TO gus_r;
+
+------------------------------------------------------------------------------
+
+CREATE SEQUENCE apidb.OrthologGroupStats_sq;
+GRANT SELECT ON apidb.OrthologGroupStats_sq TO gus_r;
+GRANT SELECT ON apidb.OrthologGroupStats_sq TO gus_w;
+
+------------------------------------------------------------------------------
+
+INSERT INTO core.TableInfo
+  (table_id, name, table_type, primary_key_column, database_id,
+    is_versioned, is_view, view_on_table_id, superclass_table_id, is_updatable,
+    modification_date, user_read, user_write, group_read, group_write,
+    other_read, other_write, row_user_id, row_group_id, row_project_id,
+    row_alg_invocation_id)
+  SELECT nextval('core.tableinfo_sq'), 'OrthologGroupStats', 'Standard', 'ORTHOLOG_GROUP_STAT_ID',
+    d.database_id, 0, 0, NULL, NULL, 1, localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
+    p.project_id, 0
+  FROM
+       (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
+       (SELECT database_id FROM core.DatabaseInfo WHERE name = 'ApiDB') d
+  WHERE 'OrthomclGroupStats' NOT IN (SELECT name FROM core.TableInfo
+  WHERE database_id = d.database_id);
+
+------------------------------------------------------------------------------
+
+CREATE OR REPLACE VIEW Dots.OrthoAASequence AS
+SELECT AA_SEQUENCE_ID, SEQUENCE_VERSION, SUBCLASS_VIEW, MOLECULAR_WEIGHT, SEQUENCE, LENGTH, DESCRIPTION, EXTERNAL_DATABASE_RELEASE_ID, SOURCE_ID, SOURCE_AA_SEQUENCE_ID, SEQUENCE_TYPE_ID, SEQUENCE_ONTOLOGY_ID, TAXON_ID, STRING1 AS SECONDARY_IDENTIFIER, STRING2 AS NAME, STRING3 AS MOLECULE_TYPE, STRING4 AS CRC32_VALUE, NUMBER1 as IS_CORE, MODIFICATION_DATE, USER_READ, USER_WRITE, GROUP_READ, GROUP_WRITE, OTHER_READ, OTHER_WRITE, ROW_USER_ID, ROW_GROUP_ID, ROW_PROJECT_ID, ROW_ALG_INVOCATION_ID FROM DoTS.AASequenceImp;
+
+------------------------------------------------------------------------------
+
+GRANT INSERT, SELECT, UPDATE, DELETE ON DOTS.AASEQUENCEIMP to public;
+GRANT INSERT, SELECT, UPDATE, DELETE ON DOTS.OrthoAASequence TO gus_w;
+GRANT SELECT ON DOTS.OrthoAASequence TO gus_r;
+  
+------------------------------------------------------------------------------
+
+INSERT INTO core.TableInfo
+  (table_id, name, table_type, primary_key_column, database_id,
+    is_versioned, is_view, view_on_table_id, superclass_table_id, is_updatable,
+    modification_date, user_read, user_write, group_read, group_write,
+    other_read, other_write, row_user_id, row_group_id, row_project_id,
+    row_alg_invocation_id)
+  SELECT nextval('core.tableinfo_sq'), 'OrthoAASequence', 'Standard', 'AA_SEQUENCE_ID',
+    d.database_id, 0, 1, s.table_id, NULL, 1, localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
+    p.project_id, 0
+  FROM
+       (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
+       (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = 'dots') d,
+       (SELECT table_id FROM core.TableInfo WHERE lower(name) = 'aasequenceimp') s
+  WHERE 'OrthoAASequence' NOT IN (SELECT name FROM core.TableInfo
+  WHERE database_id = d.database_id);
+
+------------------------------------------------------------------------------
+
+GRANT INSERT, SELECT, UPDATE, DELETE ON DOTS.OrthoAASequence to public;
+GRANT INSERT, SELECT, UPDATE, DELETE ON DOTS.OrthoAASequence TO gus_w;
+GRANT SELECT ON DOTS.OrthoAASequence TO gus_r;
+GRANT REFERENCES ON DOTS.OrthoAASequence to public;
+
+CREATE SEQUENCE DoTs.OrthoAASequence_sq;
+GRANT SELECT ON DoTs.OrthoAASequence_sq TO gus_r;
+GRANT SELECT ON DoTs.OrthoAASequence_sq TO gus_w;
+
+------------------------------------------------------------------------------
+
+CREATE TABLE apidb.OrthologGroupAASequence (
+ ortholog_group_aa_sequence_id NUMERIC(12) NOT NULL,
+ group_id                      VARCHAR(12) NOT NULL,
+ aa_sequence_id                NUMERIC(12) NOT NULL,
+ modification_date             timestamp NOT NULL,
+ user_read                     NUMERIC(1) NOT NULL,
+ user_write                    NUMERIC(1) NOT NULL,
+ group_read                    NUMERIC(1) NOT NULL,
+ group_write                   NUMERIC(1) NOT NULL,
+ other_read                    NUMERIC(1) NOT NULL,
+ other_write                   NUMERIC(1) NOT NULL,
+ row_user_id                   NUMERIC(12) NOT NULL,
+ row_group_id                  NUMERIC(3) NOT NULL,
+ row_project_id                NUMERIC(4) NOT NULL,
+ row_alg_invocation_id         NUMERIC(12) NOT NULL,
+ PRIMARY KEY (ortholog_group_aa_sequence_id)
+);
+
+ALTER TABLE apidb.OrthologGroupAASequence
+ADD CONSTRAINT ogas_fk1 FOREIGN KEY (group_id)
+REFERENCES apidb.OrthologGroup (group_id);
+
+GRANT INSERT, SELECT, UPDATE, DELETE ON apidb.OrthologGroupAASequence TO gus_w;
+GRANT SELECT ON apidb.OrthologGroupAASequence TO gus_r;
+
+CREATE INDEX ogas_ogas_ix
+ON apidb.OrthologGroupAASequence (group_id, aa_sequence_id) ;
+
+CREATE INDEX ogas_asog_ix
+ON apidb.OrthologGroupAASequence (aa_sequence_id, group_id) ;
+------------------------------------------------------------------------------
+
+CREATE SEQUENCE apidb.OrthologGroupAASequence_sq;
+
+GRANT SELECT ON apidb.OrthologGroupAASequence_sq TO gus_r;
+GRANT SELECT ON apidb.OrthologGroupAASequence_sq TO gus_w;
+
+------------------------------------------------------------------------------
+
+INSERT INTO core.TableInfo
+  (table_id, name, table_type, primary_key_column, database_id,
+    is_versioned, is_view, view_on_table_id, superclass_table_id, is_updatable,
+    modification_date, user_read, user_write, group_read, group_write,
+    other_read, other_write, row_user_id, row_group_id, row_project_id,
+    row_alg_invocation_id)
+  SELECT nextval('core.tableinfo_sq'), 'OrthologGroupAASequence', 'Standard', 'ORTHOLOG_GROUP_AA_SEQUENCE_ID',
+    d.database_id, 0, 0, NULL, NULL, 1, localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
+    p.project_id, 0
+  FROM
+       (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
+       (SELECT database_id FROM core.DatabaseInfo WHERE name = 'ApiDB') d
+  WHERE 'OrthologGroupAASequence' NOT IN (SELECT name FROM core.TableInfo
+  WHERE database_id = d.database_id);
+
+------------------------------------------------------------------------------
+
+CREATE TABLE apidb.SimilarOrthologGroup (
+ similar_ortholog_group_id    NUMERIC(12) NOT NULL,
+ group_id                     VARCHAR(12) NOT NULL,
+ similar_group_id             VARCHAR(12) NOT NULL,
+ evalue                       FLOAT8 NOT NULL,
+ modification_date            timestamp NOT NULL,
+ user_read                    NUMERIC(1) NOT NULL,
+ user_write                   NUMERIC(1) NOT NULL,
+ group_read                   NUMERIC(1) NOT NULL,
+ group_write                  NUMERIC(1) NOT NULL,
+ other_read                   NUMERIC(1) NOT NULL,
+ other_write                  NUMERIC(1) NOT NULL,
+ row_user_id                  NUMERIC(12) NOT NULL,
+ row_group_id                 NUMERIC(3) NOT NULL,
+ row_project_id               NUMERIC(4) NOT NULL,
+ row_alg_invocation_id        NUMERIC(12) NOT NULL,
+ PRIMARY KEY (similar_ortholog_group_id)
+);
+
+GRANT INSERT, SELECT, UPDATE, DELETE ON apidb.SimilarOrthologGroup TO gus_w;
+GRANT SELECT ON apidb.SimilarOrthologGroup TO gus_r;
+
+------------------------------------------------------------------------------
+
+CREATE SEQUENCE apidb.SimilarOrthologGroup_sq;
+
+GRANT SELECT ON apidb.SimilarOrthologGroup_sq TO gus_r;
+GRANT SELECT ON apidb.SimilarOrthologGroup_sq TO gus_w;
+
+------------------------------------------------------------------------------
+
+INSERT INTO core.TableInfo
+  (table_id, name, table_type, primary_key_column, database_id,
+    is_versioned, is_view, view_on_table_id, superclass_table_id, is_updatable,
+    modification_date, user_read, user_write, group_read, group_write,
+    other_read, other_write, row_user_id, row_group_id, row_project_id,
+    row_alg_invocation_id)
+  SELECT nextval('core.tableinfo_sq'), 'SimilarOrthologGroup', 'Standard', 'SIMILAR_ORTHOLOG_GROUP_ID',
+    d.database_id, 0, 0, NULL, NULL, 1, localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
+    p.project_id, 0
+  FROM
+       (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
+       (SELECT database_id FROM core.DatabaseInfo WHERE name = 'ApiDB') d
+  WHERE 'SimilarOrthologGroup' NOT IN (SELECT name FROM core.TableInfo
+  WHERE database_id = d.database_id);
+
+------------------------------------------------------------------------------
+
