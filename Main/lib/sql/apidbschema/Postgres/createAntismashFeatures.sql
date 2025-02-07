@@ -1,5 +1,7 @@
 CREATE TABLE ApiDB.antiSmashFeatures (
+  antismash_feature_id		NUMERIC(10),
   internal_id			NUMERIC(10),
+  na_feature_id			NUMERIC(10),
   gene_start			NUMERIC(10),
   gene_end			NUMERIC(10),
   gene_kind			VARCHAR(100),
@@ -16,7 +18,9 @@ CREATE TABLE ApiDB.antiSmashFeatures (
   ROW_GROUP_ID                  NUMERIC(3),
   ROW_PROJECT_ID                NUMERIC(4),
   ROW_ALG_INVOCATION_ID         NUMERIC(12),
-  FOREIGN KEY (internal_id) REFERENCES ApiDB.antiSmashClutser (internal_id)
+  PRIMARY KEY (antismash_feature_id),
+  FOREIGN KEY (internal_id) REFERENCES ApiDB.antiSmashClutser (internal_id),
+  FOREIGN KEY (na_feature_id) REFERENCES dots.nafeature (na_feature_id)
 );
 
 
