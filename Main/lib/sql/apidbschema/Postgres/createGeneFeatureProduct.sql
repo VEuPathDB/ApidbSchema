@@ -4,7 +4,7 @@ CREATE TABLE apidb.GeneFeatureProduct (
  external_database_release_id NUMERIC(12) NOT NULL,
  product                      VARCHAR(500) NOT NULL,
  is_preferred                 NUMERIC(1) NOT NULL,
- publication                  VARCHAR(20),           -- e.g. "PMID:18534909"
+ publication                  VARCHAR(50),           -- e.g. "PMID:18534909"
  evidence_code                NUMERIC(10),           -- foreign key to sres.OntologyTerm
  with_from                    VARCHAR(500),          -- e.g. "UniProtKB:RL2A_YEAST"
  assigned_by                  VARCHAR(100),
