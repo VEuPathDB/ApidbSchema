@@ -1,24 +1,24 @@
 CREATE TABLE apidb.AASequenceUniprot (
- aa_sequence_uniprot_id  NUMERIC(12) NOT NULL,
- aa_sequence_id          NUMERIC(10) NOT NULL,
- uniprot_accession       VARCHAR(20) NOT NULL,
- modification_date       timestamp NOT NULL,
- user_read               NUMERIC(1) NOT NULL,
- user_write              NUMERIC(1) NOT NULL,
- group_read              NUMERIC(1) NOT NULL,
- group_write             NUMERIC(1) NOT NULL,
- other_read              NUMERIC(1) NOT NULL,
- other_write             NUMERIC(1) NOT NULL,
- row_user_id             NUMERIC(12) NOT NULL,
- row_group_id            NUMERIC(3) NOT NULL,
- row_project_id          NUMERIC(4) NOT NULL,
- row_alg_invocation_id   NUMERIC(12) NOT NULL,
- PRIMARY KEY (aa_sequence_uniprot_id)
+  aa_sequence_uniprot_id NUMERIC(12) NOT NULL,
+  aa_sequence_id         NUMERIC(10) NOT NULL,
+  uniprot_accession      VARCHAR(20) NOT NULL,
+  modification_date      TIMESTAMP   NOT NULL,
+  user_read              NUMERIC(1)  NOT NULL,
+  user_write             NUMERIC(1)  NOT NULL,
+  group_read             NUMERIC(1)  NOT NULL,
+  group_write            NUMERIC(1)  NOT NULL,
+  other_read             NUMERIC(1)  NOT NULL,
+  other_write            NUMERIC(1)  NOT NULL,
+  row_user_id            NUMERIC(12) NOT NULL,
+  row_group_id           NUMERIC(3)  NOT NULL,
+  row_project_id         NUMERIC(4)  NOT NULL,
+  row_alg_invocation_id  NUMERIC(12) NOT NULL,
+  PRIMARY KEY (aa_sequence_uniprot_id)
 );
 
 ALTER TABLE apidb.AASequenceUniprot
-ADD CONSTRAINT as_fk1 FOREIGN KEY (aa_sequence_id)
-REFERENCES dots.AaSequenceImp (aa_sequence_id);
+  ADD CONSTRAINT as_fk1 FOREIGN KEY (aa_sequence_id)
+  REFERENCES dots.AaSequenceImp(aa_sequence_id);
 
 GRANT SELECT, UPDATE, DELETE ON apidb.AASequenceUniprot TO gus_w;
 GRANT SELECT ON apidb.AASequenceUniprot TO gus_r;
@@ -50,29 +50,29 @@ INSERT INTO core.TableInfo
 ------------------------------------------------------------------------------
 
 CREATE TABLE apidb.UniprotEnzymeClass (
- uniprot_ec_id          NUMERIC(12) NOT NULL,
- uniprot_accession      VARCHAR(20) NOT NULL,
- enzyme_class_id        NUMERIC(12) NOT NULL,
- modification_date      timestamp NOT NULL,
- user_read              NUMERIC(1) NOT NULL,
- user_write             NUMERIC(1) NOT NULL,
- group_read             NUMERIC(1) NOT NULL,
- group_write            NUMERIC(1) NOT NULL,
- other_read             NUMERIC(1) NOT NULL,
- other_write            NUMERIC(1) NOT NULL,
- row_user_id            NUMERIC(12) NOT NULL,
- row_group_id           NUMERIC(3) NOT NULL,
- row_project_id         NUMERIC(4) NOT NULL,
- row_alg_invocation_id  NUMERIC(12) NOT NULL,
- PRIMARY KEY (uniprot_ec_id)
+  uniprot_ec_id         NUMERIC(12) NOT NULL,
+  uniprot_accession     VARCHAR(20) NOT NULL,
+  enzyme_class_id       NUMERIC(12) NOT NULL,
+  modification_date     TIMESTAMP   NOT NULL,
+  user_read             NUMERIC(1)  NOT NULL,
+  user_write            NUMERIC(1)  NOT NULL,
+  group_read            NUMERIC(1)  NOT NULL,
+  group_write           NUMERIC(1)  NOT NULL,
+  other_read            NUMERIC(1)  NOT NULL,
+  other_write           NUMERIC(1)  NOT NULL,
+  row_user_id           NUMERIC(12) NOT NULL,
+  row_group_id          NUMERIC(3)  NOT NULL,
+  row_project_id        NUMERIC(4)  NOT NULL,
+  row_alg_invocation_id NUMERIC(12) NOT NULL,
+  PRIMARY KEY (uniprot_ec_id)
 );
 
 GRANT INSERT, SELECT, UPDATE, DELETE ON apidb.UniprotEnzymeClass TO gus_w;
 GRANT SELECT ON apidb.UniprotEnzymeClass TO gus_r;
 
 ALTER TABLE apidb.UniprotEnzymeClass
-ADD CONSTRAINT ue_fk1 FOREIGN KEY (enzyme_class_id)
-REFERENCES sres.EnzymeClass (enzyme_class_id);
+  ADD CONSTRAINT ue_fk1 FOREIGN KEY (enzyme_class_id)
+  REFERENCES sres.EnzymeClass (enzyme_class_id);
 
 ------------------------------------------------------------------------------
 
