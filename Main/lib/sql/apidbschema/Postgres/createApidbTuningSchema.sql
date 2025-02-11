@@ -9,6 +9,7 @@
 
 CREATE SCHEMA apidbtuning;
 
+GRANT USAGE ON SCHEMA apidbtuning TO gus_r;
 
 -- GRANT GUS_R TO ApidbTuning;
 -- GRANT GUS_W TO ApidbTuning;
@@ -47,5 +48,7 @@ CREATE TABLE apidbTuning.StudyIdDatasetId0000 (
 -- Posgtres doesn't have synonyms. Convert them to views instead
 -- create or replace synonym apidbTuning.StudyIdDatasetId for apidbTuning.StudyIdDatasetId0000;
 CREATE OR REPLACE VIEW apidbtuning.studyiddatasetid AS SELECT * FROM apidbtuning.studyiddatasetid0000;
+
+
 
 -----------------------------------

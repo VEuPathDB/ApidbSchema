@@ -9,6 +9,8 @@
 
 CREATE SCHEMA hmdb;
 
+GRANT USAGE ON SCHEMA hmdb TO gus_r;
+
 -- GRANT GUS_R TO hmdb;
 -- GRANT GUS_W TO hmdb;
 -- GRANT CREATE VIEW TO hmdb;

@@ -10,6 +10,8 @@
 
 CREATE SCHEMA testtuning;
 
+GRANT USAGE ON SCHEMA testtuning TO gus_r;
+
 -- GRANT GUS_R TO TestTuning;
 -- GRANT GUS_W TO TestTuning;
 -- GRANT CREATE VIEW TO TestTuning;
