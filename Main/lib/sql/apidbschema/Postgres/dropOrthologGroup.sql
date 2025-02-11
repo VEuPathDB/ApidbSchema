@@ -103,3 +103,13 @@ WHERE lower(name) =  'similarorthologgroup'
   AND database_id IN (SELECT database_id
                       FROM core.DatabaseInfo
                       WHERE lower(name) = 'apidb');
+
+--------------------------------------------------------------------------------
+
+DROP VIEW dots.OrthoAASequence;
+
+DELETE FROM core.TableInfo
+WHERE lower(name) =  'orthoaasequence'
+  AND database_id IN (SELECT database_id
+                      FROM core.DatabaseInfo
+                      WHERE lower(name) = 'apidb');
