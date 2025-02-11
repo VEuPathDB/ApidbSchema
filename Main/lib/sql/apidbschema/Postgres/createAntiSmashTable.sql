@@ -50,7 +50,7 @@ CREATE TABLE ApiDB.antiSmashFeatures (
    na_feature_id                 NUMERIC(10),
    gene_start                    NUMERIC(10),
    gene_end                      NUMERIC(10),
-   gene_kind                     VARCHAR(100),
+   antiSmash_annotation          VARCHAR(100),
    strand                        VARCHAR(10),
    sequence_source_id            VARCHAR(100),
    MODIFICATION_DATE             TIMESTAMP,
