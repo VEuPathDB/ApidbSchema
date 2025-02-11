@@ -70,18 +70,6 @@ WHERE lower(name) =  'GroupTaxonMatrix'
 
 --------------------------------------------------------------------------------
 
-DROP TABLE apidb.OrthomclTaxon;
-
-DROP SEQUENCE apidb.OrthomclTaxon_sq;
-
-DELETE FROM core.TableInfo
-WHERE lower(name) =  'OrthomclTaxon'
-  AND database_id IN (SELECT database_id
-                      FROM core.DatabaseInfo
-                      WHERE lower(name) = 'apidb');
-
---------------------------------------------------------------------------------
-
 DROP TABLE apidb.OrthologGroup;
 
 DROP SEQUENCE apidb.OrthologGroup_sq;
