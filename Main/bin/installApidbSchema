@@ -94,6 +94,8 @@ my @create = qw(
   createGeneFeatureProduct.sql
   createGeneFeatureName.sql
   createOrthologGroup.sql
+  createECTables.sql
+  createGroupMapping.sql
   createPhylogeneticProfile.sql
   createPhylogeneticTree.sql
   createRelatedNaFeature.sql
