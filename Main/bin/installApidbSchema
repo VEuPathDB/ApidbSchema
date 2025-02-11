@@ -86,6 +86,7 @@ my @create = qw(
   createTestTuningSchema.sql
   createApidbSchema.sql
   createChebiSchema.sql
+  createOrganism.sql
   createEdaSchema.sql
   createAnalysisMethodInvocation.sql
   createDatasource.sql
@@ -101,7 +102,6 @@ my @create = qw(
   createRelatedNaFeature.sql
   createReportCache.sql
   createSequenceAttributeTables.sql
-  createOrganism.sql
   createStoredProcedures.sql
   createPivotProcedure.sql
   createSyntenyTables.sql
