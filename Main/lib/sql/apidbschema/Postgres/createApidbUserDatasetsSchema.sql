@@ -9,6 +9,8 @@
 
 CREATE SCHEMA apidbuserdatasets;
 
+GRANT USAGE ON SCHEMA apidbuserdatasets TO gus_r;
+
 -- GRANT GUS_R TO ApidbUserDatasets;
 -- GRANT GUS_W TO ApidbUserDatasets;
 -- GRANT CREATE VIEW TO ApidbUserDatasets;

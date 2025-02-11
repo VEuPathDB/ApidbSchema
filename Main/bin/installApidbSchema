@@ -81,10 +81,9 @@ if ($dropApiDB || $dropGUS) {
 my @create = qw(
   removeNullConstraintsFromSimilarityTables.sql
   createGusTuning.sql
+  createApidbSchema.sql
   createApidbTuningSchema.sql
   createApidbUserDatasetsSchema.sql
-  createTestTuningSchema.sql
-  createApidbSchema.sql
   createChebiSchema.sql
   createEdaSchema.sql
   createAnalysisMethodInvocation.sql
@@ -178,13 +177,6 @@ my @gusSchemas = qw(
   RESULTS
   SRES
   STUDY
-  COREVER
-  DOTSVER
-  MODELVER
-  PLATFORMVER
-  RESULTSVER
-  SRESVER
-  STUDYVER
 );
 
 my @apiDbSchemas = qw(
@@ -194,7 +186,6 @@ my @apiDbSchemas = qw(
   CHEBI
   EDA
   EDA_UD
-  TESTTUNING
 );
 
 my $filesDir = "$ENV{GUS_HOME}/lib/sql/apidbschema/$dbVendor";

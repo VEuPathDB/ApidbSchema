@@ -1,5 +1,27 @@
--- schema changes for GUS tables
+-- Make sure gus_r can read tables in all gus schemas
+GRANT USAGE ON SCHEMA core TO gus_r;
+GRANT SELECT ON ALL TABLES IN SCHEMA core TO gus_r;
 
+GRANT USAGE ON SCHEMA dots TO gus_r;
+GRANT SELECT ON ALL TABLES IN SCHEMA dots TO gus_r;
+
+GRANT USAGE ON SCHEMA model TO gus_r;
+GRANT SELECT ON ALL TABLES IN SCHEMA model TO gus_r;
+
+GRANT USAGE ON SCHEMA platform TO gus_r;
+GRANT SELECT ON ALL TABLES IN SCHEMA platform TO gus_r;
+
+GRANT USAGE ON SCHEMA results TO gus_r;
+GRANT SELECT ON ALL TABLES IN SCHEMA results TO gus_r;
+
+GRANT USAGE ON SCHEMA sres TO gus_r;
+GRANT SELECT ON ALL TABLES IN SCHEMA sres TO gus_r;
+
+GRANT USAGE ON SCHEMA study TO gus_r;
+GRANT SELECT ON ALL TABLES IN SCHEMA study TO gus_r;
+
+
+-- schema changes for GUS tables
 ALTER TABLE DOTS.RNAFEATUREEXON
     ADD CODING_START numeric(12),
     ADD CODING_END numeric(12)
@@ -635,9 +657,3 @@ grant select on results.NaFeatureExpression to public;
 ALTER TABLE Sres.PathwayNode ADD cellular_location varchar(200);
 ALTER TABLE Sres.PathwayRelationship ADD is_reversible numeric(1);
 
--- TODO incompatible
--- GRANT REFERENCES on sres.ontologyterm to eda;
--- GRANT REFERENCES on sres.ontologyterm to eda_ud;
-
--- GRANT REFERENCES on sres.ExternalDatabaseRelease to eda;
--- GRANT REFERENCES on sres.ExternalDatabaseRelease to eda_ud;

@@ -1,5 +1,7 @@
 CREATE SCHEMA chebi;
 
+GRANT USAGE ON SCHEMA chebi TO gus_r;
+
 INSERT INTO core.DatabaseInfo
    (database_id, name, description, modification_date, user_read, user_write,
     group_read, group_write, other_read, other_write, row_user_id,
