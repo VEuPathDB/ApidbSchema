@@ -904,7 +904,6 @@ GRANT SELECT ON apidb.OrthologGroupStats TO gus_r;
 ------------------------------------------------------------------------------
 
 CREATE SEQUENCE apidb.OrthologGroupStats_sq;
-GRANT SELECT ON apidb.OrthologGroupStats_sq TO gus_r;
 GRANT SELECT ON apidb.OrthologGroupStats_sq TO gus_w;
 
 ------------------------------------------------------------------------------
@@ -1064,7 +1063,6 @@ FROM DoTS.AASequenceImp;
 
 ------------------------------------------------------------------------------
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON DOTS.AASEQUENCEIMP to public;
 GRANT INSERT, SELECT, UPDATE, DELETE ON DOTS.OrthoAASequence TO gus_w;
 GRANT SELECT ON DOTS.OrthoAASequence TO gus_r;
   
@@ -1088,7 +1086,5 @@ INSERT INTO core.TableInfo
 
 ------------------------------------------------------------------------------
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON DOTS.OrthoAASequence to public;
 GRANT INSERT, SELECT, UPDATE, DELETE ON DOTS.OrthoAASequence TO gus_w;
 GRANT SELECT ON DOTS.OrthoAASequence TO gus_r;
-GRANT REFERENCES ON DOTS.OrthoAASequence to public;
