@@ -1120,16 +1120,16 @@ ALTER TABLE apidb.OrthomclClade
   ADD CONSTRAINT oc_pk PRIMARY KEY (orthomcl_clade_id);
 
 ALTER TABLE apidb.OrthomclClade
-  ADD CONSTRAINT oc_fk1 FOREIGN KEY (parent_id) REFERENCES apidb.Organism (orthomcl_clade_id);
+  ADD CONSTRAINT oc_fk1 FOREIGN KEY (parent_id) REFERENCES apidb.OrthomclClade (orthomcl_clade_id);
 
 CREATE INDEX OrthomclClade_revix
-  ON apidb.OrthomclClade (parent_id, orthomcl_taxon_id);
+  ON apidb.OrthomclClade (parent_id, orthomcl_clade_id);
 
 ALTER TABLE apidb.OrthomclClade
   ADD CONSTRAINT oc_fk2 FOREIGN KEY (taxon_id) REFERENCES sres.Taxon (taxon_id);
 
 CREATE INDEX OrthomclClade_revix2
-  ON apidb.OrthomclClade (taxon_id, orthomcl_taxon_id);
+  ON apidb.OrthomclClade (taxon_id, orthomcl_clade_id);
 
 GRANT INSERT, SELECT, UPDATE, DELETE ON apidb.OrthomclClade TO gus_w;
 GRANT SELECT ON apidb.OrthomclClade TO gus_r;
