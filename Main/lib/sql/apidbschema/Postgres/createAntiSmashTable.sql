@@ -65,7 +65,7 @@ CREATE TABLE ApiDB.antiSmashFeatures (
    ROW_PROJECT_ID                NUMERIC(4),
    ROW_ALG_INVOCATION_ID         NUMERIC(12),
    PRIMARY KEY (antismash_feature_id),
-   FOREIGN KEY (internal_id) REFERENCES ApiDB.antiSmashClutser (internal_id),
+   FOREIGN KEY (internal_id) REFERENCES ApiDB.antiSmashCluster (internal_id),
    FOREIGN KEY (na_feature_id) REFERENCES dots.nafeature (na_feature_id)
  );
  
