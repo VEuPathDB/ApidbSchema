@@ -1,6 +1,7 @@
 ----- Create a table for the antiSMASH clusters -----------------------
 CREATE TABLE ApiDB.antiSmashCluster (
-   internal_id                   NUMERIC(10),
+   antismash_cluster_id        	 NUMERIC(10),
+   cluster_name			 VARCHAR(100),
    cluster_start                 NUMERIC(10),
    cluster_end                   NUMERIC(10),
    category                      VARCHAR(100),
@@ -46,7 +47,7 @@ CREATE TABLE ApiDB.antiSmashCluster (
 ------------------------------------------------------------------
 CREATE TABLE ApiDB.antiSmashFeatures (
    antismash_feature_id          NUMERIC(10),
-   internal_id                   NUMERIC(10),
+   antismash_cluster_id          NUMERIC(10),
    na_feature_id                 NUMERIC(10),
    gene_start                    NUMERIC(10),
    gene_end                      NUMERIC(10),
@@ -65,7 +66,7 @@ CREATE TABLE ApiDB.antiSmashFeatures (
    ROW_PROJECT_ID                NUMERIC(4),
    ROW_ALG_INVOCATION_ID         NUMERIC(12),
    PRIMARY KEY (antismash_feature_id),
-   FOREIGN KEY (internal_id) REFERENCES ApiDB.antiSmashCluster (internal_id),
+   FOREIGN KEY (antismash_cluster_id) REFERENCES ApiDB.antiSmashCluster (antismash_cluster_id),
    FOREIGN KEY (na_feature_id) REFERENCES dots.nafeature (na_feature_id)
  );
  
