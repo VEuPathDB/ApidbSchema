@@ -45,6 +45,9 @@ Example: ./installApidbSchema --dbName rm8711 --dbHost ares10.penn.apidb.org --c
 ";
 }
 
+# Run DDL as this role so new objects are owned by this role.
+my $runAsRole = 'GUS_W';
+
 my $login = $ENV{DB_USER};
 my $password = $ENV{DB_PASS};
 my $dbVendor = $ENV{DB_PLATFORM};
@@ -204,74 +207,14 @@ if ($create) {
      if($sqlFile eq 'createEntityGraphTables.sql') {
        $sqlplusParamValues[0] = "EDA";
        $sqlplusParamValues[1] = "SRES";
-       runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures, @sqlplusParamValues);
+       runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures, $runAsRole, @sqlplusParamValues);
        $sqlplusParamValues[0] = "ApidbUserDatasets";
        $sqlplusParamValues[1] = "ApidbUserDatasets";
-       runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures, @sqlplusParamValues);
+       runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures, $runAsRole, @sqlplusParamValues);
      }
 
      else {
-       runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures, @sqlplusParamValues);
-     }
-  }
-} elsif ($dropApiDB) {
-  if ($dbVendor eq 'Oracle') {
-    my $schemaSetStr = join ', ', map "'$_'", @apiDbSchemas;
-    dropSchemaSetTables($dbh, $schemaSetStr);  # drop only the tables, etc, not the users which are managed by DBA
-  } elsif ($dbVendor eq 'Postgres') {
-    dropSchemaSetPostgres($dbh, @apiDbSchemas);
-  } else {
-    die "Unsupported dbVendor:$dbVendor.";
-  }
-  for my $sqlFile (@delete) {
-    print STDERR "\n==============================================================\n";
-    print STDERR "$sqlFile\n";
-    print STDERR "==============================================================\n";
-
-     my $filePath = "$filesDir/$sqlFile";
-
-     my @sqlplusParamValues;
-     if($sqlFile eq 'createEntityGraphTables.sql') {
-       $sqlplusParamValues[0] = "EDA";
-       $sqlplusParamValues[1] = "SRES";
-       runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures, @sqlplusParamValues);
-       $sqlplusParamValues[0] = "ApidbUserDatasets";
-       $sqlplusParamValues[1] = "ApidbUserDatasets";
-       runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures, @sqlplusParamValues);
-     }
-
-     else {
-       runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures, @sqlplusParamValues);
-     }
-  }
-} elsif ($dropApiDB) {
-  if ($dbVendor eq 'Oracle') {
-    my $schemaSetStr = join ', ', map "'$_'", @apiDbSchemas;
-    dropSchemaSetTables($dbh, $schemaSetStr);  # drop only the tables, etc, not the users which are managed by DBA
-  } elsif ($dbVendor eq 'Postgres') {
-    dropSchemaSetPostgres($dbh, @apiDbSchemas);
-  } else {
-    die "Unsupported dbVendor:$dbVendor.";
-  }
-  for my $sqlFile (@delete) {
-    print STDERR "\n==============================================================\n";
-    print STDERR "$sqlFile\n";
-    print STDERR "==============================================================\n";
-
-     my $filePath = "$filesDir/$sqlFile";
-
-     my @sqlplusParamValues;
-     if($sqlFile eq 'createEntityGraphTables.sql') {
-       $sqlplusParamValues[0] = "EDA";
-       $sqlplusParamValues[1] = "SRES";
-       runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures, @sqlplusParamValues);
-       $sqlplusParamValues[0] = "ApidbUserDatasets";
-       $sqlplusParamValues[1] = "ApidbUserDatasets";
-       runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures, @sqlplusParamValues);
-     }
-
-     else {
-       runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures, @sqlplusParamValues);
+       runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures, $runAsRole, @sqlplusParamValues);
      }
   }
 } elsif ($dropApiDB) {
@@ -289,7 +232,7 @@ if ($create) {
     print STDERR "==============================================================\n";
 
     my $filePath = "$filesDir/$sqlFile";
-    runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures);
+    runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures, $runAsRole);
   }
 } elsif ($dropGUS) {
   if ($dbVendor eq 'Oracle') {
