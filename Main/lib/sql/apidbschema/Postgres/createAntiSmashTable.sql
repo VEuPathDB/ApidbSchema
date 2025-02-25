@@ -16,7 +16,7 @@ CREATE TABLE ApiDB.antiSmashCluster (
    ROW_GROUP_ID                  NUMERIC(3),
    ROW_PROJECT_ID                NUMERIC(4),
    ROW_ALG_INVOCATION_ID         NUMERIC(12),
-   PRIMARY KEY (internal_id)
+   PRIMARY KEY (antismash_cluster_id)
  );
  
  
@@ -47,8 +47,7 @@ CREATE TABLE ApiDB.antiSmashCluster (
 ------------------------------------------------------------------
 CREATE TABLE ApiDB.antiSmashFeatures (
    antismash_feature_id          NUMERIC(10),
-   antismash_cluster_id          NUMERIC(10),
-   na_feature_id                 NUMERIC(10),
+   na_feature_id                 VARCHAR(100),
    gene_start                    NUMERIC(10),
    gene_end                      NUMERIC(10),
    antiSmash_annotation          VARCHAR(100),
@@ -66,7 +65,6 @@ CREATE TABLE ApiDB.antiSmashFeatures (
    ROW_PROJECT_ID                NUMERIC(4),
    ROW_ALG_INVOCATION_ID         NUMERIC(12),
    PRIMARY KEY (antismash_feature_id),
-   FOREIGN KEY (antismash_cluster_id) REFERENCES ApiDB.antiSmashCluster (antismash_cluster_id),
    FOREIGN KEY (na_feature_id) REFERENCES dots.nafeature (na_feature_id)
  );
  
