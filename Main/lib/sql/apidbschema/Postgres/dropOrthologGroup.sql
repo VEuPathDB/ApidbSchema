@@ -101,3 +101,13 @@ WHERE lower(name) =  'orthoaasequence'
   AND database_id IN (SELECT database_id
                       FROM core.DatabaseInfo
                       WHERE lower(name) = 'apidb');
+
+--------------------------------------------------------------------------------
+
+DROP TABLE apidb.OrthomclClade;
+DROP SEQUENCE apidb.OrthomclClade_sq;
+DELETE FROM core.TableInfo
+WHERE lower(name) =  'OrthomclClade'
+  AND database_id IN (SELECT database_id
+                      FROM core.DatabaseInfo
+                      WHERE lower(name) = 'apidb');
