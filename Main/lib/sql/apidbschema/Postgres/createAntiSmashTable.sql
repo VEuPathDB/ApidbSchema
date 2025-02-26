@@ -48,11 +48,7 @@ CREATE TABLE ApiDB.antiSmashCluster (
 CREATE TABLE ApiDB.antiSmashFeatures (
    antismash_feature_id          NUMERIC(10),
    na_feature_id                 VARCHAR(100),
-   gene_start                    NUMERIC(10),
-   gene_end                      NUMERIC(10),
    antiSmash_annotation          VARCHAR(100),
-   strand                        VARCHAR(10),
-   sequence_source_id            VARCHAR(100),
    MODIFICATION_DATE             TIMESTAMP,
    USER_READ                     NUMERIC(1),
    USER_WRITE                    NUMERIC(1),
@@ -93,6 +89,7 @@ CREATE TABLE ApiDB.antiSmashFeatures (
 ----------------- Liking table -----------------------------------------------------------
 CREATE TABLE ApiDB.AntismashClusterFeature (
     antismash_cluster_feature_id  NUMERIC(10),
+    antismash_feature_id	  NUMERIC(10),
     antismash_cluster_id          NUMERIC(10),
     MODIFICATION_DATE             TIMESTAMP,
     USER_READ                     NUMERIC(1),
@@ -105,13 +102,13 @@ CREATE TABLE ApiDB.AntismashClusterFeature (
     ROW_GROUP_ID                  NUMERIC(3),
     ROW_PROJECT_ID                NUMERIC(4),
     ROW_ALG_INVOCATION_ID         NUMERIC(12),
-    PRIMARY KEY (antismash_feature_id),
-    FOREIGN KEY (antismash_cluster_feature_id) REFERENCES ApiDB.antiSmashFeatures (antismash_cluster_feature_id),
-    FOREIGN KEY (antismash_cluster_feature_id) REFERENCES ApiDB.antiSmashClutser (antismash_cluster_feature_id)
+    PRIMARY KEY (antismash_cluster_feature_id),
+    FOREIGN KEY (antismash_feature_id) REFERENCES ApiDB.antiSmashFeatures (antismash_feature_id),
+    FOREIGN KEY (antismash_cluster_id) REFERENCES ApiDB.antiSmashClutser (antismash_cluster_id)
   );
   
  
-  	CREATE SEQUENCE ApiDB.AntismashClusterFeature_sq;
+  CREATE SEQUENCE ApiDB.AntismashClusterFeature_sq;
   
   GRANT INSERT, SELECT, UPDATE, DELETE ON ApiDB.AntismashClusterFeature TO gus_w;
   GRANT SELECT ON ApiDB.AntismashClusterFeature TO gus_r;
