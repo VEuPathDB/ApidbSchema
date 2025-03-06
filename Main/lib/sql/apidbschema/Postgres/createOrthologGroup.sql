@@ -1,6 +1,6 @@
 CREATE TABLE apidb.OrthologGroup (
   ortholog_group_id            NUMERIC(12) NOT NULL,
-  group_id                     VARCHAR(12) NOT NULL,
+  group_id                     VARCHAR(16) NOT NULL,
   is_residual                  NUMERIC(1)  NOT NULL,
   number_of_members            NUMERIC(12),
   number_of_core_members       NUMERIC(12),
@@ -777,7 +777,7 @@ INSERT INTO core.TableInfo
 
 CREATE TABLE ApiDB.OrthomclGroupKeyword (
   orthomcl_keyword_id   NUMERIC(10)  NOT NULL,
-  ortholog_group_id     VARCHAR(12)  NOT NULL,
+  ortholog_group_id     VARCHAR(16)  NOT NULL,
   keyword               VARCHAR(255) NOT NULL,
   frequency             VARCHAR(20)  NOT NULL,
   modification_date     TIMESTAMP    NOT NULL,
@@ -879,7 +879,7 @@ INSERT INTO core.TableInfo
 
 CREATE TABLE apidb.OrthologGroupStats (
   ortholog_group_stat_id NUMERIC(10) NOT NULL,
-  group_id               VARCHAR(12) NOT NULL,
+  group_id               VARCHAR(16) NOT NULL,
   stat_type              VARCHAR(10) NOT NULL,
   evalue                 FLOAT8,
   protein_subset         VARCHAR(3)  NOT NULL,
@@ -927,7 +927,7 @@ INSERT INTO core.TableInfo
 
 CREATE TABLE apidb.OrthologGroupAASequence (
   ortholog_group_aa_sequence_id NUMERIC(12) NOT NULL,
-  group_id                      VARCHAR(12) NOT NULL,
+  group_id                      VARCHAR(16) NOT NULL,
   aa_sequence_id                NUMERIC(12) NOT NULL,
   modification_date             TIMESTAMP   NOT NULL,
   user_read                     NUMERIC(1)  NOT NULL,
@@ -983,8 +983,8 @@ INSERT INTO core.TableInfo
 
 CREATE TABLE apidb.SimilarOrthologGroup (
   similar_ortholog_group_id NUMERIC(12) NOT NULL,
-  group_id                  VARCHAR(12) NOT NULL,
-  similar_group_id          VARCHAR(12) NOT NULL,
+  group_id                  VARCHAR(16) NOT NULL,
+  similar_group_id          VARCHAR(16) NOT NULL,
   evalue                    FLOAT8      NOT NULL,
   modification_date         TIMESTAMP   NOT NULL,
   user_read                 NUMERIC(1)  NOT NULL,
