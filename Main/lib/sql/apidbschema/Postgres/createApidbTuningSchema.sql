@@ -7,7 +7,7 @@
 -- DEFAULT TABLESPACE users
 -- TEMPORARY TABLESPACE temp;
 
-CREATE SCHEMA apidbtuning;
+CREATE SCHEMA apidbtuning AUTHORIZATION apidbtuning;
 
 GRANT USAGE ON SCHEMA apidbtuning TO gus_r;
 GRANT USAGE, CREATE ON SCHEMA apidbtuning TO gus_w;
