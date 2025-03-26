@@ -26,6 +26,7 @@ BEGIN
 end;
 $body$
     LANGUAGE PLPGSQL
+    PARALLEL SAFE
     IMMUTABLE;
 
 -------------------------------------------------------------------------------
@@ -36,6 +37,7 @@ BEGIN
 end;
 $body$
     LANGUAGE PLPGSQL
+    PARALLEL SAFE
     IMMUTABLE;
 
 -------------------------------------------------------------------------------
@@ -49,6 +51,7 @@ BEGIN
 end;
 $body$
     LANGUAGE PLPGSQL
+    PARALLEL SAFE
     IMMUTABLE;
 
 -------------------------------------------------------------------------------
@@ -76,7 +79,8 @@ BEGIN
 END;
 $body$
     LANGUAGE PLPGSQL
-    IMMUTABLE;
+    PARALLEL UNSAFE -- this is due to the dynamic sql being considered a subprogram which is not allowed in a parallel query
+    STABLE;
 
 -------------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION apidb.project_id(organism varchar) RETURNS varchar AS
@@ -86,6 +90,7 @@ BEGIN
 END;
 $body$
     LANGUAGE PLPGSQL
+    PARALLEL UNSAFE
     IMMUTABLE;
 
 -------------------------------------------------------------------------------
@@ -96,6 +101,7 @@ BEGIN
 END;
 $body$
     LANGUAGE PLPGSQL
+    PARALLEL SAFE
     IMMUTABLE;
 
 -------------------------------------------------------------------------------
@@ -106,6 +112,7 @@ BEGIN
 END;
 $body$
     LANGUAGE PLPGSQL
+    PARALLEL SAFE
     IMMUTABLE;
 
 -------------------------------------------------------------------------------
@@ -127,6 +134,7 @@ BEGIN
 end;
 $body$
     LANGUAGE PLPGSQL
+    PARALLEL SAFE
     IMMUTABLE;
 
 -------------------------------------------------------------------------------
@@ -150,6 +158,7 @@ BEGIN
 end;
 $body$
     LANGUAGE PLPGSQL
+    PARALLEL SAFE
     IMMUTABLE;
 
 -------------------------------------------------------------------------------
@@ -173,6 +182,7 @@ BEGIN
 end;
 $body$
     LANGUAGE PLPGSQL
+    PARALLEL SAFE
     IMMUTABLE;
 
 -------------------------------------------------------------------------------
@@ -205,6 +215,7 @@ BEGIN
 END;
 $body$
     LANGUAGE PLPGSQL
+    PARALLEL SAFE
     IMMUTABLE;
 
 -------------------------------------------------------------------------------
@@ -234,6 +245,7 @@ BEGIN
 END;
 $body$
     LANGUAGE PLPGSQL
+    PARALLEL SAFE
     IMMUTABLE;
 
 -------------------------------------------------------------------------------
@@ -257,6 +269,7 @@ BEGIN
 END;
 $body$
     LANGUAGE PLPGSQL
+    PARALLEL SAFE
     IMMUTABLE;
 
 -------------------------------------------------------------------------------
@@ -284,6 +297,7 @@ BEGIN
 END;
 $body$
     LANGUAGE PLPGSQL
+    PARALLEL SAFE
     IMMUTABLE;
 
 -------------------------------------------------------------------------------
@@ -298,5 +312,6 @@ BEGIN
 END;
 $body$
     LANGUAGE PLPGSQL
+    PARALLEL SAFE
     IMMUTABLE;
 
