@@ -45,3 +45,19 @@ select cast(current_database() as varchar(50)) as instance_nickname,
 
 grant select on apidb.InstanceMetaInfo to gus_r;
 grant insert, update, delete on apidb.InstanceMetaInfo to gus_w;
+
+
+CREATE TABLE apidb.TuningTableLog (
+  db_name        VARCHAR,
+  table_name     VARCHAR,
+  suffix         INTEGER,
+  updater        VARCHAR,
+  timestamp      TIMESTAMP,
+  build_duration NUMERIC,
+  row_count      INTEGER,
+  table_size     VARCHAR,
+  PRIMARY KEY (db_name, table_name, suffix, timestamp)
+);
+
+GRANT SELECT ON apidb.TuningTableLog TO gus_r;
+GRANT INSERT, UPDATE, DELETE ON apidb.TuningTableLog TO gus_w;
