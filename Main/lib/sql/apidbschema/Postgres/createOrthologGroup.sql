@@ -881,7 +881,7 @@ CREATE TABLE apidb.OrthologGroupStats (
   ortholog_group_stat_id NUMERIC(10) NOT NULL,
   group_id               VARCHAR(16) NOT NULL,
   stat_type              VARCHAR(10) NOT NULL,
-  evalue                 FLOAT8,
+  evalue                 VARCHAR(12) NOT NULL,
   protein_subset         VARCHAR(3)  NOT NULL,
   modification_date      TIMESTAMP   NOT NULL,
   user_read              NUMERIC(1)  NOT NULL,
