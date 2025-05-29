@@ -18,8 +18,7 @@ CREATE TABLE ApiDB.NAFeatureList (
   PRIMARY KEY (na_feature_list_id)
 );
 
-create index apidb.nfl_ix
-  on apidb.NaFeatureList (protocol_app_node_id, na_feature_id) tablespace indx;
+create index nfl_ix on apidb.NaFeatureList (protocol_app_node_id, na_feature_id) tablespace indx;
 
 CREATE SEQUENCE ApiDB.NAFeatureList_sq;
 
