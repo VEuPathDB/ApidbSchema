@@ -76,6 +76,9 @@ CREATE TABLE ApiDB.PDBSimilarity (
 
 CREATE SEQUENCE ApiDB.PDBSimilarity_sq;
 
+CREATE INDEX pdb_ix1 ON apidb.PDBSimilarity (aa_sequence_id);
+CREATE INDEX pdb_ix2 ON apidb.PDBSimilarity (protein_data_bank_id);
+
 GRANT insert, select, update, delete ON ApiDB.PDBSimilarity TO gus_w;
 GRANT select ON ApiDB.PDBSimilarity TO gus_r;
 GRANT select ON ApiDB.PDBSimilarity_sq TO gus_w;

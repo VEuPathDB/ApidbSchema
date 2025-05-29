@@ -22,7 +22,7 @@ CREATE TABLE ApiDB.AASequenceEpitope (
   FOREIGN KEY (aa_sequence_id) REFERENCES Dots.aasequenceimp(aa_sequence_id)
 );
 
-
+CREATE INDEX ase_ix1 ON ApiDB.AASequenceEpitope (aa_sequence_id);
 
 CREATE SEQUENCE ApiDB.AASequenceEpitope_sq;
 

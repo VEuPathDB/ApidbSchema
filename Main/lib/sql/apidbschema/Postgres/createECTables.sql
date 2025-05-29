@@ -23,6 +23,8 @@ ALTER TABLE apidb.AASequenceUniprot
 GRANT SELECT, UPDATE, DELETE ON apidb.AASequenceUniprot TO gus_w;
 GRANT SELECT ON apidb.AASequenceUniprot TO gus_r;
 
+CREATE INDEX aasu_ix1 ON apidb.AASequenceUniprot (aa_sequence_id);
+
 ------------------------------------------------------------------------------
 
 CREATE SEQUENCE apidb.AASequenceUniprot_sq;
