@@ -48,14 +48,14 @@ grant insert, update, delete on apidb.InstanceMetaInfo to gus_w;
 
 
 CREATE TABLE apidb.TuningTableLog (
-  db_name        VARCHAR,
-  table_name     VARCHAR,
-  suffix         INTEGER,
-  updater        VARCHAR,
-  timestamp      TIMESTAMP,
-  build_duration NUMERIC,
-  row_count      INTEGER,
-  table_size     VARCHAR,
+  db_name                VARCHAR,
+  table_name             VARCHAR,
+  suffix                 INTEGER,
+  updater                VARCHAR,
+  timestamp              TIMESTAMP,
+  build_duration_seconds NUMERIC,
+  row_count              INTEGER,
+  table_size             VARCHAR,
   PRIMARY KEY (db_name, table_name, suffix, timestamp)
 );
 
