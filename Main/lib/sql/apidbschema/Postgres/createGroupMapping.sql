@@ -23,6 +23,10 @@ CREATE SEQUENCE ApiDB.GroupMapping_sq;
 GRANT INSERT, SELECT, UPDATE, DELETE ON apidb.GroupMapping TO gus_w;
 GRANT SELECT ON apidb.GroupMapping TO gus_r;
 
+GRANT INSERT, SELECT, UPDATE, DELETE ON ApiDB.GroupMapping_sq TO gus_w;
+GRANT SELECT ON apidb.GroupMapping_sq TO gus_r;
+
+
 INSERT INTO core.TableInfo
   (table_id, name, table_type, primary_key_column, database_id,
     is_versioned, is_view, view_on_table_id, superclass_table_id, is_updatable,
