@@ -7,24 +7,17 @@
 -- DEFAULT TABLESPACE users
 -- TEMPORARY TABLESPACE temp;
 
+-- we temporarily reset to the admin user to be able to
+-- create the schema with apidbtuning as the owner
+RESET ROLE;
+
 CREATE SCHEMA apidbtuning AUTHORIZATION apidbtuning;
 
 GRANT USAGE ON SCHEMA apidbtuning TO gus_r;
 GRANT USAGE, CREATE ON SCHEMA apidbtuning TO gus_w;
 ALTER DEFAULT PRIVILEGES FOR ROLE apidbtuning IN SCHEMA apidbtuning GRANT SELECT ON TABLES TO gus_r;
 
--- GRANT GUS_R TO ApidbTuning;
--- GRANT GUS_W TO ApidbTuning;
-
-
--- GRANT REFERENCES ON dots.GeneFeature TO ApidbTuning;
--- GRANT REFERENCES ON dots.NaFeature TO ApidbTuning;
--- GRANT REFERENCES ON dots.NaFeatureNaGene TO ApidbTuning;
--- GRANT REFERENCES ON dots.AaSequenceImp TO ApidbTuning;
--- GRANT REFERENCES ON sres.Taxon TO ApidbTuning;
-
--- GRANTs required for CTXSYS
--- GRANT CONNECT, RESOURCE, CTXAPP, GUS_W to ApiDBTuning;
+SET ROLE gus_w; -- drop back to gus_w role;
 
 -- tuningManager needs there to be a index named "ApidbTuning.blastp_text_ix"
 --  (because OracleText needs it)

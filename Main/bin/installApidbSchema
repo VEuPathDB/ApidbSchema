@@ -86,6 +86,7 @@ my @create = qw(
   createGusTuning.sql
   createApidbSchema.sql
   createApidbTuningSchema.sql
+  createWebreadySchema.sql
   createApidbUserDatasetsSchema.sql
   createChebiSchema.sql
   createOrganism.sql

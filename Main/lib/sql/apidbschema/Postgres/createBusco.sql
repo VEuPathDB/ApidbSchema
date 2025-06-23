@@ -7,6 +7,8 @@ CREATE TABLE ApiDB.Busco (
   D_score               NUMERIC(12),
   F_score               NUMERIC(12),
   M_score               NUMERIC(12),
+  lineage_dataset       VARCHAR(100) NOT NULL,
+  lineage_dataset_comment   VARCHAR(500),
   external_database_release_id NUMERIC(10) NOT NULL,
   MODIFICATION_DATE     TIMESTAMP,
   USER_READ             NUMERIC(1),
