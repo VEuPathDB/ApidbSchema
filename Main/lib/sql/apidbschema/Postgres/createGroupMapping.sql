@@ -23,8 +23,7 @@ CREATE SEQUENCE ApiDB.GroupMapping_sq;
 GRANT INSERT, SELECT, UPDATE, DELETE ON apidb.GroupMapping TO gus_w;
 GRANT SELECT ON apidb.GroupMapping TO gus_r;
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON ApiDB.GroupMapping_sq TO gus_w;
-GRANT SELECT ON apidb.GroupMapping_sq TO gus_r;
+GRANT SELECT ON apidb.GroupMapping_sq TO gus_w;
 
 
 INSERT INTO core.TableInfo
