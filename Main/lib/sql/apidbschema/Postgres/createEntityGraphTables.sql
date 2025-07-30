@@ -353,7 +353,7 @@ CREATE TABLE EDA.EntityTypeGraph (
  parent_stable_id             varchar(255),
  parent_id                    NUMERIC(12),
  stable_id                    varchar(255),
- entity_type_id                NUMERIC(12) NOT NULL,
+ entity_type_id                NUMERIC(12),
  display_name                 VARCHAR(200) NOT NULL,
  display_name_plural          VARCHAR(200),
  description                  VARCHAR(4000),

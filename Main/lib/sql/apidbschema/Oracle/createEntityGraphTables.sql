@@ -312,7 +312,7 @@ CREATE TABLE &1..EntityTypeGraph (
  parent_stable_id             varchar2(255),
  parent_id                    NUMBER(12),
  stable_id                    varchar2(255),
- entity_type_id                NUMBER(12) NOT NULL,
+ entity_type_id                NUMBER(12),
  display_name                 VARCHAR2(200) NOT NULL,
  display_name_plural          VARCHAR2(200),
  description                  VARCHAR2(4000),
