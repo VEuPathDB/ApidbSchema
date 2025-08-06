@@ -53,5 +53,3 @@ WHERE 'LongReadTranscript' NOT IN (SELECT name FROM core.TableInfo
       ;
 
 ------------------------------------------------------------------------------
-
-exit;
