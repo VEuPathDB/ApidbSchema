@@ -30,9 +30,6 @@ CREATE TABLE ApiDB.LongReadTranscript (
   FOREIGN KEY (external_database_release_id) REFERENCES SRes.ExternalDatabaseRelease (external_database_release_id)
 );
 
---create index apidb.long_read_transcript_ix
---  on apidb.LongReadTranscript (gene_source_id, transcript_source_id, min_Start, max_End, na_seq_source_id) tablespace indx;
-
 CREATE SEQUENCE ApiDB.LongReadTranscript_sq;
 
 GRANT insert, select, update, delete ON ApiDB.LongReadTranscript TO gus_w;
@@ -51,7 +48,7 @@ SELECT NEXTVAL('core.tableinfo_sq'), 'LongReadTranscript', 'Standard', 'long_rea
 FROM
      (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
      (SELECT database_id FROM core.DatabaseInfo WHERE name = 'ApiDB') d
-WHERE 'Busco' NOT IN (SELECT name FROM core.TableInfo
+WHERE 'LongReadTranscript' NOT IN (SELECT name FROM core.TableInfo
                       WHERE database_id = d.database_id)
       ;
 
