@@ -167,7 +167,8 @@ my @create = qw(
   createGenomeBedGraph.sql
   createProteinBedGraph.sql
   createMsPeptide.sql
-  createNAFeatureList.sql
+  createLongReadTranscript.sql
+    
 );
 
 my @delete = qw(
