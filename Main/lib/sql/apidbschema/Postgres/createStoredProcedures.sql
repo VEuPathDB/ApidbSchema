@@ -14,15 +14,8 @@
 -------------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION apidb.reverse_complement_clob(seq text) RETURNS text AS
 $body$
-DECLARE
-    rslt text;
 BEGIN
-    rslt := '';
-    FOR idx IN REVERSE length(seq)..1
-        loop
-            rslt := rslt || translate(substr(seq, idx, 1), 'atugcyrkmbdhvATUGCYRKMBDHV', 'taacgrymkvhdbTAACGRYMKVHDB');
-        end loop;
-    return rslt;
+  return translate(reverse(seq), 'atugcyrkmbdhvATUGCYRKMBDHV', 'taacgrymkvhdbTAACGRYMKVHDB');
 end;
 $body$
     LANGUAGE PLPGSQL
