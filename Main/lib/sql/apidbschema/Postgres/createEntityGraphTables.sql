@@ -51,7 +51,7 @@ WHERE 'study' NOT IN (SELECT lower(name) FROM core.TableInfo
 -----------------------------------------------------------
 
 CREATE TABLE :VAR1.StudyExternalDatabaseRelease (
- study_external_database_release_id   NUMERIC(12) NOT NULL,
+ study_external_database_rls_id   NUMERIC(12) NOT NULL,
  study_id                             NUMERIC(12) NOT NULL,
  external_database_release_id         NUMERIC(10) NOT NULL,
  modification_date            TIMESTAMP NOT NULL,
@@ -67,7 +67,7 @@ CREATE TABLE :VAR1.StudyExternalDatabaseRelease (
  row_alg_invocation_id        NUMERIC(12) NOT NULL,
  FOREIGN KEY (external_database_release_id) REFERENCES :VAR2.ExternalDatabaseRelease,
  FOREIGN KEY (study_id) REFERENCES :VAR1.Study,
- PRIMARY KEY (study_external_database_release_id)
+ PRIMARY KEY (study_external_database_rls_id)
 );
 
 GRANT INSERT, SELECT, UPDATE, DELETE ON :VAR1.StudyExternalDatabaseRelease TO gus_w;
@@ -86,7 +86,7 @@ INSERT INTO core.TableInfo
      other_read, other_write, row_user_id, row_group_id, row_project_id,
      row_alg_invocation_id)
 SELECT NEXTVAL('core.tableinfo_sq'), 'StudyExternalDatabaseRelease',
-       'Standard', 'study_external_database_release_id',
+       'Standard', 'study_external_database_rls_id',
        d.database_id, 0, 0, NULL, NULL, 1,localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
        p.project_id, 0
 FROM (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
