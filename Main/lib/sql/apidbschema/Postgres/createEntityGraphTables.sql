@@ -7,7 +7,6 @@
 CREATE TABLE :VAR1.Study (
  study_id            NUMERIC(12) NOT NULL,
  stable_id                         VARCHAR(200) NOT NULL,
- external_database_release_id numeric(10) NOT NULL,
  internal_abbrev              varchar(75),
  max_attr_length              numeric(4),
  modification_date            TIMESTAMP NOT NULL,
@@ -21,7 +20,6 @@ CREATE TABLE :VAR1.Study (
  row_group_id                 NUMERIC(3) NOT NULL,
  row_project_id               NUMERIC(4) NOT NULL,
  row_alg_invocation_id        NUMERIC(12) NOT NULL,
- FOREIGN KEY (external_database_release_id) REFERENCES :VAR2.ExternalDatabaseRelease,
  PRIMARY KEY (study_id),
  CONSTRAINT unique_stable_id UNIQUE (stable_id)
 );
@@ -33,16 +31,62 @@ CREATE SEQUENCE :VAR1.Study_sq;
 GRANT SELECT ON :VAR1.Study_sq TO gus_w;
 GRANT SELECT ON :VAR1.Study_sq TO gus_r;
 
-CREATE INDEX study_ix_1 ON :VAR1.study (external_database_release_id, stable_id, internal_abbrev, study_id) ;
+CREATE INDEX study_ix_1 ON :VAR1.study (stable_id, internal_abbrev, study_id) ;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
-     is_view, view_on_table_id, superclass_table_id, is_updatable, 
-     modification_date, user_read, user_write, group_read, group_write, 
-     other_read, other_write, row_user_id, row_group_id, row_project_id, 
+     is_view, view_on_table_id, superclass_table_id, is_updatable,
+     modification_date, user_read, user_write, group_read, group_write,
+     other_read, other_write, row_user_id, row_group_id, row_project_id,
      row_alg_invocation_id)
 SELECT NEXTVAL('core.tableinfo_sq'), 'Study',
        'Standard', 'study_id',
+       d.database_id, 0, 0, NULL, NULL, 1,localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
+       p.project_id, 0
+FROM (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
+     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(:'VAR1')) d
+WHERE 'study' NOT IN (SELECT lower(name) FROM core.TableInfo
+                                    WHERE database_id = d.database_id);
+
+-----------------------------------------------------------
+
+CREATE TABLE :VAR1.StudyExternalDatabaseRelease (
+ study_external_database_release_id   NUMERIC(12) NOT NULL,
+ study_id                             NUMERIC(12) NOT NULL,
+ external_database_release_id         NUMERIC(10) NOT NULL,
+ modification_date            TIMESTAMP NOT NULL,
+ user_read                    NUMERIC(1) NOT NULL,
+ user_write                   NUMERIC(1) NOT NULL,
+ group_read                   NUMERIC(1) NOT NULL,
+ group_write                  NUMERIC(1) NOT NULL,
+ other_read                   NUMERIC(1) NOT NULL,
+ other_write                  NUMERIC(1) NOT NULL,
+ row_user_id                  NUMERIC(12) NOT NULL,
+ row_group_id                 NUMERIC(3) NOT NULL,
+ row_project_id               NUMERIC(4) NOT NULL,
+ row_alg_invocation_id        NUMERIC(12) NOT NULL,
+ FOREIGN KEY (external_database_release_id) REFERENCES :VAR2.ExternalDatabaseRelease,
+ FOREIGN KEY (study_id) REFERENCES :VAR1.Study,
+ PRIMARY KEY (study_external_database_release_id)
+);
+
+GRANT INSERT, SELECT, UPDATE, DELETE ON :VAR1.StudyExternalDatabaseRelease TO gus_w;
+GRANT SELECT ON :VAR1.StudyExternalDatabaseRelease TO gus_r;
+
+CREATE SEQUENCE :VAR1.StudyExternalDatabaseRelease_sq;
+GRANT SELECT ON :VAR1.StudyExternalDatabaseRelease_sq TO gus_w;
+GRANT SELECT ON :VAR1.StudyExternalDatabaseRelease_sq TO gus_r;
+
+CREATE INDEX study_ix_1 ON :VAR1.StudyExternalDatabaseRelease (external_database_release_id, study_id) ;
+
+INSERT INTO core.TableInfo
+    (table_id, name, table_type, primary_key_column, database_id, is_versioned,
+     is_view, view_on_table_id, superclass_table_id, is_updatable,
+     modification_date, user_read, user_write, group_read, group_write,
+     other_read, other_write, row_user_id, row_group_id, row_project_id,
+     row_alg_invocation_id)
+SELECT NEXTVAL('core.tableinfo_sq'), 'StudyExternalDatabaseRelease',
+       'Standard', 'study_external_database_release_id',
        d.database_id, 0, 0, NULL, NULL, 1,localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
        p.project_id, 0
 FROM (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
