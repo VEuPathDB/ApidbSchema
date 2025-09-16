@@ -77,7 +77,7 @@ CREATE SEQUENCE :VAR1.StudyExternalDatabaseRelease_sq;
 GRANT SELECT ON :VAR1.StudyExternalDatabaseRelease_sq TO gus_w;
 GRANT SELECT ON :VAR1.StudyExternalDatabaseRelease_sq TO gus_r;
 
-CREATE INDEX study_ix_1 ON :VAR1.StudyExternalDatabaseRelease (external_database_release_id, study_id) ;
+CREATE INDEX study_extdbrls_ix_1 ON :VAR1.StudyExternalDatabaseRelease (external_database_release_id, study_id) ;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
