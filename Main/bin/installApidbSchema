@@ -150,7 +150,6 @@ my @create = qw(
   createGoSubset.sql
   createDatabaseTableMapping.sql
   createEntityGraphTables.sql
-  createEdaUdModifications.sql
   createExternalResourceUrl.sql
   createAGPPiece.sql
   createAlphaFoldTable.sql
