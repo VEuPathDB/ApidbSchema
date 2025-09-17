@@ -91,7 +91,7 @@ SELECT NEXTVAL('core.tableinfo_sq'), 'StudyExternalDatabaseRelease',
        p.project_id, 0
 FROM (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
      (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(:'VAR1')) d
-WHERE 'study' NOT IN (SELECT lower(name) FROM core.TableInfo
+WHERE 'studyexternaldatabaserelease' NOT IN (SELECT lower(name) FROM core.TableInfo
                                     WHERE database_id = d.database_id);
 
 -----------------------------------------------------------
