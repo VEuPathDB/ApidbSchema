@@ -1,13 +1,8 @@
 -- set CONCAT OFF;
 
--- so the foreign key constraints are allowed
--- grant references on &2.OntologyTerm to &1;
--- grant references on &2.ExternalDatabaseRelease to &1;
-
-CREATE TABLE :VAR1.Study (
+CREATE TABLE EDA.Study (
  study_id            NUMERIC(12) NOT NULL,
  stable_id                         VARCHAR(200) NOT NULL,
- external_database_release_id numeric(10) NOT NULL,
  internal_abbrev              varchar(75),
  max_attr_length              numeric(4),
  modification_date            TIMESTAMP NOT NULL,
@@ -21,25 +16,24 @@ CREATE TABLE :VAR1.Study (
  row_group_id                 NUMERIC(3) NOT NULL,
  row_project_id               NUMERIC(4) NOT NULL,
  row_alg_invocation_id        NUMERIC(12) NOT NULL,
- FOREIGN KEY (external_database_release_id) REFERENCES :VAR2.ExternalDatabaseRelease,
  PRIMARY KEY (study_id),
  CONSTRAINT unique_stable_id UNIQUE (stable_id)
 );
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON :VAR1.Study TO gus_w;
-GRANT SELECT ON :VAR1.Study TO gus_r;
+GRANT INSERT, SELECT, UPDATE, DELETE ON EDA.Study TO gus_w;
+GRANT SELECT ON EDA.Study TO gus_r;
 
-CREATE SEQUENCE :VAR1.Study_sq;
-GRANT SELECT ON :VAR1.Study_sq TO gus_w;
-GRANT SELECT ON :VAR1.Study_sq TO gus_r;
+CREATE SEQUENCE EDA.Study_sq;
+GRANT SELECT ON EDA.Study_sq TO gus_w;
+GRANT SELECT ON EDA.Study_sq TO gus_r;
 
-CREATE INDEX study_ix_1 ON :VAR1.study (external_database_release_id, stable_id, internal_abbrev, study_id) ;
+CREATE INDEX study_ix_1 ON EDA.study (stable_id, internal_abbrev, study_id) ;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
-     is_view, view_on_table_id, superclass_table_id, is_updatable, 
-     modification_date, user_read, user_write, group_read, group_write, 
-     other_read, other_write, row_user_id, row_group_id, row_project_id, 
+     is_view, view_on_table_id, superclass_table_id, is_updatable,
+     modification_date, user_read, user_write, group_read, group_write,
+     other_read, other_write, row_user_id, row_group_id, row_project_id,
      row_alg_invocation_id)
 SELECT NEXTVAL('core.tableinfo_sq'), 'Study',
        'Standard', 'study_id',
@@ -52,7 +46,53 @@ WHERE 'study' NOT IN (SELECT lower(name) FROM core.TableInfo
 
 -----------------------------------------------------------
 
-CREATE TABLE :VAR1.EntityType (
+CREATE TABLE EDA.StudyExternalDatabaseRelease (
+ study_external_database_rls_id   NUMERIC(12) NOT NULL,
+ study_id                             NUMERIC(12) NOT NULL,
+ external_database_release_id         NUMERIC(10) NOT NULL,
+ modification_date            TIMESTAMP NOT NULL,
+ user_read                    NUMERIC(1) NOT NULL,
+ user_write                   NUMERIC(1) NOT NULL,
+ group_read                   NUMERIC(1) NOT NULL,
+ group_write                  NUMERIC(1) NOT NULL,
+ other_read                   NUMERIC(1) NOT NULL,
+ other_write                  NUMERIC(1) NOT NULL,
+ row_user_id                  NUMERIC(12) NOT NULL,
+ row_group_id                 NUMERIC(3) NOT NULL,
+ row_project_id               NUMERIC(4) NOT NULL,
+ row_alg_invocation_id        NUMERIC(12) NOT NULL,
+ FOREIGN KEY (external_database_release_id) REFERENCES SRES.ExternalDatabaseRelease,
+ FOREIGN KEY (study_id) REFERENCES EDA.Study,
+ PRIMARY KEY (study_external_database_rls_id)
+);
+
+GRANT INSERT, SELECT, UPDATE, DELETE ON EDA.StudyExternalDatabaseRelease TO gus_w;
+GRANT SELECT ON EDA.StudyExternalDatabaseRelease TO gus_r;
+
+CREATE SEQUENCE EDA.StudyExternalDatabaseRelease_sq;
+GRANT SELECT ON EDA.StudyExternalDatabaseRelease_sq TO gus_w;
+GRANT SELECT ON EDA.StudyExternalDatabaseRelease_sq TO gus_r;
+
+CREATE INDEX study_extdbrls_ix_1 ON EDA.StudyExternalDatabaseRelease (external_database_release_id, study_id) ;
+
+INSERT INTO core.TableInfo
+    (table_id, name, table_type, primary_key_column, database_id, is_versioned,
+     is_view, view_on_table_id, superclass_table_id, is_updatable,
+     modification_date, user_read, user_write, group_read, group_write,
+     other_read, other_write, row_user_id, row_group_id, row_project_id,
+     row_alg_invocation_id)
+SELECT NEXTVAL('core.tableinfo_sq'), 'StudyExternalDatabaseRelease',
+       'Standard', 'study_external_database_rls_id',
+       d.database_id, 0, 0, NULL, NULL, 1,localtimestamp, 1, 1, 1, 1, 1, 1, 1, 1,
+       p.project_id, 0
+FROM (SELECT MAX(project_id) AS project_id FROM core.ProjectInfo) p,
+     (SELECT database_id FROM core.DatabaseInfo WHERE lower(name) = lower(:'VAR1')) d
+WHERE 'studyexternaldatabaserelease' NOT IN (SELECT lower(name) FROM core.TableInfo
+                                    WHERE database_id = d.database_id);
+
+-----------------------------------------------------------
+
+CREATE TABLE EDA.EntityType (
  entity_type_id            NUMERIC(12) NOT NULL,
  name                      VARCHAR(200) NOT NULL,
  type_id                   NUMERIC(10),
@@ -71,21 +111,21 @@ CREATE TABLE :VAR1.EntityType (
  row_group_id                 NUMERIC(3) NOT NULL,
  row_project_id               NUMERIC(4) NOT NULL,
  row_alg_invocation_id        NUMERIC(12) NOT NULL,
- FOREIGN KEY (study_id) REFERENCES :VAR1.study,
- FOREIGN KEY (type_id) REFERENCES :VAR2.ontologyterm,
+ FOREIGN KEY (study_id) REFERENCES EDA.study,
+ FOREIGN KEY (type_id) REFERENCES SRES.ontologyterm,
  PRIMARY KEY (entity_type_id)
 );
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON :VAR1.EntityType TO gus_w;
-GRANT SELECT ON :VAR1.EntityType TO gus_r;
+GRANT INSERT, SELECT, UPDATE, DELETE ON EDA.EntityType TO gus_w;
+GRANT SELECT ON EDA.EntityType TO gus_r;
 
-CREATE SEQUENCE :VAR1.EntityType_sq;
-GRANT SELECT ON :VAR1.EntityType_sq TO gus_w;
-GRANT SELECT ON :VAR1.EntityType_sq TO gus_r;
+CREATE SEQUENCE EDA.EntityType_sq;
+GRANT SELECT ON EDA.EntityType_sq TO gus_w;
+GRANT SELECT ON EDA.EntityType_sq TO gus_r;
 
-CREATE UNIQUE INDEX entitytype_ix_1 ON :VAR1.entitytype (study_id, entity_type_id) ;
-CREATE UNIQUE INDEX entitytype_ix_2 ON :VAR1.entitytype (type_id, entity_type_id) ;
-CREATE UNIQUE INDEX entitytype_ix_3 ON :VAR1.entitytype (study_id, internal_abbrev) ;
+CREATE UNIQUE INDEX entitytype_ix_1 ON EDA.entitytype (study_id, entity_type_id) ;
+CREATE UNIQUE INDEX entitytype_ix_2 ON EDA.entitytype (type_id, entity_type_id) ;
+CREATE UNIQUE INDEX entitytype_ix_3 ON EDA.entitytype (study_id, internal_abbrev) ;
 
 
 INSERT INTO core.TableInfo
@@ -106,7 +146,7 @@ WHERE 'entitytype' NOT IN (SELECT lower(name) FROM core.TableInfo
 
 -----------------------------------------------------------
 
-CREATE TABLE :VAR1.ProcessType (
+CREATE TABLE EDA.ProcessType (
  process_type_id            NUMERIC(12) NOT NULL,
  name                         VARCHAR(200) NOT NULL,
  description                  VARCHAR(4000),
@@ -122,18 +162,18 @@ CREATE TABLE :VAR1.ProcessType (
  row_group_id                 NUMERIC(3) NOT NULL,
  row_project_id               NUMERIC(4) NOT NULL,
  row_alg_invocation_id        NUMERIC(12) NOT NULL,
-FOREIGN KEY (type_id) REFERENCES :VAR2.ontologyterm,
+FOREIGN KEY (type_id) REFERENCES SRES.ontologyterm,
  PRIMARY KEY (process_type_id)
 );
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON :VAR1.ProcessType TO gus_w;
-GRANT SELECT ON :VAR1.ProcessType TO gus_r;
+GRANT INSERT, SELECT, UPDATE, DELETE ON EDA.ProcessType TO gus_w;
+GRANT SELECT ON EDA.ProcessType TO gus_r;
 
-CREATE SEQUENCE :VAR1.ProcessType_sq;
-GRANT SELECT ON :VAR1.ProcessType_sq TO gus_w;
-GRANT SELECT ON :VAR1.ProcessType_sq TO gus_r;
+CREATE SEQUENCE EDA.ProcessType_sq;
+GRANT SELECT ON EDA.ProcessType_sq TO gus_w;
+GRANT SELECT ON EDA.ProcessType_sq TO gus_r;
 
-CREATE INDEX processtype_ix_1 ON :VAR1.processtype (type_id, process_type_id) ;
+CREATE INDEX processtype_ix_1 ON EDA.processtype (type_id, process_type_id) ;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
@@ -153,7 +193,7 @@ WHERE 'processtype' NOT IN (SELECT lower(name) FROM core.TableInfo
 
 -----------------------------------------------------------
 
-CREATE TABLE :VAR1.EntityAttributes (
+CREATE TABLE EDA.EntityAttributes (
  entity_attributes_id         NUMERIC(12) NOT NULL,
  stable_id                    VARCHAR(200) NOT NULL,
  entity_type_id               NUMERIC(12) NOT NULL,
@@ -170,21 +210,21 @@ CREATE TABLE :VAR1.EntityAttributes (
  row_project_id               NUMERIC(4) NOT NULL,
  row_alg_invocation_id        NUMERIC(12) NOT NULL,
  PRIMARY KEY (entity_attributes_id),
-FOREIGN KEY (entity_type_id) REFERENCES :VAR1.EntityType (entity_type_id) --,
+FOREIGN KEY (entity_type_id) REFERENCES EDA.EntityType (entity_type_id) --,
 --CONSTRAINT ensure_va_json CHECK (atts is json)
 );
 
 -- 
---CREATE SEARCH INDEX :VAR1.va_search_ix ON :VAR1.entityattributes (atts) FOR JSON;
+--CREATE SEARCH INDEX EDA.va_search_ix ON EDA.entityattributes (atts) FOR JSON;
 
-CREATE INDEX entityattributes_ix_1 ON :VAR1.entityattributes (entity_type_id, entity_attributes_id) ;
+CREATE INDEX entityattributes_ix_1 ON EDA.entityattributes (entity_type_id, entity_attributes_id) ;
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON :VAR1.EntityAttributes TO gus_w;
-GRANT SELECT ON :VAR1.EntityAttributes TO gus_r;
+GRANT INSERT, SELECT, UPDATE, DELETE ON EDA.EntityAttributes TO gus_w;
+GRANT SELECT ON EDA.EntityAttributes TO gus_r;
 
-CREATE SEQUENCE :VAR1.EntityAttributes_sq;
-GRANT SELECT ON :VAR1.EntityAttributes_sq TO gus_w;
-GRANT SELECT ON :VAR1.EntityAttributes_sq TO gus_r;
+CREATE SEQUENCE EDA.EntityAttributes_sq;
+GRANT SELECT ON EDA.EntityAttributes_sq TO gus_w;
+GRANT SELECT ON EDA.EntityAttributes_sq TO gus_r;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
@@ -204,7 +244,7 @@ WHERE 'entityattributes' NOT IN (SELECT lower(name) FROM core.TableInfo
 
 -----------------------------------------------------------
 
-CREATE TABLE :VAR1.EntityClassification (
+CREATE TABLE EDA.EntityClassification (
  entity_classification_id         NUMERIC(12) NOT NULL,
  entity_attributes_id         NUMERIC(12) NOT NULL,
  entity_type_id               NUMERIC(12) NOT NULL,
@@ -219,20 +259,20 @@ CREATE TABLE :VAR1.EntityClassification (
  row_group_id                 NUMERIC(3) NOT NULL,
  row_project_id               NUMERIC(4) NOT NULL,
  row_alg_invocation_id        NUMERIC(12) NOT NULL,
- FOREIGN KEY (entity_type_id) REFERENCES :VAR1.EntityType (entity_type_id),
- FOREIGN KEY (entity_attributes_id) REFERENCES :VAR1.EntityAttributes (entity_attributes_id),
+ FOREIGN KEY (entity_type_id) REFERENCES EDA.EntityType (entity_type_id),
+ FOREIGN KEY (entity_attributes_id) REFERENCES EDA.EntityAttributes (entity_attributes_id),
  PRIMARY KEY (entity_classification_id)
 );
 
-CREATE INDEX entityclassification_ix_1 ON :VAR1.entityclassification (entity_type_id, entity_attributes_id) ;
-CREATE INDEX entityclassification_ix_2 ON :VAR1.entityclassification (entity_attributes_id, entity_type_id) ;
+CREATE INDEX entityclassification_ix_1 ON EDA.entityclassification (entity_type_id, entity_attributes_id) ;
+CREATE INDEX entityclassification_ix_2 ON EDA.entityclassification (entity_attributes_id, entity_type_id) ;
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON :VAR1.EntityClassification TO gus_w;
-GRANT SELECT ON :VAR1.EntityClassification TO gus_r;
+GRANT INSERT, SELECT, UPDATE, DELETE ON EDA.EntityClassification TO gus_w;
+GRANT SELECT ON EDA.EntityClassification TO gus_r;
 
-CREATE SEQUENCE :VAR1.EntityClassification_sq;
-GRANT SELECT ON :VAR1.EntityClassification_sq TO gus_w;
-GRANT SELECT ON :VAR1.EntityClassification_sq TO gus_r;
+CREATE SEQUENCE EDA.EntityClassification_sq;
+GRANT SELECT ON EDA.EntityClassification_sq TO gus_w;
+GRANT SELECT ON EDA.EntityClassification_sq TO gus_r;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
@@ -252,7 +292,7 @@ WHERE 'entityclassification' NOT IN (SELECT lower(name) FROM core.TableInfo
 
 -----------------------------------------------------------
 
-CREATE TABLE :VAR1.ProcessAttributes (
+CREATE TABLE EDA.ProcessAttributes (
  process_attributes_id           NUMERIC(12) NOT NULL,
  process_type_id                NUMERIC(12) NOT NULL,
  in_entity_id                 NUMERIC(12) NOT NULL,
@@ -269,24 +309,24 @@ CREATE TABLE :VAR1.ProcessAttributes (
  row_group_id                 NUMERIC(3) NOT NULL,
  row_project_id               NUMERIC(4) NOT NULL,
  row_alg_invocation_id        NUMERIC(12) NOT NULL,
- FOREIGN KEY (in_entity_id) REFERENCES :VAR1.entityattributes (entity_attributes_id),
- FOREIGN KEY (out_entity_id) REFERENCES :VAR1.entityattributes (entity_attributes_id),
- FOREIGN KEY (process_type_id) REFERENCES :VAR1.processtype (process_type_id),
+ FOREIGN KEY (in_entity_id) REFERENCES EDA.entityattributes (entity_attributes_id),
+ FOREIGN KEY (out_entity_id) REFERENCES EDA.entityattributes (entity_attributes_id),
+ FOREIGN KEY (process_type_id) REFERENCES EDA.processtype (process_type_id),
  PRIMARY KEY (process_attributes_id) -- ,
 --  CONSTRAINT ensure_ea_json CHECK (atts is json)   
 );
 
-CREATE INDEX ea_in_ix ON :VAR1.processattributes (in_entity_id, out_entity_id, process_attributes_id) ;
-CREATE INDEX ea_out_ix ON :VAR1.processattributes (out_entity_id, in_entity_id, process_attributes_id) ;
+CREATE INDEX ea_in_ix ON EDA.processattributes (in_entity_id, out_entity_id, process_attributes_id) ;
+CREATE INDEX ea_out_ix ON EDA.processattributes (out_entity_id, in_entity_id, process_attributes_id) ;
 
-CREATE INDEX ea_ix_1 ON :VAR1.processattributes (process_type_id, process_attributes_id) ;
+CREATE INDEX ea_ix_1 ON EDA.processattributes (process_type_id, process_attributes_id) ;
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON :VAR1.ProcessAttributes TO gus_w;
-GRANT SELECT ON :VAR1.ProcessAttributes TO gus_r;
+GRANT INSERT, SELECT, UPDATE, DELETE ON EDA.ProcessAttributes TO gus_w;
+GRANT SELECT ON EDA.ProcessAttributes TO gus_r;
 
-CREATE SEQUENCE :VAR1.ProcessAttributes_sq;
-GRANT SELECT ON :VAR1.ProcessAttributes_sq TO gus_w;
-GRANT SELECT ON :VAR1.ProcessAttributes_sq TO gus_r;
+CREATE SEQUENCE EDA.ProcessAttributes_sq;
+GRANT SELECT ON EDA.ProcessAttributes_sq TO gus_w;
+GRANT SELECT ON EDA.ProcessAttributes_sq TO gus_r;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
@@ -306,7 +346,7 @@ WHERE 'processattributes' NOT IN (SELECT lower(name) FROM core.TableInfo
 
 -----------------------------------------------------------
 
-CREATE TABLE :VAR1.EntityTypeGraph (
+CREATE TABLE EDA.EntityTypeGraph (
  entity_type_graph_id           NUMERIC(12) NOT NULL,
  study_id                       NUMERIC(12) NOT NULL,
  study_stable_id                varchar(200),
@@ -332,22 +372,22 @@ CREATE TABLE :VAR1.EntityTypeGraph (
  row_group_id                 NUMERIC(3) NOT NULL,
  row_project_id               NUMERIC(4) NOT NULL,
  row_alg_invocation_id        NUMERIC(12) NOT NULL,
- FOREIGN KEY (study_id) REFERENCES :VAR1.study (study_id),
- FOREIGN KEY (parent_id) REFERENCES :VAR1.entitytype (entity_type_id),
- FOREIGN KEY (entity_type_id) REFERENCES :VAR1.entitytype (entity_type_id),
+ FOREIGN KEY (study_id) REFERENCES EDA.study (study_id),
+ FOREIGN KEY (parent_id) REFERENCES EDA.entitytype (entity_type_id),
+ FOREIGN KEY (entity_type_id) REFERENCES EDA.entitytype (entity_type_id),
  PRIMARY KEY (entity_type_graph_id)
 );
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON :VAR1.EntityTypeGraph TO gus_w;
-GRANT SELECT ON :VAR1.EntityTypeGraph TO gus_r;
+GRANT INSERT, SELECT, UPDATE, DELETE ON EDA.EntityTypeGraph TO gus_w;
+GRANT SELECT ON EDA.EntityTypeGraph TO gus_r;
 
-CREATE SEQUENCE :VAR1.EntityTypeGraph_sq;
-GRANT SELECT ON :VAR1.EntityTypeGraph_sq TO gus_w;
-GRANT SELECT ON :VAR1.EntityTypeGraph_sq TO gus_r;
+CREATE SEQUENCE EDA.EntityTypeGraph_sq;
+GRANT SELECT ON EDA.EntityTypeGraph_sq TO gus_w;
+GRANT SELECT ON EDA.EntityTypeGraph_sq TO gus_r;
 
-CREATE INDEX entitytypegraph_ix_1 ON :VAR1.entitytypegraph (study_id, entity_type_id, parent_id, entity_type_graph_id) ;
-CREATE INDEX entitytypegraph_ix_2 ON :VAR1.entitytypegraph (parent_id, entity_type_graph_id) ;
-CREATE INDEX entitytypegraph_ix_3 ON :VAR1.entitytypegraph (entity_type_id, entity_type_graph_id) ;
+CREATE INDEX entitytypegraph_ix_1 ON EDA.entitytypegraph (study_id, entity_type_id, parent_id, entity_type_graph_id) ;
+CREATE INDEX entitytypegraph_ix_2 ON EDA.entitytypegraph (parent_id, entity_type_graph_id) ;
+CREATE INDEX entitytypegraph_ix_3 ON EDA.entitytypegraph (entity_type_id, entity_type_graph_id) ;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
@@ -368,7 +408,7 @@ WHERE 'entitytypegraph' NOT IN (SELECT lower(name) FROM core.TableInfo
 
 -----------------------------------------------------------
 
-CREATE TABLE :VAR1.AttributeUnit (
+CREATE TABLE EDA.AttributeUnit (
  attribute_unit_id                NUMERIC(12) NOT NULL,
  entity_type_id                      NUMERIC(12) NOT NULL,
  attr_ontology_term_id               NUMERIC(10) NOT NULL,
@@ -384,22 +424,22 @@ CREATE TABLE :VAR1.AttributeUnit (
  row_group_id                 NUMERIC(3) NOT NULL,
  row_project_id               NUMERIC(4) NOT NULL,
  row_alg_invocation_id        NUMERIC(12) NOT NULL,
- FOREIGN KEY (entity_type_id) REFERENCES :VAR1.EntityType,
-FOREIGN KEY (attr_ontology_term_id) REFERENCES :VAR2.ontologyterm,
-FOREIGN KEY (unit_ontology_term_id) REFERENCES :VAR2.ontologyterm,
+ FOREIGN KEY (entity_type_id) REFERENCES EDA.EntityType,
+FOREIGN KEY (attr_ontology_term_id) REFERENCES SRES.ontologyterm,
+FOREIGN KEY (unit_ontology_term_id) REFERENCES SRES.ontologyterm,
  PRIMARY KEY (attribute_unit_id)
 );
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON :VAR1.AttributeUnit TO gus_w;
-GRANT SELECT ON :VAR1.AttributeUnit TO gus_r;
+GRANT INSERT, SELECT, UPDATE, DELETE ON EDA.AttributeUnit TO gus_w;
+GRANT SELECT ON EDA.AttributeUnit TO gus_r;
 
-CREATE SEQUENCE :VAR1.AttributeUnit_sq;
-GRANT SELECT ON :VAR1.AttributeUnit_sq TO gus_w;
-GRANT SELECT ON :VAR1.AttributeUnit_sq TO gus_r;
+CREATE SEQUENCE EDA.AttributeUnit_sq;
+GRANT SELECT ON EDA.AttributeUnit_sq TO gus_w;
+GRANT SELECT ON EDA.AttributeUnit_sq TO gus_r;
 
-CREATE INDEX attributeunit_ix_1 ON :VAR1.attributeunit (entity_type_id, attr_ontology_term_id, unit_ontology_term_id, attribute_unit_id) ;
-CREATE INDEX attributeunit_ix_2 ON :VAR1.attributeunit (attr_ontology_term_id, attribute_unit_id) ;
-CREATE INDEX attributeunit_ix_3 ON :VAR1.attributeunit (unit_ontology_term_id, attribute_unit_id) ;
+CREATE INDEX attributeunit_ix_1 ON EDA.attributeunit (entity_type_id, attr_ontology_term_id, unit_ontology_term_id, attribute_unit_id) ;
+CREATE INDEX attributeunit_ix_2 ON EDA.attributeunit (attr_ontology_term_id, attribute_unit_id) ;
+CREATE INDEX attributeunit_ix_3 ON EDA.attributeunit (unit_ontology_term_id, attribute_unit_id) ;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
@@ -420,7 +460,7 @@ WHERE 'attributeunit' NOT IN (SELECT lower(name) FROM core.TableInfo
 -----------------------------------------------------------
 
 
-CREATE TABLE :VAR1.ProcessTypeComponent (
+CREATE TABLE EDA.ProcessTypeComponent (
  process_type_component_id       NUMERIC(12) NOT NULL,
  process_type_id                 NUMERIC(12) NOT NULL,
  component_id                 NUMERIC(12) NOT NULL,
@@ -436,20 +476,20 @@ CREATE TABLE :VAR1.ProcessTypeComponent (
  row_group_id                 NUMERIC(3) NOT NULL,
  row_project_id               NUMERIC(4) NOT NULL,
  row_alg_invocation_id        NUMERIC(12) NOT NULL,
- FOREIGN KEY (process_type_id) REFERENCES :VAR1.ProcessType (process_type_id),
- FOREIGN KEY (component_id) REFERENCES :VAR1.ProcessType (process_type_id),
+ FOREIGN KEY (process_type_id) REFERENCES EDA.ProcessType (process_type_id),
+ FOREIGN KEY (component_id) REFERENCES EDA.ProcessType (process_type_id),
  PRIMARY KEY (process_type_component_id)
 );
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON :VAR1.ProcessTypeComponent TO gus_w;
-GRANT SELECT ON :VAR1.ProcessTypeComponent TO gus_r;
+GRANT INSERT, SELECT, UPDATE, DELETE ON EDA.ProcessTypeComponent TO gus_w;
+GRANT SELECT ON EDA.ProcessTypeComponent TO gus_r;
 
-CREATE SEQUENCE :VAR1.ProcessTypeComponent_sq;
-GRANT SELECT ON :VAR1.ProcessTypeComponent_sq TO gus_w;
-GRANT SELECT ON :VAR1.ProcessTypeComponent_sq TO gus_r;
+CREATE SEQUENCE EDA.ProcessTypeComponent_sq;
+GRANT SELECT ON EDA.ProcessTypeComponent_sq TO gus_w;
+GRANT SELECT ON EDA.ProcessTypeComponent_sq TO gus_r;
 
-CREATE INDEX ptc_ix_1 ON :VAR1.processtypecomponent (process_type_id, component_id, order_num, process_type_component_id) ;
-CREATE INDEX ptc_ix_2 ON :VAR1.processtypecomponent (component_id, process_type_component_id) ;
+CREATE INDEX ptc_ix_1 ON EDA.processtypecomponent (process_type_id, component_id, order_num, process_type_component_id) ;
+CREATE INDEX ptc_ix_2 ON EDA.processtypecomponent (component_id, process_type_component_id) ;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
@@ -471,7 +511,7 @@ WHERE 'processtypecomponent' NOT IN (SELECT lower(name) FROM core.TableInfo
 -----------------------------------------------------------
 
 
-CREATE TABLE :VAR1.Attribute (
+CREATE TABLE EDA.Attribute (
   attribute_id                  NUMERIC(12) NOT NULL,
   entity_type_id                NUMERIC(12) not null,
   entity_type_stable_id         varchar(255),
@@ -507,22 +547,22 @@ CREATE TABLE :VAR1.Attribute (
   row_group_id                 NUMERIC(3) NOT NULL,
   row_project_id               NUMERIC(4) NOT NULL,
   row_alg_invocation_id        NUMERIC(12) NOT NULL,
-  FOREIGN KEY (entity_type_id) REFERENCES :VAR1.EntityType (entity_type_id),
-  FOREIGN KEY (process_type_id) REFERENCES :VAR1.ProcessType (process_type_id),
- FOREIGN KEY (ontology_term_id) REFERENCES :VAR2.ontologyterm (ontology_term_id),
- FOREIGN KEY (unit_ontology_term_id) REFERENCES :VAR2.ontologyterm (ontology_term_id),
+  FOREIGN KEY (entity_type_id) REFERENCES EDA.EntityType (entity_type_id),
+  FOREIGN KEY (process_type_id) REFERENCES EDA.ProcessType (process_type_id),
+ FOREIGN KEY (ontology_term_id) REFERENCES SRES.ontologyterm (ontology_term_id),
+ FOREIGN KEY (unit_ontology_term_id) REFERENCES SRES.ontologyterm (ontology_term_id),
   PRIMARY KEY (attribute_id) -- ,
 --  CONSTRAINT ensure_ov_json CHECK (ordered_values is json)   
 );
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON :VAR1.Attribute TO gus_w;
-GRANT SELECT ON :VAR1.Attribute TO gus_r;
+GRANT INSERT, SELECT, UPDATE, DELETE ON EDA.Attribute TO gus_w;
+GRANT SELECT ON EDA.Attribute TO gus_r;
 
-CREATE SEQUENCE :VAR1.Attribute_sq;
-GRANT SELECT ON :VAR1.Attribute_sq TO gus_w;
-GRANT SELECT ON :VAR1.Attribute_sq TO gus_r;
+CREATE SEQUENCE EDA.Attribute_sq;
+GRANT SELECT ON EDA.Attribute_sq TO gus_w;
+GRANT SELECT ON EDA.Attribute_sq TO gus_r;
 
-CREATE INDEX attribute_ix_1 ON :VAR1.attribute (entity_type_id, process_type_id, stable_id, attribute_id) ;
+CREATE INDEX attribute_ix_1 ON EDA.attribute (entity_type_id, process_type_id, stable_id, attribute_id) ;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
@@ -544,7 +584,7 @@ WHERE 'attribute' NOT IN (SELECT lower(name) FROM core.TableInfo
 
 -----------------------------------------------------------
 
-CREATE TABLE :VAR1.AttributeGraph (
+CREATE TABLE EDA.AttributeGraph (
   attribute_graph_id                  NUMERIC(12) NOT NULL,
   study_id            NUMERIC(12) NOT NULL, 
   ontology_term_id         NUMERIC(10),
@@ -582,22 +622,22 @@ CREATE TABLE :VAR1.AttributeGraph (
   row_group_id                 NUMERIC(3) NOT NULL,
   row_project_id               NUMERIC(4) NOT NULL,
   row_alg_invocation_id        NUMERIC(12) NOT NULL,
- FOREIGN KEY (ontology_term_id) REFERENCES :VAR2.ontologyterm (ontology_term_id),
- FOREIGN KEY (parent_ontology_term_id) REFERENCES :VAR2.ontologyterm (ontology_term_id),
-  FOREIGN KEY (study_id) REFERENCES :VAR1.study (study_id),
+ FOREIGN KEY (ontology_term_id) REFERENCES SRES.ontologyterm (ontology_term_id),
+ FOREIGN KEY (parent_ontology_term_id) REFERENCES SRES.ontologyterm (ontology_term_id),
+  FOREIGN KEY (study_id) REFERENCES EDA.study (study_id),
   PRIMARY KEY (attribute_graph_id) -- ,
 --  CONSTRAINT ensure_ordv_json CHECK (ordinal_values is json),
 --  CONSTRAINT ensure_prolbl_json CHECK (provider_label is json)
 );
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON :VAR1.AttributeGraph TO gus_w;
-GRANT SELECT ON :VAR1.AttributeGraph TO gus_r;
+GRANT INSERT, SELECT, UPDATE, DELETE ON EDA.AttributeGraph TO gus_w;
+GRANT SELECT ON EDA.AttributeGraph TO gus_r;
 
-CREATE SEQUENCE :VAR1.AttributeGraph_sq;
-GRANT SELECT ON :VAR1.AttributeGraph_sq TO gus_w;
-GRANT SELECT ON :VAR1.AttributeGraph_sq TO gus_r;
+CREATE SEQUENCE EDA.AttributeGraph_sq;
+GRANT SELECT ON EDA.AttributeGraph_sq TO gus_w;
+GRANT SELECT ON EDA.AttributeGraph_sq TO gus_r;
 
-CREATE INDEX attributegraph_ix_1 ON :VAR1.attributegraph (study_id, ontology_term_id, parent_ontology_term_id, attribute_graph_id) ;
+CREATE INDEX attributegraph_ix_1 ON EDA.attributegraph (study_id, ontology_term_id, parent_ontology_term_id, attribute_graph_id) ;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
@@ -616,7 +656,7 @@ WHERE 'attributegraph' NOT IN (SELECT lower(name) FROM core.TableInfo
                                     WHERE database_id = d.database_id);
 
 
-CREATE TABLE :VAR1.StudyCharacteristic (
+CREATE TABLE EDA.StudyCharacteristic (
   study_characteristic_id      NUMERIC(5) NOT NULL,
   study_id                     NUMERIC(12) NOT NULL, 
   attribute_id                 NUMERIC(12) NOT NULL,
@@ -633,20 +673,20 @@ CREATE TABLE :VAR1.StudyCharacteristic (
   row_group_id                 NUMERIC(3) NOT NULL,
   row_project_id               NUMERIC(4) NOT NULL,
   row_alg_invocation_id        NUMERIC(12) NOT NULL,
- FOREIGN KEY (value_ontology_term_id) REFERENCES :VAR2.ontologyterm (ontology_term_id),
- FOREIGN KEY (attribute_id) REFERENCES :VAR2.ontologyterm (ontology_term_id),
-  FOREIGN KEY (study_id) REFERENCES :VAR1.study (study_id),
+ FOREIGN KEY (value_ontology_term_id) REFERENCES SRES.ontologyterm (ontology_term_id),
+ FOREIGN KEY (attribute_id) REFERENCES SRES.ontologyterm (ontology_term_id),
+  FOREIGN KEY (study_id) REFERENCES EDA.study (study_id),
   PRIMARY KEY (study_characteristic_id)
 );
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON :VAR1.StudyCharacteristic TO gus_w;
-GRANT SELECT ON :VAR1.StudyCharacteristic TO gus_r;
+GRANT INSERT, SELECT, UPDATE, DELETE ON EDA.StudyCharacteristic TO gus_w;
+GRANT SELECT ON EDA.StudyCharacteristic TO gus_r;
 
-CREATE SEQUENCE :VAR1.StudyCharacteristic_sq;
-GRANT SELECT ON :VAR1.StudyCharacteristic_sq TO gus_w;
-GRANT SELECT ON :VAR1.StudyCharacteristic_sq TO gus_r;
+CREATE SEQUENCE EDA.StudyCharacteristic_sq;
+GRANT SELECT ON EDA.StudyCharacteristic_sq TO gus_w;
+GRANT SELECT ON EDA.StudyCharacteristic_sq TO gus_r;
 
-CREATE INDEX StudyCharacteristic_ix_1 ON :VAR1.StudyCharacteristic (study_id, attribute_id, value) ;
+CREATE INDEX StudyCharacteristic_ix_1 ON EDA.StudyCharacteristic (study_id, attribute_id, value) ;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
@@ -666,7 +706,7 @@ WHERE 'study_characteristic_id' NOT IN (SELECT lower(name) FROM core.TableInfo
 
 
 -- for mega study, we need to prefix the stable id with the study stable id (bfv=big fat view)
-create or replace view :VAR1.entityattributes_bfv as
+create or replace view EDA.entityattributes_bfv as
 select ea.entity_attributes_id
      ,  case when ec.entity_type_id = ea.entity_type_id
             then ea.stable_id
@@ -680,22 +720,22 @@ select ea.entity_attributes_id
      , s.stable_id as study_stable_id
      , s.INTERNAL_ABBREV as study_internal_abbrev
      , s.study_id as study_id
-from :VAR1.entityclassification ec
-   , :VAR1.entityattributes ea
-   , :VAR1.entitytype et
-   , :VAR1.study s
-   , :VAR1.entitytype et2
-   , :VAR1.study s2
+from EDA.entityclassification ec
+   , EDA.entityattributes ea
+   , EDA.entitytype et
+   , EDA.study s
+   , EDA.entitytype et2
+   , EDA.study s2
  where ec.entity_attributes_id = ea.entity_attributes_id
 and ec.entity_type_id = et.entity_type_id
 and et.study_id = s.study_id
 and ea.ENTITY_TYPE_ID = et2.entity_type_id
 and et2.study_id = s2.study_id;
 
-GRANT select ON :VAR1.entityattributes_bfv TO gus_r;
-GRANT select ON :VAR1.entityattributes_bfv TO gus_w;
+GRANT select ON EDA.entityattributes_bfv TO gus_r;
+GRANT select ON EDA.entityattributes_bfv TO gus_w;
 
-CREATE TABLE :VAR1.AnnotationProperties (
+CREATE TABLE EDA.AnnotationProperties (
   annotation_properties_id   NUMERIC(10) NOT NULL,
   ontology_term_id       NUMERIC(10) NOT NULL,
   study_id            NUMERIC(12) NOT NULL,
@@ -712,18 +752,18 @@ MODIFICATION_DATE     TIMESTAMP,
   ROW_GROUP_ID          NUMERIC(3),
   ROW_PROJECT_ID        NUMERIC(4),
   ROW_ALG_INVOCATION_ID NUMERIC(12),
-  FOREIGN KEY (ontology_term_id) REFERENCES :VAR2.OntologyTerm (ontology_term_id),
-  FOREIGN KEY (study_id) REFERENCES :VAR1.study (study_id),
- FOREIGN KEY (external_database_release_id) REFERENCES :VAR2.ExternalDatabaseRelease,
+  FOREIGN KEY (ontology_term_id) REFERENCES SRES.OntologyTerm (ontology_term_id),
+  FOREIGN KEY (study_id) REFERENCES EDA.study (study_id),
+ FOREIGN KEY (external_database_release_id) REFERENCES SRES.ExternalDatabaseRelease,
 PRIMARY KEY (annotation_properties_id) --,
 --  CONSTRAINT ensure_anp_json CHECK (props is json)
 );
 
-CREATE SEQUENCE :VAR1.AnnotationProperties_sq;
+CREATE SEQUENCE EDA.AnnotationProperties_sq;
 
-GRANT insert, select, update, delete ON :VAR1.AnnotationProperties TO gus_w;
-GRANT select ON :VAR1.AnnotationProperties TO gus_r;
-GRANT select ON :VAR1.AnnotationProperties_sq TO gus_w;
+GRANT insert, select, update, delete ON EDA.AnnotationProperties TO gus_w;
+GRANT select ON EDA.AnnotationProperties TO gus_r;
+GRANT select ON EDA.AnnotationProperties_sq TO gus_w;
 
 
 INSERT INTO core.TableInfo
