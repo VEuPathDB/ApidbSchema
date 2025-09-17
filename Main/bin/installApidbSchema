@@ -87,7 +87,6 @@ my @create = qw(
   createApidbSchema.sql
   createApidbTuningSchema.sql
   createWebreadySchema.sql
-  createApidbUserDatasetsSchema.sql
   createChebiSchema.sql
   createOrganism.sql
   createEdaSchema.sql
@@ -149,8 +148,6 @@ my @create = qw(
   createFeatureLocation.sql
   createCrisprPhenotype.sql
   createGoSubset.sql
-  createUserDatasetCoreTables.sql
-  createUserDatasetTypeTables.sql
   createDatabaseTableMapping.sql
   createEntityGraphTables.sql
   createEdaUdModifications.sql
@@ -168,7 +165,6 @@ my @create = qw(
   createProteinBedGraph.sql
   createMsPeptide.sql
   createLongReadTranscript.sql
-    
 );
 
 my @delete = qw(
@@ -190,10 +186,8 @@ my @gusSchemas = qw(
 my @apiDbSchemas = qw(
   APIDB
   APIDBTUNING
-  APIDBUSERDATASETS
   CHEBI
   EDA
-  EDA_UD
 );
 
 my $filesDir = "$ENV{GUS_HOME}/lib/sql/apidbschema/$dbVendor";
@@ -207,18 +201,8 @@ if ($create) {
      my $filePath = "$filesDir/$sqlFile";
 
      my @sqlplusParamValues;
-     if($sqlFile eq 'createEntityGraphTables.sql') {
-       $sqlplusParamValues[0] = "EDA";
-       $sqlplusParamValues[1] = "SRES";
-       runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures, $runAsRole, @sqlplusParamValues);
-       $sqlplusParamValues[0] = "ApidbUserDatasets";
-       $sqlplusParamValues[1] = "ApidbUserDatasets";
-       runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures, $runAsRole, @sqlplusParamValues);
-     }
+     runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures, $runAsRole, @sqlplusParamValues);
 
-     else {
-       runSql($login, $password, $dbh, $dbVendor, $filePath, $allowFailures, $runAsRole, @sqlplusParamValues);
-     }
   }
 } elsif ($dropApiDB) {
   if ($dbVendor eq 'Oracle') {
