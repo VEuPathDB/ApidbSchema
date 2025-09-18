@@ -351,9 +351,7 @@ CREATE TABLE EDA.EntityTypeGraph (
  study_id                       NUMERIC(12) NOT NULL,
  study_stable_id                varchar(200),
  parent_stable_id             varchar(255),
- parent_id                    NUMERIC(12),
  stable_id                    varchar(255),
- entity_type_id                NUMERIC(12),
  display_name                 VARCHAR(200) NOT NULL,
  display_name_plural          VARCHAR(200),
  description                  VARCHAR(4000),
@@ -373,8 +371,6 @@ CREATE TABLE EDA.EntityTypeGraph (
  row_project_id               NUMERIC(4) NOT NULL,
  row_alg_invocation_id        NUMERIC(12) NOT NULL,
  FOREIGN KEY (study_id) REFERENCES EDA.study (study_id),
- FOREIGN KEY (parent_id) REFERENCES EDA.entitytype (entity_type_id),
- FOREIGN KEY (entity_type_id) REFERENCES EDA.entitytype (entity_type_id),
  PRIMARY KEY (entity_type_graph_id)
 );
 
@@ -385,9 +381,7 @@ CREATE SEQUENCE EDA.EntityTypeGraph_sq;
 GRANT SELECT ON EDA.EntityTypeGraph_sq TO gus_w;
 GRANT SELECT ON EDA.EntityTypeGraph_sq TO gus_r;
 
-CREATE INDEX entitytypegraph_ix_1 ON EDA.entitytypegraph (study_id, entity_type_id, parent_id, entity_type_graph_id) ;
-CREATE INDEX entitytypegraph_ix_2 ON EDA.entitytypegraph (parent_id, entity_type_graph_id) ;
-CREATE INDEX entitytypegraph_ix_3 ON EDA.entitytypegraph (entity_type_id, entity_type_graph_id) ;
+CREATE INDEX entitytypegraph_ix_1 ON EDA.entitytypegraph (study_id, entity_type_graph_id) ;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
