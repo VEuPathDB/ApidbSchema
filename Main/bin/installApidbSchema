@@ -187,6 +187,7 @@ my @apiDbSchemas = qw(
   APIDBTUNING
   CHEBI
   EDA
+  WEBREADY
 );
 
 my $filesDir = "$ENV{GUS_HOME}/lib/sql/apidbschema/$dbVendor";
