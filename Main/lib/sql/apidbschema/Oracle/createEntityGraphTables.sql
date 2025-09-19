@@ -310,9 +310,7 @@ CREATE TABLE &1..EntityTypeGraph (
  study_id                       NUMBER(12) NOT NULL,
  study_stable_id                varchar2(200),
  parent_stable_id             varchar2(255),
- parent_id                    NUMBER(12),
  stable_id                    varchar2(255),
- entity_type_id                NUMBER(12) NOT NULL,
  display_name                 VARCHAR2(200) NOT NULL,
  display_name_plural          VARCHAR2(200),
  description                  VARCHAR2(4000),
@@ -332,8 +330,6 @@ CREATE TABLE &1..EntityTypeGraph (
  row_project_id               NUMBER(4) NOT NULL,
  row_alg_invocation_id        NUMBER(12) NOT NULL,
  FOREIGN KEY (study_id) REFERENCES &1..study,
- FOREIGN KEY (parent_id) REFERENCES &1..entitytype,
- FOREIGN KEY (entity_type_id) REFERENCES &1..entitytype,
  PRIMARY KEY (entity_type_graph_id)
 );
 
@@ -344,9 +340,8 @@ CREATE SEQUENCE &1..EntityTypeGraph_sq;
 GRANT SELECT ON &1..EntityTypeGraph_sq TO gus_w;
 GRANT SELECT ON &1..EntityTypeGraph_sq TO gus_r;
 
-CREATE INDEX &1..entitytypegraph_ix_1 ON &1..entitytypegraph (study_id, entity_type_id, parent_id, entity_type_graph_id) TABLESPACE indx;
+CREATE INDEX &1..entitytypegraph_ix_1 ON &1..entitytypegraph (study_id, entity_type_graph_id) TABLESPACE indx;
 CREATE INDEX &1..entitytypegraph_ix_2 ON &1..entitytypegraph (parent_id, entity_type_graph_id) TABLESPACE indx;
-CREATE INDEX &1..entitytypegraph_ix_3 ON &1..entitytypegraph (entity_type_id, entity_type_graph_id) TABLESPACE indx;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
