@@ -1,10 +1,10 @@
-DROP TABLE ApiDB.antiSmashCluster;
-DROP SEQUENCE ApiDB.antiSmashCluster_sq;
+DROP TABLE ApiDB.antiSmashClusterFeature;
+DROP SEQUENCE ApiDB.antiSmashClusterFeature_sq;
 DELETE FROM core.TableInfo
-WHERE lower(name) = lower('antiSmashCluster')
+WHERE lower(name) = lower('antiSmashClusterFeature')
   AND database_id = (SELECT database_id
-                      FROM core.DatabaseInfo
-                      WHERE lower(name) = 'apidb');
+                     FROM core.DatabaseInfo
+                     WHERE lower(name) = 'apidb');
 
 ------------------------------------------------------
  
@@ -18,10 +18,10 @@ WHERE lower(name) = lower('antiSmashFeature')
 
 ------------------------------------------------------
 
-DROP TABLE ApiDB.antiSmashClusterFeature;
-DROP SEQUENCE ApiDB.antiSmashClusterFeature_sq;
+DROP TABLE ApiDB.antiSmashCluster;
+DROP SEQUENCE ApiDB.antiSmashCluster_sq;
 DELETE FROM core.TableInfo
-WHERE lower(name) = lower('antiSmashClusterFeature')
+WHERE lower(name) = lower('antiSmashCluster')
   AND database_id = (SELECT database_id
-                      FROM core.DatabaseInfo
-                      WHERE lower(name) = 'apidb');
+                     FROM core.DatabaseInfo
+                     WHERE lower(name) = 'apidb');
