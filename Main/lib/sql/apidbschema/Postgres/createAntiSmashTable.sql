@@ -48,7 +48,7 @@ CREATE TABLE ApiDB.antiSmashCluster (
 CREATE TABLE ApiDB.antiSmashFeature (
    antismash_feature_id          NUMERIC(10),
    na_feature_id                 VARCHAR(100),
-   antiSmash_annotation          VARCHAR(100),
+   antismash_annotation          VARCHAR(100),
    MODIFICATION_DATE             TIMESTAMP,
    USER_READ                     NUMERIC(1),
    USER_WRITE                    NUMERIC(1),
@@ -86,7 +86,7 @@ CREATE TABLE ApiDB.antiSmashFeature (
    WHERE database_id = d.database_id)
 
 
------------------ Liking table -----------------------------------------------------------
+----------------- Linking table -----------------------------------------------------------
 CREATE TABLE ApiDB.AntismashClusterFeature (
     antismash_cluster_feature_id  NUMERIC(10),
     antismash_feature_id	  NUMERIC(10),
@@ -104,7 +104,7 @@ CREATE TABLE ApiDB.AntismashClusterFeature (
     ROW_ALG_INVOCATION_ID         NUMERIC(12),
     PRIMARY KEY (antismash_cluster_feature_id),
     FOREIGN KEY (antismash_feature_id) REFERENCES ApiDB.antiSmashFeature (antismash_feature_id),
-    FOREIGN KEY (antismash_cluster_id) REFERENCES ApiDB.antiSmashClutser (antismash_cluster_id)
+    FOREIGN KEY (antismash_cluster_id) REFERENCES ApiDB.antiSmashCluster (antismash_cluster_id)
   );
   
  
