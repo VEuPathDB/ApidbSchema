@@ -164,6 +164,7 @@ my @create = qw(
   createProteinBedGraph.sql
   createMsPeptide.sql
   createLongReadTranscript.sql
+  createAntiSmashTables.sql
 );
 
 my @delete = qw(
