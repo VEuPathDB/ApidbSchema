@@ -38,6 +38,11 @@ CREATE INDEX ssf_revix1
   ON apidb.SpliceSiteFeature (protocol_app_node_id, splice_site_feature_id)
 ;
 
+
+CREATE INDEX ssf_jbrowse
+  ON apidb.SpliceSiteFeature (type, na_sequence_id, strand, segment_start, splice_site_feature_id)
+;
+
 CREATE SEQUENCE apidb.SpliceSiteFeature_sq;
 
 GRANT insert, select, update, delete ON apidb.SpliceSiteFeature TO gus_w;
