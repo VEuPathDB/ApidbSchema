@@ -5,6 +5,7 @@ CREATE TABLE ApiDB.antiSmashCluster (
   cluster_start         NUMERIC(10),
   cluster_end           NUMERIC(10),
   category              VARCHAR(100),
+  EXTERNAL_DATABASE_RELEASE_ID   NUMERIC(10),
   MODIFICATION_DATE     TIMESTAMP,
   USER_READ             NUMERIC(1),
   USER_WRITE            NUMERIC(1),
@@ -16,7 +17,8 @@ CREATE TABLE ApiDB.antiSmashCluster (
   ROW_GROUP_ID          NUMERIC(3),
   ROW_PROJECT_ID        NUMERIC(4),
   ROW_ALG_INVOCATION_ID NUMERIC(12),
-  PRIMARY KEY (antismash_cluster_id)
+  PRIMARY KEY (antismash_cluster_id),
+  FOREIGN KEY (EXTERNAL_DATABASE_RELEASE_ID) REFERENCES sres.ExternalDatabaseRelease (EXTERNAL_DATABASE_RELEASE_ID)
 );
  
  
@@ -49,6 +51,7 @@ CREATE TABLE ApiDB.antiSmashFeature (
   antismash_feature_id  NUMERIC(10),
   na_feature_id         NUMERIC(10),
   antismash_annotation  VARCHAR(100),
+  EXTERNAL_DATABASE_RELEASE_ID   NUMERIC(10),
   MODIFICATION_DATE     TIMESTAMP,
   USER_READ             NUMERIC(1),
   USER_WRITE            NUMERIC(1),
@@ -61,7 +64,8 @@ CREATE TABLE ApiDB.antiSmashFeature (
   ROW_PROJECT_ID        NUMERIC(4),
   ROW_ALG_INVOCATION_ID NUMERIC(12),
   PRIMARY KEY (antismash_feature_id),
-  FOREIGN KEY (na_feature_id) REFERENCES dots.nafeatureimp (na_feature_id)
+  FOREIGN KEY (na_feature_id) REFERENCES dots.nafeatureimp (na_feature_id),
+  FOREIGN KEY (EXTERNAL_DATABASE_RELEASE_ID) REFERENCES sres.ExternalDatabaseRelease (EXTERNAL_DATABASE_RELEASE_ID)
 );
  
  
