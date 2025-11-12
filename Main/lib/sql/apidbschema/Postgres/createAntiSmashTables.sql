@@ -25,10 +25,10 @@ CREATE TABLE ApiDB.antiSmashCluster (
 CREATE SEQUENCE ApiDB.antiSmashCluster_sq;
 
 GRANT USAGE, SELECT, UPDATE ON SEQUENCE ApiDB.antiSmashCluster_sq TO gus_w;
+GRANT SELECT ON ApiDB.antiSmashCluster_sq TO gus_r;
 
 GRANT INSERT, SELECT, UPDATE, DELETE ON ApiDB.antiSmashCluster TO gus_w;
 GRANT SELECT ON ApiDB.antiSmashCluster TO gus_r;
-GRANT SELECT ON ApiDB.antiSmashCluster_sq TO gus_w;
 
 INSERT INTO core.TableInfo
   (table_id, name, table_type, primary_key_column, database_id,
@@ -74,10 +74,10 @@ CREATE TABLE ApiDB.antiSmashFeature (
 CREATE SEQUENCE ApiDB.antiSmashFeature_sq;
 
 GRANT USAGE, SELECT, UPDATE ON SEQUENCE ApiDB.antiSmashFeature_sq TO gus_w;
+GRANT SELECT ON ApiDB.antiSmashFeature_sq TO gus_r;
 
 GRANT INSERT, SELECT, UPDATE, DELETE ON ApiDB.antiSmashFeature TO gus_w;
 GRANT SELECT ON ApiDB.antiSmashFeature TO gus_r;
-GRANT SELECT ON ApiDB.antiSmashFeature_sq TO gus_w;
 
 INSERT INTO core.TableInfo
   (table_id, name, table_type, primary_key_column, database_id,
@@ -119,10 +119,10 @@ CREATE TABLE ApiDB.AntismashClusterFeature (
 CREATE SEQUENCE ApiDB.AntismashClusterFeature_sq;
 
 GRANT USAGE, SELECT, UPDATE ON SEQUENCE ApiDB.AntismashClusterFeature_sq TO gus_w;
+GRANT SELECT ON ApiDB.antiSmashClusterFeature_sq TO gus_r;
 
 GRANT INSERT, SELECT, UPDATE, DELETE ON ApiDB.AntismashClusterFeature TO gus_w;
 GRANT SELECT ON ApiDB.AntismashClusterFeature TO gus_r;
-GRANT SELECT ON ApiDB.AntismashClusterFeature_sq TO gus_w;
 
 INSERT INTO core.TableInfo
   (table_id, name, table_type, primary_key_column, database_id,
