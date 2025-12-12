@@ -2,7 +2,7 @@
 -- this is meant to supplement data in EDA tables;  long text is not handled well there
 create table ApiDB.GenePhenotype (
  gene_phenotype_id              NUMERIC(10) ,
- gene_source_id                 VARCHAR(80),
+ gene_source_id                 VARCHAR(80) NOT NULL,
  phenotype_stable_id            VARCHAR(200) NOT NULL,
  property                       VARCHAR(400) NOT NULL,
  text_value                     TEXT, -- leave this as "TEXT"  as some are very long
