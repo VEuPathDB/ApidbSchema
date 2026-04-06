@@ -21,7 +21,7 @@ CREATE SEQUENCE ApiDB.ArbaResults_sq;
 
 GRANT insert, select, update, delete ON ApiDB.ArbaResults TO gus_w;
 GRANT select ON ApiDB.ArbaResults TO gus_r;
-GRANT select ON ApiDB.ArbaResults_sq TO gus_w;
+GRANT USAGE, SELECT, UPDATE ON SEQUENCE ApiDB.ArbaResults_sq TO gus_w;
 
 INSERT INTO core.TableInfo
     (table_id, name, table_type, primary_key_column, database_id, is_versioned,
