@@ -142,6 +142,7 @@ my @create = qw(
   createWGCNAModuleEigengeneResults.sql
   createNAFeatureMetaCycle.sql
   createCNVTables.sql
+  createIndel.sql
   createRflpTables.sql
   createNAFeatureImage.sql
   createSequenceTaxon.sql
