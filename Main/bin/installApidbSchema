@@ -93,6 +93,7 @@ my @create = qw(
   createAnalysisMethodInvocation.sql
   createDatasource.sql
   createSnpTables.sql
+  createVariationTables.sql
   createGeneInteractionTables.sql
   createGeneFeatureProduct.sql
   createGeneFeatureName.sql
