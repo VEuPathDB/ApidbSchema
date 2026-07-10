@@ -1,4 +1,5 @@
 CREATE TABLE ApiDB.VariationFeature (
+  source_id                       VARCHAR(100)  NOT NULL,
   sequence_source_id              VARCHAR(60)   NOT NULL,
   location                        NUMERIC(12)   NOT NULL,
   reference_strain                VARCHAR(100)  NOT NULL,
@@ -33,7 +34,8 @@ CREATE TABLE ApiDB.VariationFeature (
   external_database_release_id    NUMERIC(10)   NOT NULL,
   FOREIGN KEY (external_database_release_id)
     REFERENCES sres.ExternalDatabaseRelease (external_database_release_id),
-  PRIMARY KEY (sequence_source_id, location)
+  PRIMARY KEY (sequence_source_id, location),
+  UNIQUE (source_id)
 );
 
 GRANT insert, select, update, delete ON ApiDB.VariationFeature TO gus_w;
@@ -52,7 +54,6 @@ CREATE TABLE ApiDB.VariationTranscriptProduct (
   product                             VARCHAR(1),
   matches_ref_codon                   NUMERIC(1),
   matches_ref_product                 NUMERIC(1),
-  downstream_of_frameshift_strain_ids VARCHAR(4000),
   hgvs_p                              VARCHAR(500),
   FOREIGN KEY (sequence_source_id, location)
     REFERENCES ApiDB.VariationFeature (sequence_source_id, location) ON DELETE CASCADE,
