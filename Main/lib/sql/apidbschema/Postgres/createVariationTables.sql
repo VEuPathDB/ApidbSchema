@@ -4,6 +4,7 @@ CREATE TABLE ApiDB.VariationFeature (
   reference_strain                VARCHAR(100)  NOT NULL,
   is_coding                       NUMERIC(1)    NOT NULL,
   variant_type                    VARCHAR(10)   NOT NULL,
+  source_id                       VARCHAR(100)  NOT NULL,
   distinct_strain_count           NUMERIC(6),
   called_strain_count             NUMERIC(6),
   no_call_strain_count            NUMERIC(6),
