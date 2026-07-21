@@ -96,6 +96,7 @@ my @create = qw(
   createGeneInteractionTables.sql
   createGeneFeatureProduct.sql
   createGeneFeatureName.sql
+  createGeneCoexpression.sql
   createOrthologGroup.sql
   createECTables.sql
   createGroupMapping.sql
