@@ -4,7 +4,7 @@ GRANT SELECT ON ApiDB.GeneCoexpression_sq TO gus_r;
 GRANT SELECT ON ApiDB.GeneCoexpression_sq TO gus_w;
 
 CREATE TABLE ApiDB.GeneCoexpression (
-  gene_coexpression_id           NUMERIC(10)   NOT NULL  DEFAULT nextval('apidb.GeneCoexpression_sq'),
+  gene_coexpression_id           NUMERIC(10)   NOT NULL  DEFAULT nextval('apidb.genecoexpression_sq'),
   gene_id                        VARCHAR(50)   NOT NULL,
   associated_gene_id             VARCHAR(50)   NOT NULL,
   coefficient                    FLOAT8,
