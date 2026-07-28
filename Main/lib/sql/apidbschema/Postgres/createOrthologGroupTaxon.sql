@@ -14,15 +14,10 @@ CREATE TABLE apidb.OrthologGroupTaxon (
   row_user_id             NUMERIC(12)  NOT NULL,
   row_group_id            NUMERIC(3)   NOT NULL,
   row_project_id          NUMERIC(4)   NOT NULL,
-  row_alg_invocation_id   NUMERIC(12)  NOT NULL
+  row_alg_invocation_id   NUMERIC(12)  NOT NULL,
+  PRIMARY KEY (ortholog_group_taxon_id),
+  FOREIGN KEY (group_id) REFERENCES apidb.OrthologGroup (group_id)
 );
-
-ALTER TABLE apidb.OrthologGroupTaxon
-ADD CONSTRAINT ogt_pk PRIMARY KEY (ortholog_group_taxon_id);
-
-ALTER TABLE apidb.OrthologGroupTaxon
-ADD CONSTRAINT ogt_fk1 FOREIGN KEY (group_id)
-REFERENCES apidb.OrthologGroup (group_id);
 
 CREATE INDEX ogt_group_ix ON apidb.OrthologGroupTaxon (group_id, three_letter_abbrev);
 CREATE INDEX ogt_abbrev_ix ON apidb.OrthologGroupTaxon (three_letter_abbrev, group_id);
