@@ -1,3 +1,5 @@
+---------ApiDB.VariationFeature ----------------------------
+------------------------------------------------------------
 CREATE TABLE ApiDB.VariationFeature (
   source_id                       VARCHAR(100)  NOT NULL,
   sequence_source_id              VARCHAR(60)   NOT NULL,
@@ -32,15 +34,18 @@ CREATE TABLE ApiDB.VariationFeature (
   indel_minor_genomic_hgvs        VARCHAR(500),
   indel_frame_effect              VARCHAR(20),
   external_database_release_id    NUMERIC(10)   NOT NULL,
-  FOREIGN KEY (external_database_release_id)
-    REFERENCES sres.ExternalDatabaseRelease (external_database_release_id),
   PRIMARY KEY (sequence_source_id, location),
+  FOREIGN KEY (external_database_release_id) REFERENCES sres.ExternalDatabaseRelease (external_database_release_id),
   UNIQUE (source_id)
 );
 
-GRANT insert, select, update, delete ON ApiDB.VariationFeature TO gus_w;
-GRANT select ON ApiDB.VariationFeature TO gus_r;
+GRANT SELECT ON ApiDB.VariationFeature TO gus_r;
+GRANT INSERT, UPDATE, DELETE ON ApiDB.VariationFeature TO gus_w;
 
+CREATE INDEX variationfeature_extdbrls_ix ON ApiDB.VariationFeature (external_database_release_id);
+
+---------ApiDB.VariationTranscriptProduct ------------------
+------------------------------------------------------------
 
 CREATE TABLE ApiDB.VariationTranscriptProduct (
   sequence_source_id                  VARCHAR(60)   NOT NULL,
@@ -55,15 +60,18 @@ CREATE TABLE ApiDB.VariationTranscriptProduct (
   matches_ref_codon                   NUMERIC(1),
   matches_ref_product                 NUMERIC(1),
   hgvs_p                              VARCHAR(500),
-  FOREIGN KEY (sequence_source_id, location)
-    REFERENCES ApiDB.VariationFeature (sequence_source_id, location) ON DELETE CASCADE,
-  FOREIGN KEY (na_feature_id)
-    REFERENCES dots.NaFeatureImp (na_feature_id)
+  FOREIGN KEY (sequence_source_id, location) REFERENCES ApiDB.VariationFeature (sequence_source_id, location) ON DELETE CASCADE,
+  FOREIGN KEY (na_feature_id) REFERENCES dots.NaFeatureImp (na_feature_id)
 );
 
-GRANT insert, select, update, delete ON ApiDB.VariationTranscriptProduct TO gus_w;
-GRANT select ON ApiDB.VariationTranscriptProduct TO gus_r;
+GRANT SELECT ON ApiDB.VariationTranscriptProduct TO gus_r;
+GRANT INSERT, UPDATE, DELETE ON ApiDB.VariationTranscriptProduct TO gus_w;
 
+CREATE INDEX variationtranscriptproduct_loc_ix ON ApiDB.VariationTranscriptProduct (sequence_source_id, location);
+CREATE INDEX variationtranscriptproduct_naf_ix ON ApiDB.VariationTranscriptProduct (na_feature_id);
+
+---------ApiDB.VariationEffect -----------------------------
+------------------------------------------------------------
 
 CREATE TABLE ApiDB.VariationEffect (
   sequence_source_id   VARCHAR(60)   NOT NULL,
@@ -74,27 +82,14 @@ CREATE TABLE ApiDB.VariationEffect (
   effect               VARCHAR(60),
   hgvs_c               VARCHAR(500),
   source               VARCHAR(20),
-  FOREIGN KEY (sequence_source_id, location)
-    REFERENCES ApiDB.VariationFeature (sequence_source_id, location) ON DELETE CASCADE,
-  FOREIGN KEY (na_feature_id)
-    REFERENCES dots.NaFeatureImp (na_feature_id)
+  FOREIGN KEY (sequence_source_id, location) REFERENCES ApiDB.VariationFeature (sequence_source_id, location) ON DELETE CASCADE,
+  FOREIGN KEY (na_feature_id) REFERENCES dots.NaFeatureImp (na_feature_id)
 );
 
-GRANT insert, select, update, delete ON ApiDB.VariationEffect TO gus_w;
-GRANT select ON ApiDB.VariationEffect TO gus_r;
+GRANT SELECT ON ApiDB.VariationEffect TO gus_r;
+GRANT INSERT, UPDATE, DELETE ON ApiDB.VariationEffect TO gus_w;
 
 
--- Indexes: Postgres auto-indexes PKs/unique constraints but NOT foreign-key
--- columns. Index the child->parent composite FK and the na_feature_id FK
--- (speeds FK checks and per-transcript / per-locus queries), plus the parent's
--- external_database_release_id (used by reload deletes).
-CREATE INDEX variationtranscriptproduct_loc_ix
-  ON ApiDB.VariationTranscriptProduct (sequence_source_id, location);
-CREATE INDEX variationtranscriptproduct_naf_ix
-  ON ApiDB.VariationTranscriptProduct (na_feature_id);
-CREATE INDEX variationeffect_loc_ix
-  ON ApiDB.VariationEffect (sequence_source_id, location);
-CREATE INDEX variationeffect_naf_ix
-  ON ApiDB.VariationEffect (na_feature_id);
-CREATE INDEX variationfeature_extdbrls_ix
-  ON ApiDB.VariationFeature (external_database_release_id);
+CREATE INDEX variationeffect_loc_ix ON ApiDB.VariationEffect (sequence_source_id, location);
+CREATE INDEX variationeffect_naf_ix ON ApiDB.VariationEffect (na_feature_id);
+
