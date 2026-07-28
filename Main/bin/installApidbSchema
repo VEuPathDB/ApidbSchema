@@ -93,10 +93,13 @@ my @create = qw(
   createAnalysisMethodInvocation.sql
   createDatasource.sql
   createSnpTables.sql
+  createVariationTables.sql
   createGeneInteractionTables.sql
   createGeneFeatureProduct.sql
   createGeneFeatureName.sql
+  createGeneCoexpression.sql
   createOrthologGroup.sql
+  createOrthologGroupTaxon.sql
   createECTables.sql
   createGroupMapping.sql
   createPhylogeneticProfile.sql
@@ -142,6 +145,7 @@ my @create = qw(
   createWGCNAModuleEigengeneResults.sql
   createNAFeatureMetaCycle.sql
   createCNVTables.sql
+  createIndel.sql
   createRflpTables.sql
   createNAFeatureImage.sql
   createSequenceTaxon.sql
@@ -166,6 +170,7 @@ my @create = qw(
   createLongReadTranscript.sql
   createAntiSmashTables.sql
   createGenePhenotype.sql
+  createNAFeatureList.sql
 );
 
 my @delete = qw(
