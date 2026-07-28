@@ -169,6 +169,7 @@ my @create = qw(
   createMsPeptide.sql
   createLongReadTranscript.sql
   createAntiSmashTables.sql
+  createGenePhenotype.sql
   createNAFeatureList.sql
 );
 
