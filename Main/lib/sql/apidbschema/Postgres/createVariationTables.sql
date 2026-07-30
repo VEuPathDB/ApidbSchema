@@ -34,6 +34,7 @@ CREATE TABLE ApiDB.VariationFeature (
   indel_minor_genomic_hgvs        VARCHAR(500),
   indel_frame_effect              VARCHAR(20),
   external_database_release_id    NUMERIC(10)   NOT NULL,
+  modification_date               TIMESTAMP     DEFAULT localtimestamp NOT NULL,
   PRIMARY KEY (sequence_source_id, location),
   FOREIGN KEY (external_database_release_id) REFERENCES sres.ExternalDatabaseRelease (external_database_release_id),
   UNIQUE (source_id)
@@ -43,6 +44,22 @@ GRANT SELECT ON ApiDB.VariationFeature TO gus_r;
 GRANT INSERT, UPDATE, DELETE ON ApiDB.VariationFeature TO gus_w;
 
 CREATE INDEX variationfeature_extdbrls_ix ON ApiDB.VariationFeature (external_database_release_id);
+
+-- modification_date is TuningManager's change-detection signal for these three
+-- tables (they are declared as <externalDependency> in apiTuningManager.xml, and
+-- TuningManager::ExternalTable compares max(modification_date) + count(*) against
+-- apidb.TuningMgrExternalDependency). The column default supplies it server-side
+-- for COPY and INSERT, so no loader has to remember to.
+--
+-- NOTE: DEFAULT does not fire on UPDATE. These tables are only ever written by
+-- delete-by-external_database_release_id + reload, so that is fine today. If you
+-- ever update a row in place, set modification_date = localtimestamp in the same
+-- statement, or attach apidb.trigger_fct_update_modification_date() (defined in
+-- createReportCache.sql) as a BEFORE UPDATE trigger -- otherwise the dependent
+-- tuning tables go stale silently, with no error anywhere.
+--
+-- The index keeps TuningManager's max(modification_date) off a full scan.
+CREATE INDEX variationfeature_moddate_ix ON ApiDB.VariationFeature (modification_date);
 
 ---------ApiDB.VariationTranscriptProduct ------------------
 ------------------------------------------------------------
@@ -60,6 +77,7 @@ CREATE TABLE ApiDB.VariationTranscriptProduct (
   matches_ref_codon                   NUMERIC(1),
   matches_ref_product                 NUMERIC(1),
   hgvs_p                              VARCHAR(500),
+  modification_date                   TIMESTAMP     DEFAULT localtimestamp NOT NULL,
   FOREIGN KEY (sequence_source_id, location) REFERENCES ApiDB.VariationFeature (sequence_source_id, location) ON DELETE CASCADE,
   FOREIGN KEY (na_feature_id) REFERENCES dots.NaFeatureImp (na_feature_id)
 );
@@ -69,6 +87,7 @@ GRANT INSERT, UPDATE, DELETE ON ApiDB.VariationTranscriptProduct TO gus_w;
 
 CREATE INDEX variationtranscriptproduct_loc_ix ON ApiDB.VariationTranscriptProduct (sequence_source_id, location);
 CREATE INDEX variationtranscriptproduct_naf_ix ON ApiDB.VariationTranscriptProduct (na_feature_id);
+CREATE INDEX variationtranscriptproduct_md_ix ON ApiDB.VariationTranscriptProduct (modification_date);
 
 ---------ApiDB.VariationEffect -----------------------------
 ------------------------------------------------------------
@@ -82,6 +101,7 @@ CREATE TABLE ApiDB.VariationEffect (
   effect               VARCHAR(60),
   hgvs_c               VARCHAR(500),
   source               VARCHAR(20),
+  modification_date    TIMESTAMP     DEFAULT localtimestamp NOT NULL,
   FOREIGN KEY (sequence_source_id, location) REFERENCES ApiDB.VariationFeature (sequence_source_id, location) ON DELETE CASCADE,
   FOREIGN KEY (na_feature_id) REFERENCES dots.NaFeatureImp (na_feature_id)
 );
@@ -92,4 +112,5 @@ GRANT INSERT, UPDATE, DELETE ON ApiDB.VariationEffect TO gus_w;
 
 CREATE INDEX variationeffect_loc_ix ON ApiDB.VariationEffect (sequence_source_id, location);
 CREATE INDEX variationeffect_naf_ix ON ApiDB.VariationEffect (na_feature_id);
+CREATE INDEX variationeffect_moddate_ix ON ApiDB.VariationEffect (modification_date);
 
