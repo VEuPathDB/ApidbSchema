@@ -12,11 +12,8 @@ CREATE TABLE apidb.FileAttributes (
   PRIMARY KEY (file_id)
 );
 
-
-GRANT insert, select, update, delete ON apidb.FileAttributes TO gus_w;
 GRANT select ON apidb.FileAttributes TO gus_r;
-GRANT select ON apidb.FileAttributes TO gus_w;
-
+GRANT insert, update, delete ON apidb.FileAttributes TO gus_w;
 
 
 INSERT INTO core.TableInfo
