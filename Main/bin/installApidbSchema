@@ -171,6 +171,7 @@ my @create = qw(
   createAntiSmashTables.sql
   createGenePhenotype.sql
   createNAFeatureList.sql
+  createFileAttributes.sql
 );
 
 my @delete = qw(
