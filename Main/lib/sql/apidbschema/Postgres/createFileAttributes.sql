@@ -12,5 +12,5 @@ CREATE TABLE apidb.FileAttributes (
   PRIMARY KEY (file_id)
 );
 
-GRANT select ON apidb.FileAttributes TO gus_r;
-GRANT insert, update, delete ON apidb.FileAttributes TO gus_w;
+GRANT SELECT ON apidb.FileAttributes TO gus_r;
+GRANT INSERT, UPDATE, DELETE ON apidb.FileAttributes TO gus_w;
