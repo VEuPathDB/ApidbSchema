@@ -1,0 +1,1 @@
+DROP TABLE apidb.FileAttributes;
