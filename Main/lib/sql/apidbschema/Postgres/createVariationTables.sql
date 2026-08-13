@@ -34,6 +34,7 @@ CREATE TABLE ApiDB.VariationFeature (
   indel_minor_genomic_hgvs        VARCHAR(500),
   indel_frame_effect              VARCHAR(20),
   external_database_release_id    NUMERIC(10)   NOT NULL,
+  modification_date               TIMESTAMP     DEFAULT localtimestamp NOT NULL,
   PRIMARY KEY (sequence_source_id, location),
   FOREIGN KEY (external_database_release_id) REFERENCES sres.ExternalDatabaseRelease (external_database_release_id),
   UNIQUE (source_id)
@@ -60,6 +61,7 @@ CREATE TABLE ApiDB.VariationTranscriptProduct (
   matches_ref_codon                   NUMERIC(1),
   matches_ref_product                 NUMERIC(1),
   hgvs_p                              VARCHAR(500),
+  modification_date                   TIMESTAMP     DEFAULT localtimestamp NOT NULL,
   FOREIGN KEY (sequence_source_id, location) REFERENCES ApiDB.VariationFeature (sequence_source_id, location) ON DELETE CASCADE,
   FOREIGN KEY (na_feature_id) REFERENCES dots.NaFeatureImp (na_feature_id)
 );
@@ -82,6 +84,7 @@ CREATE TABLE ApiDB.VariationEffect (
   effect               VARCHAR(60),
   hgvs_c               VARCHAR(500),
   source               VARCHAR(20),
+  modification_date    TIMESTAMP     DEFAULT localtimestamp NOT NULL,
   FOREIGN KEY (sequence_source_id, location) REFERENCES ApiDB.VariationFeature (sequence_source_id, location) ON DELETE CASCADE,
   FOREIGN KEY (na_feature_id) REFERENCES dots.NaFeatureImp (na_feature_id)
 );
