@@ -7,7 +7,7 @@ CREATE TABLE apidb.FileAttributes (
   category    varchar(50),
   file_type   varchar(50),
   file_format varchar(20),
-  filesize    numeric(10),
+  filesize    numeric(13),
   checksum    varchar(100),
   PRIMARY KEY (file_id)
 );
