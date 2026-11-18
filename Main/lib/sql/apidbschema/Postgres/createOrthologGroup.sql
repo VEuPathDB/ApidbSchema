@@ -898,6 +898,8 @@ CREATE TABLE apidb.OrthologGroupStats (
   PRIMARY KEY (ortholog_group_stat_id)
 );
 
+CREATE INDEX ogs_group_ix ON apidb.OrthologGroupStats (group_id);
+
 GRANT INSERT, SELECT, UPDATE, DELETE ON apidb.OrthologGroupStats TO gus_w;
 GRANT SELECT ON apidb.OrthologGroupStats TO gus_r;
 
